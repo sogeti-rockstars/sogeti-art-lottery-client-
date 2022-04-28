@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ModalService } from './component/modal/modal.service';
 import { Painting } from './model/painting';
 import { PaintingService } from './service/painting.service';
@@ -9,10 +9,12 @@ import { PaintingService } from './service/painting.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
 
   constructor(private paintingService: PaintingService, private modalService: ModalService, private viewContainerRef: ViewContainerRef) {}
+  ngOnInit(): void {
+  }
 
   // Example code on how to use painting service:
   public loadPaintings(): void {

@@ -22,6 +22,7 @@ export class ModalService {
         component.instance.closeModal.subscribe(() => this.removeDynamicComponent(component));
 
         this.rootViewContainer.insert(component.hostView);
+        console.log('hej')
     }
 
     removeDynamicComponent(component: any) {

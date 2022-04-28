@@ -15,9 +15,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule, 
     AppRoutingModule, 
-    HttpClientModule,
+    HttpClientModule, 
+    NgbModule
   ],
-  providers: [],
-  bootstrap: [AppComponent, ModalService],
+  providers: [ModalService],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

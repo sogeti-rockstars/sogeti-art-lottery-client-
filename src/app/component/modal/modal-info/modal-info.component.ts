@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+
 @Component({
   selector: 'app-modal-info',
   templateUrl: './modal-info.component.html',
@@ -12,6 +13,7 @@ export class ModalInfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log('omg')
   }
 
   close(event:any){
