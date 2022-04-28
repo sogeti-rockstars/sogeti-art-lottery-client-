@@ -2,17 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
-import { Painting } from '../model/painting';
+import { ArtItem } from '../model/art-item';
 import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PaintingService {
+export class ArtItemService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
-  public getPaintings(): Observable<Painting[]> {
-    return this.http.get<Painting[]>(this.reqBuild('getAll'), {
+  public getArtItems(): Observable<ArtItem[]> {
+    return this.http.get<ArtItem[]>(this.reqBuild('getAll'), {
       headers: this.auth.authHeaders,
     });
   }

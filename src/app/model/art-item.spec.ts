@@ -1,7 +1,7 @@
-import { Painting } from './painting';
+import { ArtItem } from './art-item';
 
 describe('Painting', () => {
   it('should create an instance', () => {
-    expect(new Painting()).toBeTruthy();
+    expect(new ArtItem()).toBeTruthy();
   });
 });

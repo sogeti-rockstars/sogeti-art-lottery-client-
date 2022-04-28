@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { Painting } from './model/painting';
-import { PaintingService } from './service/painting.service';
+import { ArtItem } from './model/art-item';
+import { ArtItemService } from './service/art-item.service';
 
 @Component({
   selector: 'app-root',
@@ -11,22 +11,22 @@ import { PaintingService } from './service/painting.service';
 export class AppComponent {
   title = 'sogeti-art-lottery-client';
 
-  constructor(private paintingService: PaintingService) {}
+  constructor(private artItemService: ArtItemService) {}
 
   // Example code on how to use painting service:
   public loadPaintings(): void {
-    this.paintingService.getPaintings().subscribe({
+    this.artItemService.getArtItems().subscribe({
       complete: () => {
         console.log('Loading complete!');
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
       },
-      next: (resp: Painting[]) => {
+      next: (resp: ArtItem[]) => {
         this.paintings = resp;
       },
     });
   }
 
-  public paintings: Painting[] = [];
+  public paintings: ArtItem[] = [];
 }
