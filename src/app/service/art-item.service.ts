@@ -12,7 +12,7 @@ export class ArtItemService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   public getArtItems(): Observable<ArtItem[]> {
-    return this.http.get<ArtItem[]>(this.reqBuild('getAll'), {
+    return this.http.get<ArtItem[]>(this.reqBuild('get-all'), {
       headers: this.auth.authHeaders,
     });
   }
