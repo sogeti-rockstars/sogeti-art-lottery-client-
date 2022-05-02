@@ -20,7 +20,7 @@ export class ArtItemService {
   private apiServerUrl = environment.apiBaseUrl;
 
   private reqs: Map<string, string> = new Map()
-    .set('getAll', `${this.apiServerUrl}/api/v1/item/getAll`)
+    .set('get-all', `${this.apiServerUrl}/api/v1/item/get-all`)
     .set('get', `${this.apiServerUrl}/api/v1/item/get`);
 
   private reqBuild(key: string): string {
