@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { ModalService } from './component/modal/modal.service';
 import { ArtItem } from './model/art-item';
 import { ArtItemService } from './service/art-item.service';
 
@@ -10,8 +11,13 @@ import { ArtItemService } from './service/art-item.service';
 })
 export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
+  paintings: ArtItem[]=[];
 
-  constructor(private artItemService: ArtItemService) {}
+  constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
+    private modalService: ModalService) {}
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
 
   // Example code on how to use painting service:
   public loadPaintings(): void {
@@ -33,6 +39,4 @@ export class AppComponent implements OnInit{
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.addInfoHeaderComponent(modalHeader, modalBody);
   }
-}
-  public paintings: ArtItem[] = [];
 }
