@@ -1,8 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { ModalService } from './component/modal/modal.service';
-import { Painting } from './model/painting';
-import { PaintingService } from './service/painting.service';
+import { Component } from '@angular/core';
+import { ArtItem } from './model/art-item';
+import { ArtItemService } from './service/art-item.service';
 
 @Component({
   selector: 'app-root',
@@ -12,30 +11,28 @@ import { PaintingService } from './service/painting.service';
 export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
 
-  constructor(private paintingService: PaintingService, private modalService: ModalService, private viewContainerRef: ViewContainerRef) {}
-  ngOnInit(): void {
-  }
+  constructor(private artItemService: ArtItemService) {}
 
   // Example code on how to use painting service:
   public loadPaintings(): void {
-    this.paintingService.getPaintings().subscribe({
+    this.artItemService.getArtItems().subscribe({
       complete: () => {
         console.log('Loading complete!');
       },
       error: (error: HttpErrorResponse) => {
         alert(error.message);
       },
-      next: (resp: Painting[]) => {
+      next: (resp: ArtItem[]) => {
         this.paintings = resp;
       },
     });
   }
-
-  public paintings: Painting[] = [];
 
   public modalInfo(e: any, modalHeader: string, modalBody: string){
     e.preventDefault();
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.addInfoHeaderComponent(modalHeader, modalBody);
   }
+}
+  public paintings: ArtItem[] = [];
 }

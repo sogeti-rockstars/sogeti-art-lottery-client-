@@ -1,2 +1,8 @@
-<button type="button" (click)="modalInfo($event, 'hej', 'hej då')">aaaa</button>
-<p>hej</p>
+<h1>Hello</h1>
+<p><button (click)="loadPaintings()">Load paintings</button></p>
+<div *ngFor="let paint of paintings" class="col-md-6 col-xl-3">
+  <p>
+    {{ paint.id }} {{ paint.itemName }} {{ paint.artistName }}
+    {{ paint.technique }}
+  </p>
+</div>
