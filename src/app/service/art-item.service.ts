@@ -47,7 +47,7 @@ export class ArtItemService {
   public getArtItemImage(id: number): Observable<Blob> {
     var imageUrl = `${this.apiServerUrl}/api/v1/item/image/${id}`;
     console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
-    return this.http.get<Blob>(`${imageUrl}`, {
+    return this.http.get<Blob>(imageUrl, {
       headers: this.auth.authHeaders,
     });
   }

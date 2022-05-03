@@ -12,6 +12,7 @@ import { ArtItemService } from './service/art-item.service';
 export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
   paintings: ArtItem[]=[];
+  isImageLoading: boolean=false;
 
   constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
     private modalService: ModalService) {}
@@ -33,6 +34,30 @@ export class AppComponent implements OnInit{
       },
     });
   }
+
+  imageToShow: any;
+
+createImageFromBlob(image: Blob) {
+   let reader = new FileReader();
+   reader.addEventListener("load", () => {
+      this.imageToShow = reader.result;
+   }, false);
+
+   if (image) {
+      reader.readAsDataURL(image);
+   }
+}
+
+  getImageFromService(artItem:ArtItem) {
+    this.isImageLoading = true;
+    this.artItemService.getArtItemImage(artItem.id).subscribe(data => {
+      this.createImageFromBlob(data);
+      this.isImageLoading = false;
+    }, error => {
+      this.isImageLoading = false;
+      console.log(error);
+    });
+}
 
   public addItem(e: any){
     e.preventDefault();
