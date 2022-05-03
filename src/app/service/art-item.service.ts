@@ -18,12 +18,28 @@ export class ArtItemService {
       headers: this.auth.authHeaders,
     });
   }
-  public addArtItem(artItem:ArtItem): Observable<ArtItem>{
-    console.log(artItem.itemName+'addItemService');
-    return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, artItem);
+
+  public addArtItem(artItem: ArtItem): Observable<ArtItem> {
+    console.log(artItem.itemName + 'addItemService');
+    return this.http.post<ArtItem>(
+      `${this.apiServerUrl}/api/v1/item/`,
+      artItem,
+      { headers: this.auth.authHeaders }
+    );
   }
-  public updateArtItem(artItem:ArtItem) : Observable<ArtItem>{
-    return this.http.put<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, {
+
+  public updateArtItem(artItem: ArtItem): Observable<ArtItem> {
+    console.log(`Update: { id:${artItem.id}, itemName:${artItem.itemName} } `);
+    return this.http.put<ArtItem>(
+      `${this.apiServerUrl}/api/v1/item/${artItem.id}`,
+      artItem,
+      { headers: this.auth.authHeaders }
+    );
+  }
+
+  public deleteArtItem(id: number): Observable<Object> {
+    console.log(`Delete: { id:${id} } `);
+    return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/item/${id}`, {
       headers: this.auth.authHeaders,
     });
   }
