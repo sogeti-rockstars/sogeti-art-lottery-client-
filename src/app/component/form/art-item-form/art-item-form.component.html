@@ -1,0 +1,77 @@
+
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+          <div class="form-group">
+             <label for="itemName">Item Name</label>
+             <input id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Item Name" required>
+          </div>
+          <div class="form-group">
+             <label for="artistName">Artist Name</label>
+             <input type="artistName" type="text" formControlName="artistName" class="form-control" id="artistName" placeholder="Artist Name">
+          </div>
+          <div class="form-group">
+             <label for="value">Value</label>
+             <input type="value" type="text" formControlName="value" class="form-control" id="value" placeholder="Value">
+          </div>
+          <div class="form-group">
+             <label for="pictureUrl">Picture URL</label>
+             <input type="pictureUrl" type="text" formControlName="pictureUrl" class="form-control" id="pictureUrl" placeholder="Picture URL">
+          </div>
+          <div class="form-group">
+            <label for="">Test</label>
+            <input type="" type="text" formControlName="frameDescription" class="form-control" id="" placeholder="Tjena tjena">
+         </div>
+          <div class="modal-footer">
+             <button [disabled]="!profileForm.valid" type="submit" class="btn btn-primary" >Add Item</button>
+          </div>
+          </form>
+          <hr>
+  
+          <p>Form Value: {{ profileForm.value | json }}</p>
+          
+          <p>Form Status: {{ profileForm.status }}</p>
+
+          <button type="button" (click)="updateForm()">Update Profile</button>
+
+          <!-- lotteryId: [''],
+    pictureUrl: [''],
+    artistName: [''],
+    size: [''],
+    frameDescription: [''],
+    value: [''],
+    technique: [''], -->
+
+<!--  -->
+<!-- 
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <label for="item-name">First Name: </label>
+    <input id="item-name" type="text" formControlName="itemName" required />
+  
+    <div formGroupName="address">
+      <h2>Address</h2>
+  
+      <label for="street">Street: </label>
+      <input id="street" type="text" formControlName="street">
+  
+      <label for="city">City: </label>
+      <input id="city" type="text" formControlName="city">
+  
+      <label for="state">State: </label>
+      <input id="state" type="text" formControlName="state">
+  
+      <label for="zip">Zip Code: </label>
+      <input id="zip"type="text" formControlName="zip">
+    </div>
+  
+  
+    <p>Complete the form to enable button.</p>
+    <button type="submit" [disabled]="!profileForm.valid">Submit</button>
+  </form>
+  
+  <hr>
+  
+  <p>Form Value: {{ profileForm.value | json }}</p>
+  
+  <p>Form Status: {{ profileForm.status }}</p>
+  
+  <button type="button" (click)="updateProfile()">Update Profile</button> -->
+  

@@ -1,1 +1,78 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css';
+@import 'https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css';
+@import 'bootstrap/dist/css/bootstrap.css';
+
+body{
+    margin-top:20px;
+    background: #f5f5f5;
+}
+.card {
+    border: none;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.05);
+    margin-bottom: 30px;
+}
+.w-60 {
+    width: 60px;
+}
+h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+.social-links li a {
+    -webkit-border-radius: 50%;
+    background-color: rgba(89,206,181,.85);
+    border-radius: 50%;
+    color: #fff;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    width: 30px;
+    font-size: 12px;
+}
+a {
+    color: #707070;
+}
+body {
+    margin: 0;
+    font-family: "PT Sans", sans-serif;
+    font-size: 16px;
+    font-weight: regular;
+    line-height: 16px;
+    color: #666666;
+    text-align: left;
+    background-color: white;
+    padding: 40px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.btn {
+    background-color: #ebe084;
+    color: #000;
+    border-color: #ebe084;
+    border-width: 3px;
+    border-style: solid;
+    font-size: 0.875rem;
+    line-height: 2.1875rem;
+    padding: 0 25px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    display: inline-block;
+    transition: all .25s ease-in-out;
+    text-decoration: none;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: 0 0 2px 2px #cccccc;
+}
+
+.btn:hover {
+    background-color: darken(#ebe084, 15%);
+    border-color: darken(#ebe084, 15%);
+    color: #000;
+}
