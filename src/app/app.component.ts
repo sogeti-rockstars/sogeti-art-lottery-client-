@@ -71,4 +71,10 @@ createImageFromBlob(image: Blob) {
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
   }
+
+  public deleteItem(e: any, artItem: ArtItem){
+    e.preventDefault();
+    this.artItemService.deleteArtItem(artItem.id);
+    this.loadPaintings();
+  }
 }
