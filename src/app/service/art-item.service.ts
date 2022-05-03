@@ -9,23 +9,23 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ArtItemService {
+  private apiServerUrl = environment.apiBaseUrl;
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   public getArtItems(): Observable<ArtItem[]> {
-    return this.http.get<ArtItem[]>(this.reqBuild('get-all'), {
+    return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/item/`, {
       headers: this.auth.authHeaders,
     });
   }
-
-  private apiServerUrl = environment.apiBaseUrl;
-
-  private reqs: Map<string, string> = new Map()
-    .set('get-all', `${this.apiServerUrl}/api/v1/item/`)
-    .set('get', `${this.apiServerUrl}/api/v1/item/get`);
-
-  private reqBuild(key: string): string {
-    let request: string = this.reqs.get(key) || '';
-    console.log(`Requesting: ${request}.`);
-    return request;
+  public addArtItem(artItem:ArtItem): Observable<ArtItem>{
+    console.log(artItem.itemName+'addItemService')
+    return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item`, artItem, {
+      headers: this.auth.authHeaders,
+    });
+  }
+  public updateArtItem(artItem:ArtItem) : Observable<ArtItem>{
+    return this.http.put<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, {
+      headers: this.auth.authHeaders,
+    });
   }
 }

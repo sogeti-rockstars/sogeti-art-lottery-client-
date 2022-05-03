@@ -1,5 +1,5 @@
 
-          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
           <div class="form-group">
              <label for="itemName">Item Name</label>
              <input id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Item Name" required>
@@ -21,7 +21,7 @@
             <input type="" type="text" formControlName="frameDescription" class="form-control" id="" placeholder="Tjena tjena">
          </div>
           <div class="modal-footer">
-             <button [disabled]="!profileForm.valid" type="submit" class="btn btn-primary" >Add Item</button>
+             <button [disabled]="!profileForm.valid" (click)="onSubmit(profileForm.value)" type="submit" class="btn btn-primary" >Add Item</button>
           </div>
           </form>
           <hr>

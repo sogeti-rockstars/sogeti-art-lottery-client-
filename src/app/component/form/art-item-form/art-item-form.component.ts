@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Type, ViewContainerRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, Type, ViewContainerRef } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ArtItem } from 'src/app/model/art-item';
+import { ArtItemService } from 'src/app/service/art-item.service';
 
 @Component({
   selector: 'app-art-item-form',
@@ -29,7 +30,7 @@ export class ArtItemFormComponent implements OnInit{
     return this.profileForm.get('aliases') as FormArray;
   }
 
-  constructor(private fb: FormBuilder, public viewContainerRef: ViewContainerRef) { }
+  constructor(private fb: FormBuilder, public viewContainerRef: ViewContainerRef, private artItemService: ArtItemService) { }
 
   ngOnInit(): void {
     if(this.artItem!=null){
@@ -40,7 +41,6 @@ export class ArtItemFormComponent implements OnInit{
   updateForm(){
       this.profileForm.patchValue({
         itemName: this.artItem.itemName,
-    pictureUrl: this.artItem.pictureUrl,
     artistName: this.artItem.artistName,
     size: this.artItem.size,
     frameDescription: this.artItem.frameDescription,
@@ -54,8 +54,9 @@ export class ArtItemFormComponent implements OnInit{
     this.aliases.push(this.fb.control(''));
   }
 
-  onSubmit(){
-    console.warn(this.profileForm.value);
+  onSubmit(artItem: ArtItem){
+    this.artItemService.addArtItem(artItem);
+    console.log(artItem.itemName+'submit')
   }
 
   setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
