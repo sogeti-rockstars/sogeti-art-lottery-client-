@@ -1,6 +1,8 @@
 <h1>Hello</h1>
 <!-- <app-art-item-form></app-art-item-form> -->
+<app-art-item-form></app-art-item-form>
 <p><button (click)="loadPaintings()">Load paintings</button></p>
 <div *ngFor="let paint of paintings" class="col-md-6 col-xl-3">
-  <button type="button" (click)="modalInfo($event, 'header', 'body')">aaa</button>
+  <button type="button" (click)="modalInfo($event, 'header', 'body')">modal {{paint.itemName}}</button>
+  <button type="button" (click)="updateItem($event, paint)">form {{paint.itemName}}</button>
 </div>

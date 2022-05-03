@@ -39,4 +39,10 @@ export class AppComponent implements OnInit{
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.addInfoHeaderComponent(modalHeader, modalBody);
   }
+
+  public updateItem(e: any, artItem: ArtItem){
+    e.preventDefault();
+    this.modalService.setRootViewContainerRef(this.viewContainerRef);
+    this.modalService.updateArtItemFormComponent(artItem);
+  }
 }

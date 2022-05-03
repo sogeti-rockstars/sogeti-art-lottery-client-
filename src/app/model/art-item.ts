@@ -1,6 +1,6 @@
 export class ArtItem {
-  id: number | undefined;
-  lotteryId: number | undefined;
+  id!: number;
+  lotteryId!: number;
   pictureUrl: string = '';
   itemName: string = '';
   artistName: string = '';
