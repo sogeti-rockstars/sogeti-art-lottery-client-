@@ -10,6 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class ArtItemService {
   private apiServerUrl = environment.apiBaseUrl;
+  postId!: number;
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   public getArtItems(): Observable<ArtItem[]> {
@@ -18,10 +19,8 @@ export class ArtItemService {
     });
   }
   public addArtItem(artItem:ArtItem): Observable<ArtItem>{
-    console.log(artItem.itemName+'addItemService')
-    return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item`, artItem, {
-      headers: this.auth.authHeaders,
-    });
+    console.log(artItem.itemName+'addItemService');
+    return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, artItem);
   }
   public updateArtItem(artItem:ArtItem) : Observable<ArtItem>{
     return this.http.put<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, {

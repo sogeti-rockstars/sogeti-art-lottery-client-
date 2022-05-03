@@ -55,8 +55,8 @@ export class ArtItemFormComponent implements OnInit{
   }
 
   onSubmit(artItem: ArtItem){
-    this.artItemService.addArtItem(artItem);
-    console.log(artItem.itemName+'submit')
+    this.artItemService.addArtItem(artItem).subscribe(data => {
+      console.log(data.id) });
   }
 
   setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
