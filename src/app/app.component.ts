@@ -16,7 +16,7 @@ export class AppComponent implements OnInit{
   constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
     private modalService: ModalService) {}
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    
   }
 
   // Example code on how to use painting service:

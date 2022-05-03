@@ -7,16 +7,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { ModalInfoComponent } from './component/modal/modal-info/modal-info.component';
 import { ModalService } from './component/modal/modal.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    ModalInfoComponent],
+    ModalInfoComponent,
+  ArtItemFormComponent
+  ],
   imports: [
     BrowserModule, 
     AppRoutingModule, 
     HttpClientModule, 
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [ModalService],
   bootstrap: [AppComponent],

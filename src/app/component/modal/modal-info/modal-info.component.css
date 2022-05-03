@@ -19,7 +19,6 @@
     position: fixed;
     top: 0;
     left: 0;
-    border-radius: 0px;
 }
 
 .modal--modal-content {
@@ -31,20 +30,3 @@
     position: relative;
     border-radius: 15px;
 }
-
-.modal--close-btn {
-    position: absolute;
-    top: -15px;
-    right: -13px;
-    font-size: 18px;
-    color: #d74840;
-    background-color: #ebe084;
-    padding: 0px;
-    border-radius: 30px;
-
-}
-
-.modal--close-btn:hover {
-    background-color: darken(#ebe084, 15%);
-    cursor: pointer;
-} 

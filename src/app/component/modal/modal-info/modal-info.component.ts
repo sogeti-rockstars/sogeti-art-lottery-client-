@@ -16,7 +16,7 @@ export class ModalInfoComponent implements OnInit {
     console.log('omg')
   }
 
-  close(event:any){
+  close(event: any){
     this.closeModal.emit(event);
   }
 
