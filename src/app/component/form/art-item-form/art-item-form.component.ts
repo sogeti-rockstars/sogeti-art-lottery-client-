@@ -10,6 +10,8 @@ import { ArtItemService } from 'src/app/service/art-item.service';
 })
 export class ArtItemFormComponent implements OnInit{
   @Input() artItem!: ArtItem;
+  update:boolean=false;
+
   profileForm = this.fb.group({
     id: [''],
     lotteryId: [''],
@@ -33,13 +35,17 @@ export class ArtItemFormComponent implements OnInit{
   constructor(private fb: FormBuilder, public viewContainerRef: ViewContainerRef, private artItemService: ArtItemService) { }
 
   ngOnInit(): void {
-    if(this.artItem!=null){
+    if(this.artItem.id!=null){
       this.updateForm();
+      this.update=true;
+      console.log('artitem is not null')
     }
   }
 
   updateForm(){
       this.profileForm.patchValue({
+        id: this.artItem.id,
+        lotteryId: this.artItem.lotteryId,
         itemName: this.artItem.itemName,
     artistName: this.artItem.artistName,
     size: this.artItem.size,

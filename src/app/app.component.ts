@@ -16,7 +16,7 @@ export class AppComponent implements OnInit{
   constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
     private modalService: ModalService) {}
   ngOnInit(): void {
-    
+    this.loadPaintings();
   }
 
   // Example code on how to use painting service:
@@ -34,15 +34,16 @@ export class AppComponent implements OnInit{
     });
   }
 
-  public modalInfo(e: any, modalHeader: string, modalBody: string){
+  public addItem(e: any){
     e.preventDefault();
+    const artItem = new ArtItem;
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.addInfoHeaderComponent(modalHeader, modalBody);
+    this.modalService.itemModal(artItem, `Add new item`);
   }
 
   public updateItem(e: any, artItem: ArtItem){
     e.preventDefault();
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.updateArtItemFormComponent(artItem);
+    this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
   }
 }

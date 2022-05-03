@@ -2,76 +2,45 @@
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
           <div class="form-group">
              <label for="itemName">Item Name</label>
-             <input id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Item Name" required>
+             <input id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Name of the item" required>
           </div>
           <div class="form-group">
              <label for="artistName">Artist Name</label>
-             <input type="artistName" type="text" formControlName="artistName" class="form-control" id="artistName" placeholder="Artist Name">
+             <input type="artistName" type="text" formControlName="artistName" class="form-control" id="artistName" placeholder="Artist who made the item">
           </div>
           <div class="form-group">
              <label for="value">Value</label>
-             <input type="value" type="text" formControlName="value" class="form-control" id="value" placeholder="Value">
+             <input type="value" type="text" formControlName="value" class="form-control" id="value" placeholder="e.g. '500kr'">
           </div>
           <div class="form-group">
-             <label for="pictureUrl">Picture URL</label>
-             <input type="pictureUrl" type="text" formControlName="pictureUrl" class="form-control" id="pictureUrl" placeholder="Picture URL">
+             <label for="pictureUrl">Size</label>
+             <input type="size" type="text" formControlName="size" class="form-control" id="size" placeholder="e.g. '25x35cm'">
           </div>
           <div class="form-group">
-            <label for="">Test</label>
-            <input type="" type="text" formControlName="frameDescription" class="form-control" id="" placeholder="Tjena tjena">
+            <label for="">Frame Description</label>
+            <input type="frameDescription" type="text" formControlName="frameDescription" class="form-control" id="frameDescription" placeholder="e.g. 'Wooden frame'">
+         </div>
+         <div class="form-group">
+            <label for="">Technique</label>
+            <input type="technique" type="text" formControlName="technique" class="form-control" id="technique" placeholder="e.g. 'Oil painting', 'carved in wood'">
+         </div>
+         <!-- <div class="form-group">
+            <label for="">ID</label>
+            <input type="technique" type="text" formControlName="id" class="form-control" id="technique" placeholder="Technique">
+         </div> -->
+         <div class="form-group">
+            <label for="">Lottery ID</label>
+            <input type="technique" type="text" formControlName="lotteryId" class="form-control" id="technique" placeholder="e.g. '45'">
          </div>
           <div class="modal-footer">
              <button [disabled]="!profileForm.valid" type="submit" class="btn btn-primary" >Add Item</button>
           </div>
           </form>
-          <hr>
   
-          <p>Form Value: {{ profileForm.value | json }}</p>
+          <div *ngIf="update==true" ><p>Form Value: {{ profileForm.value | json }}</p>
+         <p>Form Status: {{ profileForm.status }}</p>
+         <p>Update status: {{update}}</p>
+         </div>
           
-          <p>Form Status: {{ profileForm.status }}</p>
-
-          <button type="button" (click)="updateForm()">Update Profile</button>
-
-          <!-- lotteryId: [''],
-    pictureUrl: [''],
-    artistName: [''],
-    size: [''],
-    frameDescription: [''],
-    value: [''],
-    technique: [''], -->
-
-<!--  -->
-<!-- 
-<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-    <label for="item-name">First Name: </label>
-    <input id="item-name" type="text" formControlName="itemName" required />
-  
-    <div formGroupName="address">
-      <h2>Address</h2>
-  
-      <label for="street">Street: </label>
-      <input id="street" type="text" formControlName="street">
-  
-      <label for="city">City: </label>
-      <input id="city" type="text" formControlName="city">
-  
-      <label for="state">State: </label>
-      <input id="state" type="text" formControlName="state">
-  
-      <label for="zip">Zip Code: </label>
-      <input id="zip"type="text" formControlName="zip">
-    </div>
-  
-  
-    <p>Complete the form to enable button.</p>
-    <button type="submit" [disabled]="!profileForm.valid">Submit</button>
-  </form>
-  
-  <hr>
-  
-  <p>Form Value: {{ profileForm.value | json }}</p>
-  
-  <p>Form Status: {{ profileForm.status }}</p>
-  
-  <button type="button" (click)="updateProfile()">Update Profile</button> -->
-  
+          
+          
