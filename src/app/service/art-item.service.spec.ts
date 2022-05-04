@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ArtItemService } from './art-item.service';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 describe('ArtItemService', () => {
   let service: ArtItemService;
