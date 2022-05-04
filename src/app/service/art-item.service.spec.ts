@@ -1,5 +1,6 @@
 import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { lastValueFrom } from 'rxjs';
 import { Observable } from 'rxjs/internal/Observable';
 import { AppComponent } from '../app.component';
 import { ArtItem } from '../model/art-item';
@@ -9,6 +10,7 @@ import { ArtItemService } from './art-item.service';
 describe('ArtItemService', () => {
   let service: ArtItemService;
   let artItems: ArtItem[];
+  let component: AppComponent;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -22,52 +24,62 @@ describe('ArtItemService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should load an array of ArtItems', (done: DoneFn) => {
-    loadItems(() => {
-      expect(artItems.length).toBeGreaterThanOrEqual(0);
-      expect(artItems).toBeDefined();
-      done();
-    });
+  it('should load an array of ArtItems', async () => {
+    var list = await lastValueFrom(service.getArtItems());
+    expect(list.length).toBeGreaterThanOrEqual(0);
+    expect(list).toBeDefined();
   });
 
-  it('delete the last item of artItems', (done: DoneFn) => {
-    loadItems(() => {
-      var oldLength = artItems.length;
-      var newLength = oldLength == 0 ? 0 : oldLength - 1;
-
-      deleteLastItem(() => {
-        expect(artItems.length).toBe(newLength);
-        done();
-      });
-    });
+  it('delete the last item of artItems', async () => {
+    var preList = await lastValueFrom(service.getArtItems());
+    if (preList.length == 0) return;
+    await lastValueFrom(service.deleteArtItem(preList[preList.length - 1].id));
+    var postList = await lastValueFrom(service.getArtItems());
+    expect(preList.length).toBe(postList.length + 1);
+    console.log('del last item done');
+    console.log({ pre: preList, post: postList });
   });
 
-  it('delete all artItems', (done: DoneFn) => {
-    loadItems(() => {
-      deleteAllItems(() => {
-        loadItems(() => {
-          expect(artItems.length).toBe(0);
-          done();
-        });
-      });
-    });
+  it('delete all artItems', async () => {
+    await addNItems(10);
+    var currList = await lastValueFrom(service.getArtItems());
+    while (currList.length > 0) {
+      await lastValueFrom(
+        service.deleteArtItem(currList[currList.length - 1].id)
+      );
+      currList = await lastValueFrom(service.getArtItems());
+    }
+    expect(currList.length).toBe(0); // Yah we would prob never get here if it ever were to fail...
   });
 
-  it('add an artItem', (done: DoneFn) => {
-    loadItems(() => {
-      var oldLength = artItems.length;
-      var newLength = oldLength + 1;
-
-      addAnItem(() => {
-        loadItems(() => {
-          expect(artItems.length).toBe(newLength);
-          done();
-        });
-      });
-    });
+  it('add an artItem', async () => {
+    var oldList = await lastValueFrom(service.getArtItems());
+    await lastValueFrom(service.addArtItem(getRndmItem()));
+    var newList = await lastValueFrom(service.getArtItems());
+    expect(newList.length).toBe(oldList.length + 1);
+    console.log({ pre: oldList, post: newList });
   });
 
-  // it('add 10 artItem', (done: DoneFn) => {
+  it('add 10 artItems', async () => {
+    var itemsLists = await addNItems(10);
+    expect(itemsLists.post.length).toBe(itemsLists.pre.length + 10);
+  });
+
+  type ItemList = {
+    pre: ArtItem[];
+    post: ArtItem[];
+  };
+
+  async function addNItems(newItemsLen: number): Promise<ItemList> {
+    var oldList = await lastValueFrom(service.getArtItems());
+    for (let i = 0; i < newItemsLen; i++) {
+      await lastValueFrom(service.addArtItem(getRndmItem()));
+    }
+    var newList = await lastValueFrom(service.getArtItems());
+    console.log(`old: ${oldList.length}, new: ${newList.length}`);
+    return { pre: oldList, post: newList };
+  }
+
   //   loadItems(() => {
   //     deleteAllItems(() => {
   //       loadItems(() => {
@@ -93,7 +105,6 @@ describe('ArtItemService', () => {
   //       });
   //     });
   //   });
-  // });
 
   function loadItems(onLoadingFinished: Function): void {
     service.getArtItems().subscribe({
@@ -111,7 +122,7 @@ describe('ArtItemService', () => {
     });
   }
 
-  function addAnItem(onAddFinished: Function): void {
+  function getRndmItem(): ArtItem {
     var randItem = new ArtItem();
     randItem.artistName = 'addAnItemArtistName';
     randItem.frameDescription = 'addAnItemRandDescription';
@@ -120,8 +131,11 @@ describe('ArtItemService', () => {
     randItem.size = 'addAnItem99x99cm';
     randItem.technique = 'addAnItemRandTechnique';
     randItem.value = 'addAnItem999kr';
+    return randItem;
+  }
 
-    service.addArtItem(randItem).subscribe({
+  function addAnItem(onAddFinished: Function): void {
+    service.addArtItem(getRndmItem()).subscribe({
       complete: () => {
         console.log('deleteItem complete:');
         onAddFinished();
@@ -170,6 +184,32 @@ describe('ArtItemService', () => {
       });
     });
   }
-});
 
-function onDeleteComplete(): void {}
+  var obsCompleted: boolean = true;
+  function awaitObservable(obs: Observable<any>): void {
+    obsCompleted = false;
+    obs.subscribe({
+      complete: () => {
+        console.log('awaitObservable complete.');
+        obsCompleted = true;
+      },
+      error: (error: any) => {
+        console.log('awaitObservable error:');
+        console.log(error);
+      },
+      next: (resp: any) => {
+        console.log('deleteItem Resp:');
+        console.log(resp);
+      },
+    });
+
+    // while (!obsCompleted) {
+    //   delay(10);
+    //   setTimeout(10, 10);
+    // }
+  }
+
+  function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+});
