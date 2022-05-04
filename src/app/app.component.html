@@ -1,26 +1,13 @@
 <h1>Hello</h1>
-<!-- <p><button (click)="loadPaintings()">Load paintings</button></p> -->
-<button type="button" (click)="addItem($event)">New item</button>
-<!-- <div *ngFor="let paint of paintings" class="col-md-6 col-xl-3">
-  <div class="card m-b-30">
-    <div class="card-body row">
-        <div class="col-6">
-  
-</div>
-
-</div>
-
-</div>
-<button type="button" (click)="updateItem($event, paint)">Update {{paint.itemName}}</button>
-</div> -->
+<button type="button" (click)="addArtItem($event)">New item</button>
 <div class="container" id="main-container">
   <div class="row">
       <div *ngFor="let paint of paintings" class="col-md-6 col-xl-3">
-          <button (click)="getImageFromService(paint)">Load Image</button>
           <div class="card m-b-30">
               <div class="card-body row">
                   <div class="col-6">
-                      <a href=""><img [src]="imageToShow"></a>
+                        <img [src]="getImageUrl(paint.id)" width="100px">
+                      <a href=""></a>
                   </div>
                   <div class="col-6 card-title align-self-center mb-0">
                       <h5>{{paint?.itemName}}</h5>
@@ -33,13 +20,13 @@
               </ul>
               <div class="card-body">
                   <div class="float-right btn-group btn-group-sm">
-                      <a class="btn btn-primary tooltips" (click)="updateItem($event, paint)" data-toggle="modal" type="button" data-target="#editStudentModal" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
-                      <a href="#" class="btn btn-secondary tooltips" (click)="deleteItem($event, paint)" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-times"></i></a>
+                      <a class="btn btn-primary tooltips" (click)="updateArtItem($event, paint)" data-toggle="modal" type="button" data-target="#editStudentModal" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                      <a href="#" class="btn btn-secondary tooltips" (click)="deleteArtItem($event, paint)" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-times"></i></a>
                    </div>
                   <ul class="social-links list-inline mb-0">
-                      <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="" data-original-title="Facebook"><i class="fa fa-facebook-f"></i></a></li>
+                      <!-- <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="" data-original-title="Facebook"><i class="fa fa-facebook-f"></i></a></li>
                       <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="" data-original-title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                      <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="" data-original-title="Skype"><i class="fa fa-skype"></i></a></li>
+                      <li class="list-inline-item"><a title="" data-placement="top" data-toggle="tooltip" class="tooltips" href="" data-original-title="Skype"><i class="fa fa-skype"></i></a></li> -->
                   </ul>
                 </div>
           </div>

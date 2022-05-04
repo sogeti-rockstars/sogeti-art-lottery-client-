@@ -37,44 +37,53 @@ export class AppComponent implements OnInit{
 
   imageToShow: any;
 
-createImageFromBlob(image: Blob) {
-   let reader = new FileReader();
-   reader.addEventListener("load", () => {
-      this.imageToShow = reader.result;
-   }, false);
+  public getImageUrl(id:number): string{
+    return this.artItemService.getArtItemImageUrl(id);
+  }
 
-   if (image) {
-      reader.readAsDataURL(image);
-   }
-}
 
-  getImageFromService(artItem:ArtItem) {
-    this.isImageLoading = true;
-    this.artItemService.getArtItemImage(artItem.id).subscribe(data => {
-      this.createImageFromBlob(data);
-      this.isImageLoading = false;
-    }, error => {
-      this.isImageLoading = false;
-      console.log(error);
-    });
-}
+  //WIP: loading an image from blob
+// createImageFromBlob(image: Blob) {
+//    let reader = new FileReader();
+//    reader.addEventListener("load", () => {
+//       this.imageToShow = reader.result;
+//    }, false);
 
-  public addItem(e: any){
+//    if (image) {
+//       reader.readAsDataURL(image);
+//    }
+// }
+
+//   getImageFromService(artItem:ArtItem) {
+//     this.isImageLoading = true;
+//     this.artItemService.getArtItemImage(artItem.id).subscribe(data => {
+//       this.createImageFromBlob(data);
+//       this.isImageLoading = false;
+//     }, error => {
+//       this.isImageLoading = false;
+//       console.log(error);
+//     });
+// }
+
+  public addArtItem(e: any){
     e.preventDefault();
     const artItem = new ArtItem;
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.itemModal(artItem, `Add new item`);
   }
 
-  public updateItem(e: any, artItem: ArtItem){
+  public updateArtItem(e: any, artItem: ArtItem){
     e.preventDefault();
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
     this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
   }
 
-  public deleteItem(e: any, artItem: ArtItem){
+  public deleteArtItem(e: any, artItem: ArtItem){
     e.preventDefault();
-    this.artItemService.deleteArtItem(artItem.id);
-    this.loadPaintings();
+    this.artItemService.deleteArtItem(artItem.id).subscribe({
+      complete: () => {
+        this.loadPaintings();
+      }
+    })
   }
 }

@@ -9,15 +9,13 @@ import { ModalService } from './component/modal/modal.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
-import { LotteryParticipantComponent } from './component/form/lottery-participant/lottery-participant.component';
 import { ArtItemService } from './service/art-item.service';
 
 @NgModule({
   declarations: [
     AppComponent, 
     ModalInfoComponent,
-  ArtItemFormComponent,
-  LotteryParticipantComponent
+  ArtItemFormComponent
   ],
   imports: [
     BrowserModule, 

@@ -61,8 +61,16 @@ export class ArtItemFormComponent implements OnInit{
   }
 
   onSubmit(artItem: ArtItem){
+    if(this.update==false){
+      console.log('update is'+this.update);
     this.artItemService.addArtItem(artItem).subscribe(data => {
       console.log(data.id) });
+    }
+    if(this.update==true){
+      console.log('update is'+this.update);
+      this.artItemService.updateArtItem(artItem).subscribe(data => {
+        console.log(data.id) });
+    }
   }
 
   setRootViewContainerRef(viewContainerRef: ViewContainerRef) {

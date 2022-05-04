@@ -1,9 +1,0 @@
-<form [formGroup]="participantForm" (ngSubmit)="onSubmit()">
-    <label for="name">Name</label>
-    <input id="name" type="text" formControlName="name">
-
-    <label for="office">Office</label>
-    <input id="office" type="text" formControlName="office">
-</form>
-<p>Complete the form to enable button.</p>
-<button type="submit" [disabled]="!participantForm.valid">Submit</button>
