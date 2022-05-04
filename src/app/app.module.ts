@@ -10,12 +10,14 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
 import { ArtItemService } from './service/art-item.service';
+import { ModalImageComponent } from './component/modal/modal-image/modal-image.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
     ModalInfoComponent,
-  ArtItemFormComponent
+  ArtItemFormComponent,
+  ModalImageComponent
   ],
   imports: [
     BrowserModule, 

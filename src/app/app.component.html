@@ -6,8 +6,8 @@
           <div class="card m-b-30">
               <div class="card-body row">
                   <div class="col-6">
-                        <img [src]="getImageUrl(paint.id)" width="100px">
-                      <a href=""></a>
+                        <a href=""><img [src]="getImageUrl(paint.id)"  (click)="imageModalView($event, paint)" width="100px"></a>
+                      
                   </div>
                   <div class="col-6 card-title align-self-center mb-0">
                       <h5>{{paint?.itemName}}</h5>

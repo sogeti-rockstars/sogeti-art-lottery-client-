@@ -1,0 +1,17 @@
+<div class="modal" id="modalInfo" role="dialog" aria-labelledby="modalInfoLabel">
+	<div class="modal-overlay" (click)="close($event)"></div>
+		<div class="modal-dialog" role="document">
+	  		<div class="modal-content">
+		 		<div class="modal-header">
+					 <div class="header-image"><img [src]="loadImageUrl()" height="650"></div>
+					<div class="close-button"><button type="button" class="close" (click)="close($event)" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button></div>
+			
+		 </div>
+		 <div class="modal-body">
+			<app-art-item-form [artItem]="artItem" ></app-art-item-form>
+		 </div>
+	  </div>
+	</div>
+	</div>
