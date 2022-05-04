@@ -12,11 +12,12 @@ import { ArtItemService } from './service/art-item.service';
 export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
   paintings: ArtItem[]=[];
+  isImageLoading: boolean=false;
 
   constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
     private modalService: ModalService) {}
   ngOnInit(): void {
-    
+    this.loadPaintings();
   }
 
   // Example code on how to use painting service:
@@ -34,15 +35,55 @@ export class AppComponent implements OnInit{
     });
   }
 
-  public modalInfo(e: any, modalHeader: string, modalBody: string){
-    e.preventDefault();
-    this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.addInfoHeaderComponent(modalHeader, modalBody);
+  imageToShow: any;
+
+  public getImageUrl(id:number): string{
+    return this.artItemService.getArtItemImageUrl(id);
   }
 
-  public updateItem(e: any, artItem: ArtItem){
+
+  //WIP: loading an image from blob
+// createImageFromBlob(image: Blob) {
+//    let reader = new FileReader();
+//    reader.addEventListener("load", () => {
+//       this.imageToShow = reader.result;
+//    }, false);
+
+//    if (image) {
+//       reader.readAsDataURL(image);
+//    }
+// }
+
+//   getImageFromService(artItem:ArtItem) {
+//     this.isImageLoading = true;
+//     this.artItemService.getArtItemImage(artItem.id).subscribe(data => {
+//       this.createImageFromBlob(data);
+//       this.isImageLoading = false;
+//     }, error => {
+//       this.isImageLoading = false;
+//       console.log(error);
+//     });
+// }
+
+  public addArtItem(e: any){
+    e.preventDefault();
+    const artItem = new ArtItem;
+    this.modalService.setRootViewContainerRef(this.viewContainerRef);
+    this.modalService.itemModal(artItem, `Add new item`);
+  }
+
+  public updateArtItem(e: any, artItem: ArtItem){
     e.preventDefault();
     this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.updateArtItemFormComponent(artItem);
+    this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
+  }
+
+  public deleteArtItem(e: any, artItem: ArtItem){
+    e.preventDefault();
+    this.artItemService.deleteArtItem(artItem.id).subscribe({
+      complete: () => {
+        this.loadPaintings();
+      }
+    })
   }
 }

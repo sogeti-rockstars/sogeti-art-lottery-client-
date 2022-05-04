@@ -11,6 +11,7 @@ import { AuthService } from './auth.service';
 export class ArtItemService {
   private apiServerUrl = environment.apiBaseUrl;
   postId!: number;
+  status!: string;
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   public getArtItems(): Observable<ArtItem[]> {
@@ -37,18 +38,23 @@ export class ArtItemService {
     );
   }
 
-  public deleteArtItem(id: number): Observable<Object> {
+  public deleteArtItem(id: number) {
     console.log(`Delete: { id:${id} } `);
-    return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/item/${id}`, {
+    return this.http.delete(`${this.apiServerUrl}/api/v1/item/${id}`);
+  }
+
+  //WIP
+  public getArtItemImage(id: number): Observable<Blob> {
+    var imageUrl = `${this.apiServerUrl}/api/v1/item/image/${id}`;
+    console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
+    return this.http.get<Blob>(imageUrl, {
       headers: this.auth.authHeaders,
     });
   }
 
-  public getArtItemImage(id: number): Observable<Blob> {
+  public getArtItemImageUrl(id: number): string {
     var imageUrl = `${this.apiServerUrl}/api/v1/item/image/${id}`;
     console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
-    return this.http.get<Blob>(`${imageUrl}`, {
-      headers: this.auth.authHeaders,
-    });
+    return imageUrl;
   }
 }
