@@ -38,9 +38,11 @@ export class ArtItemService {
     );
   }
 
-  public deleteArtItem(id: number) {
+  public deleteArtItem(id: number): Observable<Object> {
     console.log(`Delete: { id:${id} } `);
-    return this.http.delete(`${this.apiServerUrl}/api/v1/item/${id}`);
+    return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/item/${id}`, {
+      headers: this.auth.authHeaders,
+    });
   }
 
   //WIP
