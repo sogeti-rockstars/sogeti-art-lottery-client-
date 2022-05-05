@@ -20,8 +20,14 @@ export class ArtItemService {
     });
   }
 
+  public getArtItem(id: number): Observable<ArtItem> {
+    return this.http.get<ArtItem>(`${this.apiServerUrl}/api/v1/item/${id}`, {
+      headers: this.auth.authHeaders,
+    });
+  }
+
   public addArtItem(artItem: ArtItem): Observable<ArtItem> {
-    console.log(artItem.itemName + 'addItemService');
+    // console.log(artItem.itemName + 'addItemService');
     return this.http.post<ArtItem>(
       `${this.apiServerUrl}/api/v1/item/`,
       artItem,
@@ -30,7 +36,7 @@ export class ArtItemService {
   }
 
   public updateArtItem(artItem: ArtItem): Observable<ArtItem> {
-    console.log(`Update: { id:${artItem.id}, itemName:${artItem.itemName} } `);
+    // console.log(`Update: { id:${artItem.id}, itemName:${artItem.itemName} } `);
     return this.http.put<ArtItem>(
       `${this.apiServerUrl}/api/v1/item/${artItem.id}`,
       artItem,
@@ -39,7 +45,6 @@ export class ArtItemService {
   }
 
   public deleteArtItem(id: number): Observable<Object> {
-    console.log(`Delete: { id:${id} } `);
     return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/item/${id}`, {
       headers: this.auth.authHeaders,
     });
@@ -48,15 +53,16 @@ export class ArtItemService {
   //WIP
   public getArtItemImage(id: number): Observable<Blob> {
     var imageUrl = `${this.apiServerUrl}/api/v1/item/image/${id}`;
-    console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
-    return this.http.get<Blob>(imageUrl, {
+    // console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
+    return this.http.get(imageUrl, {
       headers: this.auth.authHeaders,
+      responseType: 'blob',
     });
   }
 
   public getArtItemImageUrl(id: number): string {
     var imageUrl = `${this.apiServerUrl}/api/v1/item/image/${id}`;
-    console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
+    // console.log(`getPictureUrl: { id:${id} } url: ${imageUrl}`);
     return imageUrl;
   }
 }
