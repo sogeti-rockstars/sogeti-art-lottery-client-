@@ -1,30 +1,54 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AppRoutes } from './app.routing';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
-import { ModalInfoComponent } from './component/modal/modal-info/modal-info.component';
-import { ModalService } from './component/modal/modal.service';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule } from '@angular/forms';
-import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
-import { ArtItemService } from './service/art-item.service';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FullComponent } from './layouts/full/full.component';
+import { AppHeaderComponent } from './layouts/full/header/header.component';
+import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DemoMaterialModule } from './demo-material-module';
+
+import { SharedModule } from './shared/shared.module';
+import { SpinnerComponent } from './shared/spinner.component';
+import { ArtItemsComponent } from './components/art-items/art-items.component';
+import { ThumbnailComponent } from './components/thumbnail/thumbnail.component';
+import { SearchComponent } from './components/search/search.component';
+
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    ModalInfoComponent,
-  ArtItemFormComponent
+    AppComponent,
+    FullComponent,
+    AppHeaderComponent,
+    SpinnerComponent,
+    AppSidebarComponent,
+    ArtItemsComponent,
+    ThumbnailComponent,
+    SearchComponent
   ],
   imports: [
-    BrowserModule, 
-    AppRoutingModule, 
-    HttpClientModule, 
-    NgbModule,
-    ReactiveFormsModule
+    BrowserModule,
+    BrowserAnimationsModule,
+    DemoMaterialModule,
+    FormsModule,
+    FlexLayoutModule,
+    HttpClientModule,
+    SharedModule,
+    RouterModule.forRoot(AppRoutes)
   ],
-  providers: [ModalService, ArtItemService],
-  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: PathLocationStrategy
+    }
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

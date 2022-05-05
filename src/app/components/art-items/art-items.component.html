@@ -1,0 +1,12 @@
+<app-search></app-search>
+
+<table>
+    <ng-container *ngFor="let item of artItems; let i=index;">
+        <tr *ngIf="i % 3 == 0">
+            <ng-container *ngFor="let pos of [0, 1, 2]">
+                <td *ngIf="i+pos < artItems.length"> 
+                    <thumbnail [id]=item.id cssClass="thumbnailImg"></thumbnail>                        
+            </ng-container>
+        </tr>
+    </ng-container>
+</table>

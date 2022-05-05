@@ -1,0 +1,25 @@
+.square {
+    height: 50px;
+    width: 50px;
+    background-color: white;
+    display: table-cell;
+    justify-content: center;
+    vertical-align: middle;
+    text-align: center;
+    /* outline-color: #000000; */
+    /* outline-width: 1; */
+  }
+  .thumbnailImg {
+      width: 150px;
+      margin: 10px;
+      margin-right: 30px;
+      margin-bottom: 5px;
+      margin-left: 30px;
+  }
+  .thumbnailImg:hover {
+    transform: scale(2.0); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+  }
+
+  .thumbnailImgLarge {
+    width: 500px;
+    }
