@@ -33,36 +33,35 @@ import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(MaterialRoutes),
-    DemoMaterialModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FlexLayoutModule,
-    CdkTableModule
-  ],
-  providers: [],
-  entryComponents: [DialogOverviewExampleDialogComponent],
-  declarations: [
-    ButtonsComponent,
-    GridComponent,
-    ListsComponent,
-    MenuComponent,
-    TabsComponent,
-    StepperComponent,
-    ExpansionComponent,
-    ChipsComponent,
-    ToolbarComponent,
-    ProgressSnipperComponent,
-    ProgressComponent,
-    DialogComponent,
-    DialogOverviewExampleDialogComponent,
-    TooltipComponent,
-    SnackbarComponent,
-    SliderComponent,
-    SlideToggleComponent
-  ]
+    imports: [
+        CommonModule,
+        RouterModule.forChild(MaterialRoutes),
+        DemoMaterialModule,
+        HttpClientModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FlexLayoutModule,
+        CdkTableModule
+    ],
+    providers: [],
+    declarations: [
+        ButtonsComponent,
+        GridComponent,
+        ListsComponent,
+        MenuComponent,
+        TabsComponent,
+        StepperComponent,
+        ExpansionComponent,
+        ChipsComponent,
+        ToolbarComponent,
+        ProgressSnipperComponent,
+        ProgressComponent,
+        DialogComponent,
+        DialogOverviewExampleDialogComponent,
+        TooltipComponent,
+        SnackbarComponent,
+        SliderComponent,
+        SlideToggleComponent
+    ]
 })
 export class MaterialComponentsModule {}
