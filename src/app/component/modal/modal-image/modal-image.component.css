@@ -23,7 +23,6 @@
     box-shadow: 0 1px 3px 0 rgba(38,41,58,.06);
     width:fit-content;
     height: fit-content;
-    padding: 0px;
     background: white;
     left: 0;
     right: 0;
@@ -33,18 +32,27 @@
     position: fixed;
     border-radius: 15px;
 }
+.img-display{
+    max-height: 45rem;
+}
 .modal-header{
-    padding:0px;
+    padding-top: 50px;
 }
 .modal-body{
     font-size: small;
     max-width: fit-content;
-    max-height: 250px;
+    max-height: 17rem;
     overflow-y:scroll;
     padding-left: 50px;
     padding-right: 50px;
+    padding-top: 100px;
 }
-.close-button{
+
+.x-button{
+
+}
+
+.close{
     position: absolute;
     top: 0px;
     right: 0px;

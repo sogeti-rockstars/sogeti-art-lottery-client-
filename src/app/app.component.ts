@@ -78,6 +78,12 @@ export class AppComponent implements OnInit{
     this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
   }
 
+  public editImageModalView(e:any, artItem:ArtItem){
+    e.preventDefault();
+    this.modalService.setRootViewContainerRef(this.viewContainerRef);
+    this.modalService.editItemImageModal(artItem, 'Image modal');
+  }
+
   public imageModalView(e:any, artItem:ArtItem){
     e.preventDefault();
     this.modalService.setRootViewContainerRef(this.viewContainerRef);

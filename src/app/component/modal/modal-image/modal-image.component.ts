@@ -27,7 +27,8 @@ export class ModalImageComponent implements OnInit {
 }
 
 loadImageUrl(): string{
-  return this.itemService.getArtItemImageUrl(this.artItem.id);
+  this.imageUrl = this.itemService.getArtItemImageUrl(this.artItem.id);
+  return this.imageUrl;
 }
 
   close(event: any){

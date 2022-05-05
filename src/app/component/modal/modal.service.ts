@@ -25,6 +25,8 @@ export class ModalService {
         console.log(artItem.itemName+'modalservice')
         component.instance.modalHeader = header;
         component.instance.artItem = artItem;
+        component.instance.imageView = false;
+        component.instance.editView = true;
         component.instance.setRootViewContainerRef(this.rootViewContainer)
         // Subscribe to the closeModal event and destroy the component
         component.instance.closeModal.subscribe(() => this.removeDynamicComponent(component));
@@ -33,12 +35,29 @@ export class ModalService {
         console.log('hej')
     }
 
-    itemImageModal(artItem: ArtItem, header:string){
-        const factory = this.factoryResolver.resolveComponentFactory(ModalImageComponent);
+    editItemImageModal(artItem: ArtItem, header:string){
+        const factory = this.factoryResolver.resolveComponentFactory(ModalInfoComponent);
         const component = factory.create(this.rootViewContainer.parentInjector);
         console.log(artItem.itemName+'modalservice')
         component.instance.modalHeader = header;
         component.instance.artItem = artItem;
+        component.instance.editView = true;
+        component.instance.imageView = true;
+        component.instance.setRootViewContainerRef(this.rootViewContainer)
+        // Subscribe to the closeModal event and destroy the component
+        component.instance.closeModal.subscribe(() => this.removeDynamicComponent(component));
+        
+        this.rootViewContainer.insert(component.hostView);
+        console.log('hej')
+    }
+    itemImageModal(artItem: ArtItem, header:string){
+        const factory = this.factoryResolver.resolveComponentFactory(ModalInfoComponent);
+        const component = factory.create(this.rootViewContainer.parentInjector);
+        console.log(artItem.itemName+'modalservice')
+        component.instance.modalHeader = header;
+        component.instance.artItem = artItem;
+        component.instance.imageView = true;
+        component.instance.editView = false;
         component.instance.setRootViewContainerRef(this.rootViewContainer)
         // Subscribe to the closeModal event and destroy the component
         component.instance.closeModal.subscribe(() => this.removeDynamicComponent(component));

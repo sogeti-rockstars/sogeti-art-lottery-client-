@@ -3,13 +3,19 @@
 		<div class="modal-dialog" role="document">
 	  		<div class="modal-content">
 		 		<div class="modal-header">
-			<h5 class="modal-title" id="modalInfoLabel">{{modalHeader}}</h5>
+			<div *ngIf="imageView==false" class="modal-header-text"><h5 class="modal-title" id="modalInfoLabel">{{modalHeader}}</h5></div>
+			<div *ngIf="imageView==true" class="modal-header-image"><a href="http://localhost:8080/api/v1/item/image/{{artItem.id}}"	 target="_blank" rel="noopener noreferrer"><img class="img-display" [src]="loadImageUrl()"></a></div>
 			<button type="button" class="close" (click)="close($event)" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
+			<span *ngIf="imageView==false" class="close-span-text" aria-hidden="true">&times;</span>
+			<span *ngIf="imageView==true" class="close-span-text" aria-hidden="true">&times;</span>
 			</button>
 		 </div>
 		 <div class="modal-body">
-			<app-art-item-form [artItem]="artItem" ></app-art-item-form>
+			 <div *ngIf="editView==false"><app-card-info [artItem]="artItem"></app-card-info></div>
+			 <div *ngIf="editView==true" class="modal-body-edit">
+			<div *ngIf="imageView==true" class="modal-body-image"><app-art-item-form [artItem]="artItem" ></app-art-item-form></div>
+			<div *ngIf="imageView==false" class="modal-body-text"><app-art-item-form [artItem]="artItem" ></app-art-item-form></div>
+		</div>
 		 </div>
 	  </div>
 	</div>
