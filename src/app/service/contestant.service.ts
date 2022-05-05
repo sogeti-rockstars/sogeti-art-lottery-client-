@@ -24,15 +24,18 @@ export class ContestantService {
   }
 
   public getContestant(id: number): Observable<Contestant> {
-    return this.http.get<Contestant>(`${this.apiServerUrl}/api/v1/item/${id}`, {
-      headers: this.auth.authHeaders,
-    });
+    return this.http.get<Contestant>(
+      `${this.apiServerUrl}/api/v1/contestant/${id}`,
+      {
+        headers: this.auth.authHeaders,
+      }
+    );
   }
 
   public addContestant(artItem: Contestant): Observable<Contestant> {
     // console.log(artItem.itemName + 'addItemService');
     return this.http.post<Contestant>(
-      `${this.apiServerUrl}/api/v1/item/`,
+      `${this.apiServerUrl}/api/v1/contestant/`,
       artItem,
       { headers: this.auth.authHeaders }
     );
@@ -41,15 +44,18 @@ export class ContestantService {
   public updateContestant(artItem: Contestant): Observable<Contestant> {
     // console.log(`Update: { id:${artItem.id}, itemName:${artItem.itemName} } `);
     return this.http.put<Contestant>(
-      `${this.apiServerUrl}/api/v1/item/${artItem.id}`,
+      `${this.apiServerUrl}/api/v1/contestant/${artItem.id}`,
       artItem,
       { headers: this.auth.authHeaders }
     );
   }
 
   public deleteContestant(id: number): Observable<Object> {
-    return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/item/${id}`, {
-      headers: this.auth.authHeaders,
-    });
+    return this.http.delete<Object>(
+      `${this.apiServerUrl}/api/v1/contestant/${id}`,
+      {
+        headers: this.auth.authHeaders,
+      }
+    );
   }
 }
