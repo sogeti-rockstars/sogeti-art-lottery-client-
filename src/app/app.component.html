@@ -6,8 +6,8 @@
           <div class="card m-b-30">
               <div class="card-body row">
                   <div class="col-6">
-                        <img [src]="getImageUrl(paint.id)" width="100px">
-                      <a href=""></a>
+                        <a href=""><img [src]="getImageUrl(paint.id)"  (click)="imageModalView($event, paint)" width="100px"></a>
+                      
                   </div>
                   <div class="col-6 card-title align-self-center mb-0">
                       <h5>{{paint?.itemName}}</h5>
@@ -20,7 +20,7 @@
               </ul>
               <div class="card-body">
                   <div class="float-right btn-group btn-group-sm">
-                      <a class="btn btn-primary tooltips" (click)="updateArtItem($event, paint)" data-toggle="modal" type="button" data-target="#editStudentModal" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
+                      <a class="btn btn-primary tooltips" (click)="editImageModalView($event, paint)" data-toggle="modal" type="button" data-target="#editStudentModal" data-placement="top" data-original-title="Edit"><i class="fa fa-pencil"></i> </a>
                       <a href="#" class="btn btn-secondary tooltips" (click)="deleteArtItem($event, paint)" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-times"></i></a>
                    </div>
                   <ul class="social-links list-inline mb-0">

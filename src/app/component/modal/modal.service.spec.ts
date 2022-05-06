@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ModalService } from './modal.service';
 
-xdescribe('ModalService', () => {
+describe('ModalService', () => {
   let service: ModalService;
 
   beforeEach(() => {

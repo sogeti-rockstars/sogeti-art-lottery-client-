@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ModalService } from './component/modal/modal.service';
 import { ArtItem } from './model/art-item';
+import { ArtItemApiService } from './service/api/art-item-api.service';
 import { ArtItemService } from './service/art-item.service';
 
 @Component({
@@ -14,15 +15,18 @@ export class AppComponent implements OnInit{
   paintings: ArtItem[]=[];
   isImageLoading: boolean=false;
 
-  constructor(private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
+  constructor(private artItemApiService: ArtItemApiService, private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
     private modalService: ModalService) {}
   ngOnInit(): void {
     this.loadPaintings();
+    this.artItemService.artItemSubject$.subscribe(() => {
+      this.loadPaintings();
+    })
   }
 
   // Example code on how to use painting service:
   public loadPaintings(): void {
-    this.artItemService.getArtItems().subscribe({
+    this.artItemApiService.getArtItems().subscribe({
       complete: () => {
         console.log('Loading complete!');
       },
@@ -38,7 +42,7 @@ export class AppComponent implements OnInit{
   imageToShow: any;
 
   public getImageUrl(id:number): string{
-    return this.artItemService.getArtItemImageUrl(id);
+    return this.artItemApiService.getArtItemImageUrl(id);
   }
 
 
@@ -56,7 +60,7 @@ export class AppComponent implements OnInit{
 
 //   getImageFromService(artItem:ArtItem) {
 //     this.isImageLoading = true;
-//     this.artItemService.getArtItemImage(artItem.id).subscribe(data => {
+//     this.artItemApiService.getArtItemImage(artItem.id).subscribe(data => {
 //       this.createImageFromBlob(data);
 //       this.isImageLoading = false;
 //     }, error => {
@@ -78,9 +82,21 @@ export class AppComponent implements OnInit{
     this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
   }
 
+  public editImageModalView(e:any, artItem:ArtItem){
+    e.preventDefault();
+    this.modalService.setRootViewContainerRef(this.viewContainerRef);
+    this.modalService.editItemImageModal(artItem, 'Image modal');
+  }
+
+  public imageModalView(e:any, artItem:ArtItem){
+    e.preventDefault();
+    this.modalService.setRootViewContainerRef(this.viewContainerRef);
+    this.modalService.itemImageModal(artItem, 'Image modal');
+  }
+
   public deleteArtItem(e: any, artItem: ArtItem){
     e.preventDefault();
-    this.artItemService.deleteArtItem(artItem.id).subscribe({
+    this.artItemApiService.deleteArtItem(artItem.id).subscribe({
       complete: () => {
         this.loadPaintings();
       }

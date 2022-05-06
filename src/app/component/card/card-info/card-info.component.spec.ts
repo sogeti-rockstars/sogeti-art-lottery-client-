@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ArtItemFormComponent } from './art-item-form.component';
+import { CardInfoComponent } from './card-info.component';
 
-describe('ArtItemFormComponent', () => {
-  let component: ArtItemFormComponent;
-  let fixture: ComponentFixture<ArtItemFormComponent>;
+describe('CardInfoComponent', () => {
+  let component: CardInfoComponent;
+  let fixture: ComponentFixture<CardInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ArtItemFormComponent ]
+      declarations: [ CardInfoComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ArtItemFormComponent);
+    fixture = TestBed.createComponent(CardInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
