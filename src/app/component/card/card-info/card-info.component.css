@@ -1,7 +1,7 @@
 .card{
-
+    margin-bottom: 0px;
 }
 .list-group{
     text-align: center;
-    width: 18rem;
+    width:inherit;
 }

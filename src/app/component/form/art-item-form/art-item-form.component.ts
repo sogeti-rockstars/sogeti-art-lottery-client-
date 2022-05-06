@@ -10,6 +10,7 @@ import { ArtItemService } from 'src/app/service/art-item.service';
 })
 export class ArtItemFormComponent implements OnInit{
   @Input() artItem!: ArtItem;
+  @Output() artItemOutput = new EventEmitter<ArtItem>();
   update:boolean=false;
 
   profileForm = this.fb.group({
@@ -62,14 +63,16 @@ export class ArtItemFormComponent implements OnInit{
 
   onSubmit(artItem: ArtItem){
     if(this.update==false){
-      console.log('update is'+this.update);
-    this.artItemService.addArtItem(artItem).subscribe(data => {
-      console.log(data.id) });
+    //   console.log('update is'+this.update);
+    // this.artItemService.addArtItem(artItem).subscribe(data => {
+    //   console.log(data.id) });
+    this.artItemOutput.emit(artItem);
     }
     if(this.update==true){
-      console.log('update is'+this.update);
-      this.artItemService.updateArtItem(artItem).subscribe(data => {
-        console.log(data.id) });
+      // console.log('update is'+this.update);
+      // this.artItemService.saveArtItem(artItem).subscribe(data => {
+      //   console.log(data.id) });
+        this.artItemOutput.emit(artItem);
     }
   }
 
