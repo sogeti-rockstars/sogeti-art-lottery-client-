@@ -26,6 +26,7 @@ getTestBed().initTestEnvironment(
 
 var enabledSuites: Map<String, boolean> = new Map();
 enabledSuites.set('ArtItemService', true);
+enabledSuites.set('ContestantService', true);
 var enabled = false;
 jasmine.getEnv().addReporter({
   suiteStarted(result) {
