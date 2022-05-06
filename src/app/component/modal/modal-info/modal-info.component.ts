@@ -27,12 +27,15 @@ export class ModalInfoComponent implements OnInit {
     //TODO: Hur refresha loadPaintings() i appComponent när den har sparat något?
   saveModal(artItemOutput:ArtItem){
     if(this.newItem==true){
-    this.itemApiService.addArtItem(artItemOutput).subscribe(data => {
-    console.log(data.id+'ID new item') });
+    this.itemService.observeAddArtItem(artItemOutput).subscribe(data => {
+    console.log(data.id+'ID new item');
+    this.close(artItemOutput);
+  });
   }
     if(this.newItem==false){
-      this.itemService.saveArtItem(artItemOutput).subscribe(data => {
+      this.itemService.observeUpdateArtItem(artItemOutput).subscribe(data => {
         console.log(data.id+'ID updated item');
+        this.close(artItemOutput);
       })
     }
   }
