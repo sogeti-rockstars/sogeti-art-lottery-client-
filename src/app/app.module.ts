@@ -20,6 +20,7 @@ import { SpinnerComponent } from './shared/spinner.component';
 import { ArtItemsComponent } from './components/art-items/art-items.component';
 import { ThumbnailComponent } from './components/thumbnail/thumbnail.component';
 import { SearchComponent } from './components/search/search.component';
+import { AssociationComponent } from './components/association/association.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { SearchComponent } from './components/search/search.component';
     AppSidebarComponent,
     ArtItemsComponent,
     ThumbnailComponent,
-    SearchComponent
+    SearchComponent,
+    AssociationComponent,
   ],
   imports: [
     BrowserModule,

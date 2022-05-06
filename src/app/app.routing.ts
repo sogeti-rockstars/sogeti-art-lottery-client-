@@ -11,7 +11,7 @@ export const AppRoutes: Routes = [
         path: '',
         redirectTo: '/artitems',
         pathMatch: 'full'
-      },
+      }, 
       {
         path: '',
         loadChildren:

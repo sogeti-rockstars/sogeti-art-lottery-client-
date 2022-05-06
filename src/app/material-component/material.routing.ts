@@ -18,17 +18,19 @@ import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { ArtItemsComponent } from '../components/art-items/art-items.component';
 import { SearchComponent } from '../components/search/search.component';
+import { AssociationComponent } from '../components/association/association.component';
+
 
 export const MaterialRoutes: Routes = [
   {
     path: 'artitems',
     component: ArtItemsComponent
-  },  {
+  }, {
     path: 'appsearch',
     component: SearchComponent
-  },{
-    path: 'button',
-    component: ButtonsComponent
+  },  {
+    path: 'association',
+    component: AssociationComponent
   },
   {
     path: 'grid',
