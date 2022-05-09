@@ -18,10 +18,4 @@
     /*margin-left: 30px;*/
     border: 3px solid burlywood;
   }
-  .thumbnailImg:hover {
-    transform: scale(2.0); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-  }
-
-  .thumbnailImgLarge {
-    width: 600px;
-    }
+  
