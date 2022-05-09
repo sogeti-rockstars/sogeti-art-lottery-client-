@@ -19,10 +19,12 @@ import { appRoutes } from './app.routing';
 // import { ThumbnailComponent } from './component/thumbnail/thumbnail.component';
 import { MaterialComponentsModule } from './component/material.module';
 import { MenuItems } from './component/menu-items/menu-items';
+// import { SpinnerComponent } from './layouts/pages/spinner/spinner.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    // SpinnerComponent,
     // ArtItemsComponent,
     // ThumbnailComponent,
     // SearchComponent,
@@ -41,10 +43,10 @@ import { MenuItems } from './component/menu-items/menu-items';
   ],
   providers: [
     MenuItems,
-    {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy,
-    },
+    // {
+    //   provide: LocationStrategy,
+    //   useClass: PathLocationStrategy,
+    // },
   ],
   bootstrap: [AppComponent],
 })
