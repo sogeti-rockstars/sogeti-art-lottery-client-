@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MenuItems } from 'src/app/component/menu-items/menu-items';
 
@@ -9,6 +9,8 @@ import { MenuItems } from 'src/app/component/menu-items/menu-items';
 })
 export class AppSidebarComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
+  @Input()
+  public isShowing: boolean = false;
 
   private _mobileQueryListener: () => void;
 
@@ -26,5 +28,10 @@ export class AppSidebarComponent implements OnDestroy {
     this.mobileQuery.removeListener(this._mobileQueryListener);
     // this.menuItems.getMenuitem()[0].state;
     // this.menuItems.getMenuite
+  }
+
+  @Input()
+  public toggleSideNav(): void {
+    this.isShowing = !this.isShowing;
   }
 }
