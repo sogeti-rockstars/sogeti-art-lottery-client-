@@ -1,5 +1,8 @@
 h1{
-    color: black;
+    background: #008498;
+    text-shadow: 1px 1px black;
+    padding: 1em;
+    color: white;
     text-align: center;
 
 }
