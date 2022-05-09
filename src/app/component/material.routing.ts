@@ -7,6 +7,11 @@ import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 
 export const MaterialRoutes: Routes = [
   {
+    path: '',
+    redirectTo: 'artitems',
+    pathMatch: 'full',
+  },
+  {
     path: 'artitems',
     component: ArtItemsComponent,
   },
@@ -18,8 +23,8 @@ export const MaterialRoutes: Routes = [
     path: 'association',
     component: AssociationComponent,
   },
-  {
-    path: 'spinner',
-    component: SpinnerComponent,
-  },
+  // {
+  //   path: 'spinner',
+  //   component: SpinnerComponent,
+  // },
 ];

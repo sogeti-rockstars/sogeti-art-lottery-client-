@@ -1,12 +1,15 @@
-<ng-container *ngFor="let item of artItems; let i = index">
-  <div style="max-width: 1000px" class="row" *ngIf="i % 6 == 0">
-    <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
-      <div class="column" *ngIf="i + pos < artItems.length">
-        <thumbnail
-          [id]="artItems[i + pos].id"
-          cssClass="thumbnailImg"
-        ></thumbnail>
-      </div>
-    </ng-container>
-  </div>
-</ng-container>
+<div *ngIf="artItems.length == 0; else mainContent">loading...</div>
+<ng-template #mainContent>
+  <ng-container *ngFor="let item of artItems; let i = index">
+    <div style="max-width: 1000px" class="row" *ngIf="i % 6 == 0">
+      <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
+        <div class="column" *ngIf="i + pos < artItems.length">
+          <thumbnail
+            [id]="artItems[i + pos].id"
+            cssClass="thumbnailImg"
+          ></thumbnail>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-template>
