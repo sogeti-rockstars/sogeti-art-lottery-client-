@@ -1,0 +1,15 @@
+.navbar-header {
+  margin: auto;
+  display: flex;
+  justify-content: right;
+}
+
+.logga {
+  width: 120px;
+  margin-top: 10px;
+  /* margin-right: 100px; */
+  position: relative;
+  margin-right: 0px;
+  margin-left: auto;
+}
+

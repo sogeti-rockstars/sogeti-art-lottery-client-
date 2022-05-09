@@ -1,0 +1,30 @@
+<div class="navbar-header">
+  <mat-toolbar class="topbar telative">
+    <button
+      mat-raised-button
+      class="main-buttons"
+      color="accent"
+      value="sidebarclosed"
+    >
+      <!-- (click)="snav.toggle()" -->
+      <mat-icon>menu</mat-icon><a class="main-buttons-a">Norrkonst</a>
+    </button>
+    <button mat-raised-button class="main-buttons" color="accent">
+      <a class="main-buttons-a" [routerLink]="['.', 'artitems']"> Konstverk</a>
+    </button>
+    <button mat-raised-button class="main-buttons" color="accent">
+      <a class="main-buttons-a" [routerLink]="['.', 'artitems']"> Vinnare</a>
+    </button>
+    <button mat-raised-button class="main-buttons" color="accent">
+      <a class="main-buttons-a" [routerLink]="['.', 'association']">
+        Om föreningen</a
+      >
+    </button>
+  </mat-toolbar>
+
+  <div class="navbar-brand">
+    <a href="index.html">
+      <img class="logga" src="assets/images/sogeti.jpg" alt="logga" />
+    </a>
+  </div>
+</div>

@@ -1,0 +1,34 @@
+<!-- ============================================================== -->
+<!-- sidebar -->
+<!-- ============================================================== -->
+
+<mat-sidenav
+  #snav
+  id="snav"
+  class="dark-sidebar pl-xs"
+  [mode]="mobileQuery.matches ? 'side' : 'over'"
+  fixedTopGap="0"
+  [opened]="true"
+  [disableClose]="mobileQuery.matches"
+>
+  <mat-nav-list appAccordion>
+    <mat-list-item
+      appAccordionLink
+      *ngFor="let menuitem of menuItems.getMenuitem()"
+      routerLinkActive="selected"
+    >
+      <!-- </mat-list-item>group="{{menuitem.state}}"> -->
+      <a
+        class=""
+        appAccordionToggle
+        [routerLink]="['/', menuitem.state]"
+        *ngIf="menuitem.type === 'link'"
+      >
+        <mat-icon>{{ menuitem.icon }}</mat-icon>
+        <span>{{ menuitem.name }}</span>
+        <span fxFlex></span>
+        <!-- <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>  -->
+      </a>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-sidenav>

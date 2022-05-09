@@ -1,0 +1,15 @@
+.navbar-header {
+    display: none;
+}
+.main-buttons {
+    background-color: white;
+}
+.main-buttons mat-icon {
+    color: black;
+}
+.main-buttons-a {
+    color: black;
+}
+.mat-toolbar {
+    background-color: white;
+}
