@@ -6,6 +6,7 @@ import {
   OnDestroy,
   AfterViewInit,
   Output,
+  EventEmitter,
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
@@ -16,9 +17,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class FullComponent implements OnDestroy, AfterViewInit {
   mobileQuery: MediaQueryList;
-  @Output()
-  public showSidenav: boolean = false;
   private _mobileQueryListener: () => void;
+  public sideNavVisible = false;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -35,9 +35,7 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   }
   ngAfterViewInit() {}
 
-  toggleSideNav(): boolean {
-    console.log('HEY THERE2' + this.showSidenav);
-    this.showSidenav = !this.showSidenav;
-    return this.showSidenav;
+  public toggleSideNav() {
+    this.sideNavVisible = !this.sideNavVisible;
   }
 }

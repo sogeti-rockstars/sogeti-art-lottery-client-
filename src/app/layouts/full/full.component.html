@@ -1,11 +1,10 @@
+<app-header (toggleSideNav)="toggleSideNav()"></app-header>
 <div class="main-container">
-  <app-header (toggleSideNavButton)="toggleSideNav()"></app-header>
-  <!-- <button (click)="toggleSideNav()">toggleSideNav</button> -->
+  <app-sidebar [visible]="sideNavVisible"></app-sidebar>
   <mat-sidenav-container
     class="example-sidenav-container"
     [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
   >
-    <app-sidebar [isShowing]="showSidenav"></app-sidebar>
     <mat-sidenav-content class="page-wrapper">
       <div class="page-content">
         <router-outlet><app-spinner></app-spinner></router-outlet>

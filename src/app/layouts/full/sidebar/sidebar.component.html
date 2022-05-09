@@ -2,41 +2,44 @@
 <!-- sidebar -->
 <!-- ============================================================== -->
 
-<button
-  mat-raised-button
-  class="main-buttons"
-  color="accent"
-  value="sidebarclosed"
-  (click)="snav.toggle()"
+<mat-sidenav
+  #snav
+  id="snav"
+  class="dark-sidebar pl-xs"
+  [mode]="mobileQuery.matches ? 'side' : 'over'"
+  fixedTopGap="0"
+  [opened]="visible"
+  [disableClose]="mobileQuery.matches"
 >
-  <mat-sidenav
-    #snav
-    id="snav"
-    class="dark-sidebar pl-xs"
-    [mode]="mobileQuery.matches ? 'side' : 'over'"
-    fixedTopGap="0"
-    [opened]="isShowing"
-    [disableClose]="mobileQuery.matches"
-  >
-    <mat-nav-list appAccordion>
-      <mat-list-item
-        appAccordionLink
-        *ngFor="let menuitem of menuItems.getMenuitem()"
-        routerLinkActive="selected"
+  <mat-nav-list appAccordion>
+    <mat-list-item>
+      <button
+        mat-raised-button
+        class="main-buttons"
+        color="accent"
+        (click)="toggleSideNav()"
       >
-        <!-- </mat-list-item>group="{{menuitem.state}}"> -->
-        <a
-          class=""
-          appAccordionToggle
-          [routerLink]="['/', menuitem.state]"
-          *ngIf="menuitem.type === 'link'"
-        >
-          <mat-icon>{{ menuitem.icon }}</mat-icon>
-          <span>{{ menuitem.name }}</span>
-          <span fxFlex></span>
-          <!-- <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>  -->
-        </a>
-      </mat-list-item>
-    </mat-nav-list>
-  </mat-sidenav>
-</button>
+        Close
+      </button>
+    </mat-list-item>
+    <mat-list-item
+      appAccordionLink
+      *ngFor="let menuitem of menuItems.getMenuitem()"
+      routerLinkActive="selected"
+    >
+      <!-- </mat-list-item>group="{{menuitem.state}}"> -->
+      <a
+        class=""
+        appAccordionToggle
+        [routerLink]="['/', menuitem.state]"
+        *ngIf="menuitem.type === 'link'"
+      >
+        <mat-icon>{{ menuitem.icon }}</mat-icon>
+        <span>{{ menuitem.name }}</span>
+        <span fxFlex></span>
+        <!-- <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>  -->
+      </a>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-sidenav>
+<!-- </button> -->

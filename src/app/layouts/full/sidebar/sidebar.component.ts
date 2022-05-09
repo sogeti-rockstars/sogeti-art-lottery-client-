@@ -9,10 +9,10 @@ import { MenuItems } from 'src/app/component/menu-items/menu-items';
 })
 export class AppSidebarComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
-  @Input()
-  public isShowing: boolean = false;
-
   private _mobileQueryListener: () => void;
+
+  @Input()
+  public visible = false;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -30,8 +30,7 @@ export class AppSidebarComponent implements OnDestroy {
     // this.menuItems.getMenuite
   }
 
-  @Input()
-  public toggleSideNav(): void {
-    this.isShowing = !this.isShowing;
+  public toggleSideNav() {
+    this.visible = !this.visible;
   }
 }
