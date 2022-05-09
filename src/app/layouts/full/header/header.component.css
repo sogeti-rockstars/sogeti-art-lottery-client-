@@ -13,3 +13,8 @@
   margin-left: auto;
 }
 
+.main-buttons {
+  color: #000000;
+  background-color: #ff0000;
+  margin: 1em;
+}
