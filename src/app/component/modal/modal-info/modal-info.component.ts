@@ -55,18 +55,4 @@ export class ModalInfoComponent implements OnInit {
     return this.itemApiService.getArtItemImageUrl(this.artItem.id);
   }
 
-  public loadPaintings(): void {
-    this.itemApiService.getArtItems().subscribe({
-      complete: () => {
-        console.log('Loading complete!aaaa');
-      },
-      error: (error: HttpErrorResponse) => {
-        alert(error.message);
-      },
-      next: (resp: ArtItem[]) => {
-        this.paintings = resp;
-      },
-    });
-  }
-
 }

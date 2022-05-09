@@ -11,20 +11,34 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
 import { ArtItemService } from './service/art-item.service';
 import { CardInfoComponent } from './component/card/card-info/card-info.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DialogContent, DialogContentImage, MaterialmodalComponent } from './component/modal/materialmodal/materialmodal.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { MaterialArtItemFormComponent } from './component/form/material-art-item-form/material-art-item-form.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
     ModalInfoComponent,
   ArtItemFormComponent,
-  CardInfoComponent
+  CardInfoComponent,
+  MaterialmodalComponent,
+  DialogContentImage,
+  MaterialArtItemFormComponent,
+  DialogContent
   ],
   imports: [
     BrowserModule, 
     AppRoutingModule, 
     HttpClientModule, 
     NgbModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [ModalService, ArtItemService],
   bootstrap: [AppComponent],
