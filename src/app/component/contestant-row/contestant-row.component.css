@@ -1,0 +1,12 @@
+* {
+    align-items: flex-end;
+    align-content: flex-end;
+}
+.name {
+    display: block;
+    float: left;
+}
+.buttons {
+    display: block;
+    float: right;
+}

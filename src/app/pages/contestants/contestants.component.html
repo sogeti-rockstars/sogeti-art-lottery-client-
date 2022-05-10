@@ -1,1 +1,9 @@
-<p>contestants works!</p>
+<!-- <form (submit)="submitSearchQuery()"> -->
+<mat-form-field id="query-input-field" [formGroup]="searchForm">
+  <mat-label>Search:</mat-label>
+  <input matInput type="search" placeholder="Exempel exempeplson" (input)="keyDownFunction($event)" formControlName="query" />
+</mat-form-field>
+<p>Value: {{ searchQuery }}</p>
+<mat-selection-list *ngFor="let cont of contestantData">
+  <app-contestant-row *ngIf="cont[1]" [data]="cont[0]"></app-contestant-row>
+</mat-selection-list>
