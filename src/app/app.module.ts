@@ -18,11 +18,11 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { ModalInfoComponent } from './component/modal/modal-info/modal-info.component';
-import { ModalService } from './component/modal/modal.service';
-import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
+// import { ModalInfoComponent } from './component/modal/modal-info/modal-info.component';
+// import { ModalService } from './component/modal/modal.service';
+// import { ArtItemFormComponent } from './component/form/art-item-form/art-item-form.component';
 import { ArtItemService } from './service/art-item.service';
-import { CardInfoComponent } from './component/card/card-info/card-info.component';
+// import { CardInfoComponent } from './component/card/card-info/card-info.component';
 import { appRoutes } from './app.routing';
 import { MaterialComponentsModule } from './component/material.module';
 import { MenuItems } from './component/menu-items/menu-items';
@@ -30,9 +30,9 @@ import { MenuItems } from './component/menu-items/menu-items';
 @NgModule({
     declarations: [
         AppComponent,
-        ModalInfoComponent,
-        ArtItemFormComponent,
-        CardInfoComponent,
+        // ModalInfoComponent,
+        // ArtItemFormComponent,
+        // CardInfoComponent,
         // SpinnerComponent,
         // ArtItemsComponent,
         // ThumbnailComponent,
@@ -54,7 +54,7 @@ import { MenuItems } from './component/menu-items/menu-items';
     ],
     providers: [
         MenuItems,
-        ModalService,
+        // ModalService,
         ArtItemService,
         {
             provide: LocationStrategy,
