@@ -20,6 +20,7 @@ import { Routes } from '@angular/router';
 import { ArtItemsComponent } from './art-items/art-items.component';
 import { SearchComponent } from './search/search.component';
 import { AssociationComponent } from './association/association.component';
+import { WinnersComponent } from './winners/winners.component';
 
 export const MaterialRoutes: Routes = [
   {
@@ -35,10 +36,10 @@ export const MaterialRoutes: Routes = [
     component: AssociationComponent,
   },
 
-  // {
-  //   path: 'grid',
-  //   component: GridComponent
-  // },
+   {
+     path: 'winners',
+     component: WinnersComponent,
+   },
   // {
   //   path: 'lists',
   //   component: ListsComponent

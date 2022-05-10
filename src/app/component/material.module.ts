@@ -69,6 +69,7 @@ import { AppSidebarComponent } from '../layouts/full/sidebar/sidebar.component';
 import { AppHeaderComponent } from '../layouts/full/header/header.component';
 import { FullComponent } from '../layouts/full/full.component';
 import { SpinnerComponent } from './spinner.component';
+import { WinnersComponent } from './winners/winners.component';
 
 @NgModule({
   imports: [
@@ -93,6 +94,7 @@ import { SpinnerComponent } from './spinner.component';
     SearchComponent,
     AssociationComponent,
     ArtItemsListComponent,
+    WinnersComponent
   ],
   exports: [
     FullComponent,
@@ -104,6 +106,7 @@ import { SpinnerComponent } from './spinner.component';
     SearchComponent,
     AssociationComponent,
     ArtItemsListComponent,
+    WinnersComponent
   ],
 })
 export class MaterialComponentsModule {}
