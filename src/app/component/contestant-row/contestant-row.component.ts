@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Contestant } from 'src/app/model/contestant';
 
 @Component({
@@ -8,8 +8,20 @@ import { Contestant } from 'src/app/model/contestant';
 })
 export class ContestantRowComponent implements OnInit {
   @Input() data!: Contestant;
+  @Output() clickEvent: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  checkboxHandler(state: boolean): void {
+    this.clickEvent.emit([this.data, 'checkbox', state]);
+  }
+
+  buttonHandler(event: Event): void {
+    let elem = event.target as Element;
+    // console.log(elem.id);
+    event.stopPropagation();
+    this.clickEvent.emit([this.data, elem.id, true]);
+  }
 }

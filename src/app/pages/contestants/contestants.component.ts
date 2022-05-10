@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, NgModel, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
 
@@ -9,9 +9,6 @@ import { ContestantService } from 'src/app/service/contestant.service';
   styleUrls: ['./contestants.component.css'],
 })
 export class ContestantsComponent implements OnInit {
-  public allContestants!: Contestant[];
-  public filteredContestants!: Contestant[];
-
   public contestantData!: [Contestant, boolean][];
 
   public searchQuery: string = '';
@@ -32,10 +29,8 @@ export class ContestantsComponent implements OnInit {
   private loadContestants(): void {
     this.service.getContestants().subscribe({
       next: (resp) => {
-        this.allContestants = resp;
-        this.filteredContestants = this.allContestants;
-        this.contestantData = new Array(this.allContestants.length);
-        this.allContestants.map((c, i) => (this.contestantData[i] = [c, true]));
+        this.contestantData = new Array(resp.length);
+        resp.map((c, i) => (this.contestantData[i] = [c, true]));
       },
     });
   }
@@ -49,13 +44,19 @@ export class ContestantsComponent implements OnInit {
     this.contestantData.map((c) => {
       c[1] = c[0].name.toLowerCase().includes(this.searchQuery.toLowerCase());
     });
-    console.log(event);
-    // this.filteredContestants = this.allContestants.slice().filter((c) => {
-    //   this.searchQuery.includes(c.name);
-    // });
-    // if (event.code === 'Enter') {
-    //   this.search();
-    // }
+    // console.log(event);
+    if (event.code === 'Enter') {
+      this.search();
+    }
+  }
+
+  public itemClicked(event: [Contestant, string, boolean]) {
+    console.log(`${event[1]}: ${event[0].id} ${event[2]}`);
+    if (event[1] == 'remove')
+      this.contestantData = this.contestantData.filter((c) => {
+        return c[0].id != event[0].id;
+      });
+    console.log(this.contestantData);
   }
 }
 

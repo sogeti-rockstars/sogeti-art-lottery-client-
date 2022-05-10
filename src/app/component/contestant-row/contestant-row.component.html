@@ -1,4 +1,4 @@
-<mat-list-option checkboxPosition="before" draggable="true">
+<mat-list-option checkboxPosition="before" draggable="true" (selectedChange)="checkboxHandler($event)">
   <div matLine>
     <span class="name" matLine>
       <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
@@ -8,9 +8,9 @@
     </span>
 
     <span class="buttons">
-      <button mat-icon-button aria-label="Mer info"><mat-icon>open_in_full</mat-icon></button>
-      <button mat-icon-button aria-label="Redigera"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button aria-label="Ta bort"><mat-icon>delete</mat-icon></button>
+      <button mat-icon-button id="info" aria-label="Mer info"><mat-icon id="info" (click)="buttonHandler($event)">open_in_full</mat-icon></button>
+      <button mat-icon-button id="edit" aria-label="Redigera"><mat-icon id="edit" (click)="buttonHandler($event)">edit</mat-icon></button>
+      <button mat-icon-button id="remove" aria-label="Ta bort"><mat-icon id="remove" (click)="buttonHandler($event)">delete</mat-icon></button>
     </span>
   </div>
 </mat-list-option>
