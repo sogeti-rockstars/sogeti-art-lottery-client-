@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalInfoComponent } from './modal-info.component';
+import { MaterialmodalComponent } from './materialmodal.component';
 
-describe('ModalInfoComponent', () => {
-  let component: ModalInfoComponent;
-  let fixture: ComponentFixture<ModalInfoComponent>;
+describe('MaterialmodalComponent', () => {
+  let component: MaterialmodalComponent;
+  let fixture: ComponentFixture<MaterialmodalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalInfoComponent ]
+      declarations: [ MaterialmodalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalInfoComponent);
+    fixture = TestBed.createComponent(MaterialmodalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
