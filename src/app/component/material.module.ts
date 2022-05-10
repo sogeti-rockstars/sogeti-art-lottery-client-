@@ -61,21 +61,22 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { ArtItemsListComponent } from './art-items-list/art-items-list.component';
-import { ArtItemsComponent } from './art-items/art-items.component';
-import { AssociationComponent } from './association/association.component';
+import { ArtItemsComponent } from '../pages/art-items/art-items.component';
+import { AssociationComponent } from '../pages/association/association.component';
 import { SearchComponent } from './search/search.component';
 import { ThumbnailComponent } from './thumbnail/thumbnail.component';
 import { AppSidebarComponent } from '../layouts/full/sidebar/sidebar.component';
 import { AppHeaderComponent } from '../layouts/full/header/header.component';
 import { FullComponent } from '../layouts/full/full.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
-import { WinnersComponent } from './winners/winners.component';
+import { WinnersComponent } from '../pages/winners/winners.component';
 import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
 import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
 import { MaterialmodalComponent, DialogContentImage, DialogContent } from './modal/materialmodal/materialmodal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
+import { ModalDirective } from './modal/modal.directive';
 
 
 @NgModule({
@@ -111,7 +112,8 @@ import {MatCardModule} from '@angular/material/card';
     FancyImageCardComponent,
     MaterialmodalComponent,
     DialogContentImage,
-    DialogContent
+    DialogContent,
+    ModalDirective
 
   ],
   exports: [

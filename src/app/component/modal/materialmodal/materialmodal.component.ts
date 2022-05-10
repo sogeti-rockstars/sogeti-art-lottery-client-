@@ -1,14 +1,18 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 import { FancyImageCardComponent } from '../../card/fancy-image-card/fancy-image-card.component';
+import { ModalDirective } from '../modal.directive';
 
 
 @Component({
   selector: 'app-materialmodal',
-  templateUrl: './materialmodal.component.html',
+  // templateUrl: './materialmodal.component.html',
+  template: `<div class="modal">
+  <ng-template modalHost></ng-template>
+</div>`,
   styleUrls: ['./materialmodal.component.css']
 })
 export class MaterialmodalComponent implements OnInit {
@@ -16,12 +20,13 @@ export class MaterialmodalComponent implements OnInit {
   @Input() editItem: boolean = false;
   @Input() addItem: boolean = false;
   @Input() viewItem: boolean = false;
+  @ViewChild(ModalDirective, {static: true}) modalHost!: ModalDirective;
 
   constructor(public dialog: MatDialog, private artItemService: ArtItemService) { }
 
   ngOnInit(): void {
-  }
 
+  }
   openDialogImage(artItem:ArtItem) {
     let dialogRef = this.dialog.open(DialogContentImage, {
       data: { label: 'label example', artItem: artItem },

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MenuItems } from 'src/app/component/menu-items/menu-items';
 
@@ -11,8 +11,8 @@ export class AppSidebarComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  @Input()
-  public visible = false;
+  @Input() public visible = false;
+  @Output() public visibility = new EventEmitter<boolean>();
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -32,5 +32,7 @@ export class AppSidebarComponent implements OnDestroy {
 
   public toggleSideNav() {
     this.visible = !this.visible;
+    this.visibility.emit(this.visible);
+
   }
 }

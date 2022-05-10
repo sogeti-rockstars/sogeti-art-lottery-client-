@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { ArtItemsComponent } from './art-items/art-items.component';
+import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { SearchComponent } from './search/search.component';
-import { AssociationComponent } from './association/association.component';
-import { WinnersComponent } from './winners/winners.component';
+import { AssociationComponent } from '../pages/association/association.component';
+import { WinnersComponent } from '../pages/winners/winners.component';
 
 
 export const MaterialRoutes: Routes = [
@@ -15,10 +15,6 @@ export const MaterialRoutes: Routes = [
   {
     path: 'artitems',
     component: ArtItemsComponent,
-  },
-  {
-    path: 'appsearch',
-    component: SearchComponent,
   },
   {
     path: 'association',
