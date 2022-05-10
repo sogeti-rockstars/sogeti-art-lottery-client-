@@ -1,26 +1,26 @@
 <div class="modal" id="modalInfo" role="dialog" aria-labelledby="modalInfoLabel">
-	<div class="modal-overlay" (click)="close($event)"></div>
-		<div class="modal-dialog" role="document">
-	  		<div class="modal-content">
-		 		<div class="modal-header">
-			<div *ngIf="imageView==false" class="modal-header-text"><h5 class="modal-title" id="modalInfoLabel">{{modalHeader}}</h5></div>
-			<div *ngIf="imageView==true" class="modal-header-image"><a href="http://localhost:8080/api/v1/item/image/{{artItem.id}}"	 target="_blank" rel="noopener noreferrer"><img class="img-display" [src]="loadImageUrl()"></a></div>
-			<button type="button" class="close" (click)="close($event)" aria-label="Close">
-			<span *ngIf="imageView==false" class="close-info" aria-hidden="true">&times;</span>
-			<span *ngIf="imageView==true" class="close-image" aria-hidden="true">&times;</span>
-			</button>
-		 </div>
-		 <div class="modal-body">
-			 <div *ngIf="editView==false"><app-card-info [artItem]="artItem"></app-card-info></div>
-			 <div *ngIf="editView==true" class="modal-body-edit">
-			<div *ngIf="imageView==true" class="modal-body-image">
-				<app-art-item-form [artItem]="artItem" (artItemOutput)="saveModal($event)" ></app-art-item-form>
-			</div>
-			<div *ngIf="imageView==false" class="modal-body-text">
-				<app-art-item-form [artItem]="artItem" (artItemOutput)="saveModal($event)" ></app-art-item-form>
-			</div>
-		</div>
-		 </div>
-	  </div>
-	</div>
-	</div>
+    <div class="modal-overlay" (click)="close($event)"></div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div *ngIf="imageView==false" class="modal-header-text"><h5 class="modal-title" id="modalInfoLabel">{{modalHeader}}</h5></div>
+                <div *ngIf="imageView==true" class="modal-header-image"><a href="http://localhost:8080/api/v1/item/image/{{artItem.id}}"	 target="_blank" rel="noopener noreferrer"><img class="img-display" [src]="loadImageUrl()"></a></div>
+                <button type="button" class="close" (click)="close($event)" aria-label="Close">
+                    <span *ngIf="imageView==false" class="close-info" aria-hidden="true">&times;</span>
+                    <span *ngIf="imageView==true" class="close-image" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <div *ngIf="editView==false"><app-card-info [artItem]="artItem"></app-card-info></div> -->
+                <!-- <div *ngIf="editView==true" class="modal-body-edit"> -->
+                <!--     <div *ngIf="imageView==true" class="modal-body-image"> -->
+                <!--         <app-art-item-form [artItem]="artItem" (artItemOutput)="saveModal($event)" ></app-art-item-form> -->
+                <!--     </div> -->
+                <!--     <div *ngIf="imageView==false" class="modal-body-text"> -->
+                <!--         <app-art-item-form [artItem]="artItem" (artItemOutput)="saveModal($event)" ></app-art-item-form> -->
+                <!--     </div> -->
+                <!-- </div> -->
+            </div>
+        </div>
+    </div>
+</div>
