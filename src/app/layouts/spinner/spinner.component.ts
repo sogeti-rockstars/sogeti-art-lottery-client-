@@ -9,15 +9,7 @@ import {
 
 @Component({
   selector: 'app-spinner',
-  template: `<mat-progress-spinner *ngIf="isSpinnerVisible">
-  </mat-progress-spinner>`,
-  // <div class="preloader" *ngIf="isSpinnerVisible">
-  //   <div class="spinner">
-  //
-  //     <div class="double-bounce1"></div>
-  //     <div class="double-bounce2"></div>
-  //   </div>
-  // </div>`,
+  templateUrl: 'spinner.component.html',
   encapsulation: ViewEncapsulation.None,
 })
 export class SpinnerComponent implements OnDestroy {

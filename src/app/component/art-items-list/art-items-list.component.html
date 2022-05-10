@@ -1,3 +1,5 @@
+<div *ngIf="artItems.length == 0; else mainContent">loading...</div>
+<ng-template #mainContent>
 <ng-container *ngFor="let item of artItems; let i = index">
   <div style="max-width: 800px" class="row" *ngIf="i % 5 == 0">
     <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
@@ -10,3 +12,4 @@
     </ng-container>
   </div>
 </ng-container>
+</ng-template>

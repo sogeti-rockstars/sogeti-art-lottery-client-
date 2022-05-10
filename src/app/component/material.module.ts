@@ -71,6 +71,7 @@ import { FullComponent } from '../layouts/full/full.component';
 import { SpinnerComponent } from './spinner.component';
 import { WinnersComponent } from './winners/winners.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
