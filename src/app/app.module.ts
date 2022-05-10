@@ -17,6 +17,9 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { MaterialArtItemFormComponent } from './component/form/material-art-item-form/material-art-item-form.component';
+import { FancyImageCardComponent } from './component/card/fancy-image-card/fancy-image-card.component';
+import { MatButtonModule} from '@angular/material/button';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,8 @@ import { MaterialArtItemFormComponent } from './component/form/material-art-item
   MaterialmodalComponent,
   DialogContentImage,
   MaterialArtItemFormComponent,
-  DialogContent
+  DialogContent,
+  FancyImageCardComponent
   ],
   imports: [
     BrowserModule, 
@@ -38,7 +42,9 @@ import { MaterialArtItemFormComponent } from './component/form/material-art-item
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule
   ],
   providers: [ModalService, ArtItemService],
   bootstrap: [AppComponent],

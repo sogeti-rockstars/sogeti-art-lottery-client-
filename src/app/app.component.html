@@ -7,7 +7,8 @@
           <div class="card m-b-30">
               <div class="card-body row">
                   <div class="col-6">
-                        <a href=""><img [src]="getImageUrl(paint.id)"  (click)="imageModalView($event, paint)" width="100px"></a>
+                        <!-- <a href=""><img [src]="getImageUrl(paint.id)"  (click)="imageModalView($event, paint)" width="100px"></a> -->
+                        <app-materialmodal [viewItem]="true" [artItem]="paint"></app-materialmodal>
                       
                   </div>
                   <app-materialmodal [artItem]="paint" [editItem]="true"></app-materialmodal>

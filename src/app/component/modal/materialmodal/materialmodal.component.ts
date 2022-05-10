@@ -3,6 +3,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
+import { FancyImageCardComponent } from '../../card/fancy-image-card/fancy-image-card.component';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class MaterialmodalComponent implements OnInit {
   @Input() artItem!: ArtItem;
   @Input() editItem: boolean = false;
   @Input() addItem: boolean = false;
+  @Input() viewItem: boolean = false;
 
   constructor(public dialog: MatDialog) { }
 
@@ -32,6 +34,15 @@ export class MaterialmodalComponent implements OnInit {
   openNewItemDialog(){
     let dialogRef = this.dialog.open(DialogContent, {data: {
       label: 'New Item'
+    }})
+    dialogRef.afterClosed().subscribe(result=> {
+      console.log(`dialog result: ${result}`)
+    });
+  }
+
+  openFancyItemCard(artItem:ArtItem){
+    let dialogRef = this.dialog.open(FancyImageCardComponent, {data: {
+      artItem: artItem
     }})
     dialogRef.afterClosed().subscribe(result=> {
       console.log(`dialog result: ${result}`)

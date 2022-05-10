@@ -1,4 +1,4 @@
-<form [formGroup]="profileForm" class="form-group">
+<form [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
 <div class="form-div">
     <mat-form-field appearance="outline" width="inherit">
       <mat-label>Item Name</mat-label>
@@ -39,7 +39,7 @@
      <button [disabled]="!profileForm.valid" type="submit" class="btn btn-primary" >Add Item</button>
   </p>
   </form>
-<!-- 
+<div class="form-value">
   <p *ngIf="update==true" ><p>Form Value: {{ profileForm.value | json }}</p>
  <p>Form Status: {{ profileForm.status }}</p>
- <p>Update status: {{update}}</p> -->
+ <p>Update status: {{update}}</p></div>
