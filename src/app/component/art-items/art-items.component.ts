@@ -13,20 +13,7 @@ import { ArtItem } from 'src/app/model/art-item';
   templateUrl: 'art-items.component.html',
   styleUrls: ['./art-items.component.css'],
 })
-export class ArtItemsComponent
-  implements OnInit, AfterViewInit, AfterContentInit, AfterContentChecked
-{
-  public artItems: ArtItem[] = [];
-  constructor(private app: AppComponent) {}
-
-  ngAfterContentChecked(): void {
-    this.artItems = this.app.paintings;
-  }
-  ngAfterContentInit(): void {}
-  ngAfterViewInit(): void {}
-
-  ngOnInit(): void {
-    // this.artItems = this.app.paintings;
-  }
-  // ngOn
+export class ArtItemsComponent {
+  // public artItems: ArtItem[] = [];
+  constructor() {}
 }
