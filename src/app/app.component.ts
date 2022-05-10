@@ -41,6 +41,10 @@ export class AppComponent implements OnInit{
 
   imageToShow: any;
 
+// <<<<<<< material_bootstrap_mush
+//   public getImageUrl(id: number): string {
+//     return this.artItemService.getArtItemImageUrl(id);
+// =======
   public getImageUrl(id:number): string{
     return this.artItemApiService.getArtItemImageUrl(id);
   }

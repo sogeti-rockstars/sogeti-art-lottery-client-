@@ -1,0 +1,48 @@
+<!-- ============================================================== -->
+<!-- sidebar -->
+<!-- ============================================================== -->
+
+<mat-sidenav
+  #snav
+  id="snav"
+  class="dark-sidebar pl-xs"
+  [mode]="mobileQuery.matches ? 'side' : 'over'"
+  fixedTopGap="0"
+  [opened]="visible"
+  [disableClose]="mobileQuery.matches"
+>
+  <mat-nav-list appAccordion>
+    <mat-list-item>
+      <button
+        mat-raised-button
+        class="main-buttons"
+        color="accent"
+        (click)="toggleSideNav()"
+      >
+        Close
+      </button>
+    </mat-list-item>
+    <mat-list-item
+      appAccordionLink
+      *ngFor="let menuitem of menuItems.getMenuitem()"
+      routerLinkActive="selected"
+    >
+      <!-- </mat-list-item>group="{{menuitem.state}}"> -->
+      <button (click)="toggleSideNav()">
+        <a
+          class=""
+          appAccordionToggle
+          [routerLink]="['.', menuitem.state]"
+          *ngIf="menuitem.type === 'link'"
+        >
+          <mat-icon>{{ menuitem.icon }}</mat-icon>
+          <span>{{ menuitem.name }}</span>
+          <span fxFlex></span>
+
+          <!-- <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>  -->
+        </a>
+      </button>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-sidenav>
+<!-- </button> -->
