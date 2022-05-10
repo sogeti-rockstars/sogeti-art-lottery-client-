@@ -30,7 +30,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 // import { SlideToggleComponent } from './example/slide-toggle/slide-toggle.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
-// import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -70,6 +70,12 @@ import { AppHeaderComponent } from '../layouts/full/header/header.component';
 import { FullComponent } from '../layouts/full/full.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { WinnersComponent } from './winners/winners.component';
+import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
+import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
+import { MaterialmodalComponent, DialogContentImage, DialogContent } from './modal/materialmodal/materialmodal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -83,6 +89,11 @@ import { WinnersComponent } from './winners/winners.component';
     MatProgressSpinnerModule,
     MatSidenavModule,
     MatToolbarModule,
+    MatInputModule,
+    MatDialogModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   declarations: [
@@ -95,7 +106,13 @@ import { WinnersComponent } from './winners/winners.component';
     SearchComponent,
     AssociationComponent,
     ArtItemsListComponent,
-    WinnersComponent
+    WinnersComponent,
+    MaterialArtItemFormComponent,
+    FancyImageCardComponent,
+    MaterialmodalComponent,
+    DialogContentImage,
+    DialogContent
+
   ],
   exports: [
     FullComponent,
@@ -107,7 +124,12 @@ import { WinnersComponent } from './winners/winners.component';
     SearchComponent,
     AssociationComponent,
     ArtItemsListComponent,
-    WinnersComponent
+    WinnersComponent,
+    MaterialArtItemFormComponent,
+    FancyImageCardComponent,
+    MaterialmodalComponent,
+    DialogContentImage,
+    DialogContent
   ],
 })
 export class MaterialComponentsModule {}
