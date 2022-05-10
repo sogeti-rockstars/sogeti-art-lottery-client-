@@ -38,4 +38,8 @@ export class FullComponent implements OnDestroy, AfterViewInit {
   public toggleSideNav() {
     this.sideNavVisible = !this.sideNavVisible;
   }
+
+  public toggleSideNavValue(visibility:boolean) {
+    this.sideNavVisible = visibility;
+  }
 }

@@ -6,7 +6,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class AppHeaderComponent {
-  public showSidenav = false;
   @Output() toggleSideNav = new EventEmitter<void>();
 
   // toggleSideNav(val: any) {
