@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -13,6 +13,7 @@ export class MaterialArtItemFormComponent implements OnInit {
   @Input() label!:string;
   @Input() inputPlaceholder!:string;
   @Input() artItem!:ArtItem;
+  @Output() artItemOutput = new EventEmitter<ArtItem>();
   update: boolean = false;
   profileForm = this.fb.group({
     id: [''],
@@ -29,16 +30,16 @@ export class MaterialArtItemFormComponent implements OnInit {
 
   onSubmit(artItem: ArtItem){
     if(this.update==false){
-      console.log('update is'+this.update);
-    this.artItemService.observeUpdateArtItem(artItem).subscribe(data => {
-      console.log(data.id) });
-    // this.artItemOutput.emit(artItem);
+    //   console.log('update is'+this.update);
+    // this.artItemService.observeUpdateArtItem(artItem).subscribe(data => {
+    //   console.log(data.id) });
+    this.artItemOutput.emit(artItem);
     }
     if(this.update==true){
-      console.log('update is'+this.update);
-      this.artItemService.observeAddArtItem(artItem).subscribe(data => {
-        console.log(data.id) });
-        // this.artItemOutput.emit(artItem);
+      // console.log('update is'+this.update);
+      // this.artItemService.observeAddArtItem(artItem).subscribe(data => {
+        // console.log(data.id) });
+        this.artItemOutput.emit(artItem);
     }
   }
   
@@ -60,7 +61,7 @@ export class MaterialArtItemFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.artItem.id!=null){
+    if(this.artItem!=undefined){
       this.updateForm();
       this.update=true;
       console.log('artitem is not null')

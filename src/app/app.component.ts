@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { ModalService } from './component/modal/modal.service';
 import { ArtItem } from './model/art-item';
 import { ArtItemApiService } from './service/api/art-item-api.service';
 import { ArtItemService } from './service/art-item.service';
@@ -15,8 +14,7 @@ export class AppComponent implements OnInit{
   paintings: ArtItem[]=[];
   isImageLoading: boolean=false;
 
-  constructor(private artItemApiService: ArtItemApiService, private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef, 
-    private modalService: ModalService) {}
+  constructor(private artItemApiService: ArtItemApiService, private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef) {}
   ngOnInit(): void {
     this.loadPaintings();
     this.artItemService.artItemSubject$.subscribe(() => {
@@ -69,30 +67,30 @@ export class AppComponent implements OnInit{
 //     });
 // }
 
-  public addArtItem(e: any){
-    e.preventDefault();
-    const artItem = new ArtItem;
-    this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.itemModal(artItem, `Add new item`);
-  }
+  // public addArtItem(e: any){
+  //   e.preventDefault();
+  //   const artItem = new ArtItem;
+  //   this.modalService.setRootViewContainerRef(this.viewContainerRef);
+  //   this.modalService.itemModal(artItem, `Add new item`);
+  // }
 
-  public updateArtItem(e: any, artItem: ArtItem){
-    e.preventDefault();
-    this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
-  }
+  // public updateArtItem(e: any, artItem: ArtItem){
+  //   e.preventDefault();
+  //   this.modalService.setRootViewContainerRef(this.viewContainerRef);
+  //   this.modalService.itemModal(artItem, `Update "${artItem.itemName}"`);
+  // }
 
-  public editImageModalView(e:any, artItem:ArtItem){
-    e.preventDefault();
-    this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.editItemImageModal(artItem, 'Image modal');
-  }
+  // public editImageModalView(e:any, artItem:ArtItem){
+  //   e.preventDefault();
+  //   this.modalService.setRootViewContainerRef(this.viewContainerRef);
+  //   this.modalService.editItemImageModal(artItem, 'Image modal');
+  // }
 
-  public imageModalView(e:any, artItem:ArtItem){
-    e.preventDefault();
-    this.modalService.setRootViewContainerRef(this.viewContainerRef);
-    this.modalService.itemImageModal(artItem, 'Image modal');
-  }
+  // public imageModalView(e:any, artItem:ArtItem){
+  //   e.preventDefault();
+  //   this.modalService.setRootViewContainerRef(this.viewContainerRef);
+  //   this.modalService.itemImageModal(artItem, 'Image modal');
+  // }
 
   public deleteArtItem(e: any, artItem: ArtItem){
     e.preventDefault();

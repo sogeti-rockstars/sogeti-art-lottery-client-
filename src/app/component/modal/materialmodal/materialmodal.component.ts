@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -17,7 +17,7 @@ export class MaterialmodalComponent implements OnInit {
   @Input() addItem: boolean = false;
   @Input() viewItem: boolean = false;
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private artItemService: ArtItemService) { }
 
   ngOnInit(): void {
   }
@@ -49,6 +49,10 @@ export class MaterialmodalComponent implements OnInit {
     });
   }
 
+  closeDialogs(e:any){
+    this.dialog.closeAll;
+  }
+
 }
 
 @Component({
@@ -57,14 +61,27 @@ export class MaterialmodalComponent implements OnInit {
   styleUrls: ['./materialmodalimage.component.css']
 })
 export class DialogContentImage{
+  @Output() artItemOutput = new EventEmitter<ArtItem>();
+
+  output(artItem:ArtItem){
+    console.log('diaconima'+artItem.itemName);
+    this.saveUpdateItem(artItem);
+  }
 
 constructor(@Inject(MAT_DIALOG_DATA) public data: {
   label: string;
   artItem: ArtItem;
-}, private itemApiService: ArtItemApiService, private itemService : ArtItemService){}
+}, private itemApiService: ArtItemApiService, private artItemService : ArtItemService){}
 
 loadImageUrl(): string{
   return this.itemApiService.getArtItemImageUrl(this.data.artItem.id);
+}
+
+saveUpdateItem(artItem:ArtItem){
+  console.log('update is'+artItem.itemName);
+this.artItemService.observeUpdateArtItem(artItem).subscribe(data => {
+  console.log(data.id) });
+  this.artItemOutput.emit(artItem);
 }
 
 }
@@ -74,9 +91,21 @@ loadImageUrl(): string{
   templateUrl: './materialmodalcontent.component.html'
 })
 export class DialogContent{
-
+  @Output() artItemOutput = new EventEmitter<ArtItem>();
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
     label:string;
-  }) {}
+  }, private artItemService: ArtItemService) {}
+
+  output(artItem:ArtItem){
+    console.log('diacon'+artItem.itemName);
+    this.saveAddItem(artItem);
+  }
+
+  saveAddItem(artItem:ArtItem){
+    console.log('add is'+artItem.itemName);
+  this.artItemService.observeAddArtItem(artItem).subscribe(data => {
+    console.log(data.id) });
+    this.artItemOutput.emit(artItem);
+}
 
 }
