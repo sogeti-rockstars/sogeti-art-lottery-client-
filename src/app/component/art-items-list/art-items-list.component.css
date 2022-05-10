@@ -2,7 +2,7 @@
     display: -ms-flexbox; /* IE10 */
     display: flex;
     -ms-flex-wrap: wrap; /* IE10 */
-    flex-wrap: wrap;
+    flex-wrap: "";
     padding: 0 4px;
   }
   
@@ -15,7 +15,7 @@
   }
   
   .column img {
-    margin-top: 8px;
+    margin-top: 10px;
     vertical-align: middle;
     width: 100%;
   }
