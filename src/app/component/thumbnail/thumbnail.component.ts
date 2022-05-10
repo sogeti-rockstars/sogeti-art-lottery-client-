@@ -13,10 +13,10 @@ export class ThumbnailComponent implements OnInit {
   @Input() id: number;
   @Input() cssClass: string;
   @Input() artItem!: ArtItem;
-  @ViewChild(ModalDirective, {static: true}) modalHost!: ModalDirective
 
   loadModal(){
     const componentRef = this.viewContainerRef.createComponent<MaterialmodalComponent>(MaterialmodalComponent);
+    this.viewContainerRef.clear();
     componentRef.instance.artItem = this.artItem; 
     componentRef.instance.viewItem = true;
     componentRef.instance.openFancyItemCard(this.artItem);

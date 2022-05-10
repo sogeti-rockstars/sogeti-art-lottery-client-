@@ -9,10 +9,10 @@ import { ModalDirective } from '../modal.directive';
 
 @Component({
   selector: 'app-materialmodal',
-  // templateUrl: './materialmodal.component.html',
-  template: `<div class="modal">
-  <ng-template modalHost></ng-template>
-</div>`,
+  templateUrl: './materialmodal.component.html',
+//   template: `<div class="modal">
+//   <ng-template modalHost></ng-template>
+// </div>`,
   styleUrls: ['./materialmodal.component.css']
 })
 export class MaterialmodalComponent implements OnInit {
@@ -48,7 +48,7 @@ export class MaterialmodalComponent implements OnInit {
   openFancyItemCard(artItem:ArtItem){
     let dialogRef = this.dialog.open(FancyImageCardComponent, {data: {
       artItem: artItem
-    }})
+    }, panelClass: 'custom-dialog-container'})
     dialogRef.afterClosed().subscribe(result=> {
       console.log(`dialog result: ${result}`)
     });
@@ -93,7 +93,8 @@ this.artItemService.observeUpdateArtItem(artItem).subscribe(data => {
 
 @Component({
   selector: 'dialog-content',
-  templateUrl: './materialmodalcontent.component.html'
+  templateUrl: './materialmodalcontent.component.html',
+  styleUrls: ['./materialmodalcontent.component.css']
 })
 export class DialogContent{
   @Output() artItemOutput = new EventEmitter<ArtItem>();

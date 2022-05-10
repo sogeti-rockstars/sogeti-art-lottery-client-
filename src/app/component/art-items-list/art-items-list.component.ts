@@ -11,21 +11,9 @@ import { ModalDirective } from '../modal/modal.directive';
 })
 export class ArtItemsListComponent implements AfterContentChecked {
   public artItems: ArtItem[] = [];
-  // @ViewChild(ModalDirective, {static: true}) modalHost!: ModalDirective
-
-  // loadModal(artItem:ArtItem){
-  //   const viewContainerRef = this.modalHost.viewContainerRef;
-  //   viewContainerRef.clear();
-  //   const componentRef = viewContainerRef.createComponent<MaterialmodalComponent>(MaterialmodalComponent);
-  //   componentRef.instance.artItem = artItem; 
-  //   componentRef.instance.viewItem = true;
-  //   componentRef.instance.openDialogImage(artItem);
-   
-  // }
   constructor(private app: AppComponent) {}
 
   ngOnInit(): void {
-    // this.artItems = this.app.paintings;
     this.artItems = this.app.paintings;
   }
 
