@@ -8,14 +8,6 @@ export const appRoutes: Routes = [
     redirectTo: '/spinner',
     pathMatch: 'full',
   },
-  // {
-  //   path: 'full',
-  //   component: FullComponent,
-  //   loadChildren: () =>
-  //     import('./component/material.module').then(
-  //       (m) => m.MaterialComponentsModule
-  //     ),
-  // },
   {
     path: 'spinner',
     component: SpinnerComponent,
