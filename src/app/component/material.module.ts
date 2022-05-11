@@ -36,23 +36,6 @@ import { ContestantRowComponent } from './contestant-row/contestant-row.componen
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
 
-// import { ButtonsComponent } from './example/buttons/buttons.component';
-// import { GridComponent } from './example/grid/grid.component';
-// import { ListsComponent } from './example/lists/lists.component';
-// import { MenuComponent } from './example/menu/menu.component';
-// import { TabsComponent } from './example/tabs/tabs.component';
-// import { StepperComponent } from './example/stepper/stepper.component';
-// import { ExpansionComponent } from './example/expansion/expansion.component';
-// import { ChipsComponent } from './example/chips/chips.component';
-// import { ToolbarComponent } from './example/toolbar/toolbar.component';
-// import { ProgressSnipperComponent } from './example/progress-snipper/progress-snipper.component';
-// import { ProgressComponent } from './example/progress/progress.component';
-// import { DialogComponent } from './example/dialog/dialog.component';
-// import { TooltipComponent } from './example/tooltip/tooltip.component';
-// import { SnackbarComponent } from './example/snackbar/snackbar.component';
-// import { SliderComponent } from './example/slider/slider.component';
-// import { SlideToggleComponent } from './example/slide-toggle/slide-toggle.component';
-
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
