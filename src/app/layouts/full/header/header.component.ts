@@ -7,10 +7,4 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class AppHeaderComponent {
   @Output() toggleSideNav = new EventEmitter<void>();
-
-  // toggleSideNav(val: any) {
-  //   console.log('HEY THERE' + val);
-  //   this.showSidenav = !this.showSidenav;
-  //   // this.toggleSideNavButton.emit(this.showSidenav);
-  // }
 }
