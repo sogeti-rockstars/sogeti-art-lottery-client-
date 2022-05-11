@@ -77,6 +77,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import { ModalDirective } from './modal/modal.directive';
+import { MembersComponent } from '../pages/members/members.component';
 
 
 @NgModule({
@@ -94,7 +95,7 @@ import { ModalDirective } from './modal/modal.directive';
     MatDialogModule,
     MatCardModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [],
   declarations: [
@@ -113,8 +114,8 @@ import { ModalDirective } from './modal/modal.directive';
     MaterialmodalComponent,
     DialogContentImage,
     DialogContent,
-    ModalDirective
-
+    ModalDirective,
+    MembersComponent
   ],
   exports: [
     FullComponent,
@@ -131,7 +132,8 @@ import { ModalDirective } from './modal/modal.directive';
     FancyImageCardComponent,
     MaterialmodalComponent,
     DialogContentImage,
-    DialogContent
+    DialogContent,
+    MembersComponent
   ],
 })
 export class MaterialComponentsModule {}

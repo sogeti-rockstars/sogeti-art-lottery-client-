@@ -12,6 +12,9 @@ const MENUITEMS = [
   { state: 'artitems', name: 'Norrkonst 2020', type: 'link', icon: '' },
   { state: 'artitems', name: 'Norrkonst 2019', type: 'link', icon: '' },
   { state: 'artitems', name: 'Norrkonst 2018', type: 'link', icon: '' },
+  { state: 'artitems', name: 'Sydkonst 2021', type: 'link', icon: '' },
+  { state: 'artitems', name: 'Sydkonst 2020', type: 'link', icon: '' },
+  { state: 'artitems', name: 'Nytt lotteri', type: 'link', icon: '' },
 ];
 
 @Injectable()

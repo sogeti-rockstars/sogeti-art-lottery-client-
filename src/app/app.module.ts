@@ -27,6 +27,7 @@ import { appRoutes } from './app.routing';
 import { MaterialComponentsModule } from './component/material.module';
 import { MenuItems } from './component/menu-items/menu-items';
 
+
 @NgModule({
     declarations: [
         AppComponent,
