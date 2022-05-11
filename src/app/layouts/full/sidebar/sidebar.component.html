@@ -27,14 +27,14 @@
       routerLinkActive="selected"
     >
       <!-- </mat-list-item>group="{{menuitem.state}}"> -->
-      <button (click)="toggleSideNav()">
+      <button *ngIf="menuitem.isAdmin ? this.app.isAdmin : true" (click)="toggleSideNav()" class="menuitem-button">
         <a
           class=""
           appAccordionToggle
           [routerLink]="['.', menuitem.state]"
           *ngIf="menuitem.type === 'link'"
         >
-          <mat-icon>{{ menuitem.icon }}</mat-icon>
+          
           <span>{{ menuitem.name }}</span>
           <span fxFlex></span>
 

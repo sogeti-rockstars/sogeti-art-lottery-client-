@@ -15,5 +15,5 @@ import { ArtItem } from 'src/app/model/art-item';
 })
 export class ArtItemsComponent {
   // public artItems: ArtItem[] = [];
-  constructor() {}
+  constructor(public app: AppComponent) {}
 }

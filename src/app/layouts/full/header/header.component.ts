@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-header',
@@ -6,7 +7,9 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class AppHeaderComponent {
+  constructor(public app: AppComponent) {}
   @Output() toggleSideNav = new EventEmitter<void>();
+
 
   // toggleSideNav(val: any) {
   //   console.log('HEY THERE' + val);

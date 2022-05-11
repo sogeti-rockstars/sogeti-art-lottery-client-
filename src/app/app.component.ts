@@ -13,6 +13,7 @@ export class AppComponent implements OnInit{
   title = 'sogeti-art-lottery-client';
   paintings: ArtItem[]=[];
   isImageLoading: boolean=false;
+  isAdmin:boolean = location.search.indexOf("adminview") != -1;
 
   constructor(private artItemApiService: ArtItemApiService, private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef) {}
   ngOnInit(): void {
@@ -21,7 +22,9 @@ export class AppComponent implements OnInit{
       this.loadPaintings();
     })
   }
+ 
 
+ 
   // Example code on how to use painting service:
   public loadPaintings(): void {
     this.artItemApiService.getArtItems().subscribe({

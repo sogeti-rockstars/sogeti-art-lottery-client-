@@ -13,7 +13,7 @@
     <button mat-raised-button class="main-buttons">
       <a class="main-buttons-a" [routerLink]="['.', 'artitems']"> Konstverk</a>
     </button>
-    <button mat-raised-button class="main-buttons" color="accent">
+    <button *ngIf="this.app.isAdmin==true" mat-raised-button class="main-buttons" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'appmembers']"> Medlemmar</a>
     </button>
     <button mat-raised-button class="main-buttons" color="accent">
@@ -22,10 +22,10 @@
     <button mat-raised-button class="app-association" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'association']"> Om föreningen</a>
     </button>
-    <button mat-raised-button class="main-buttons" color="accent">
+    <button *ngIf="this.app.isAdmin==true" mat-raised-button class="main-buttons" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'applottery']">Starta lotteri</a>
-    </button>
-    <button class="mdc-button mdc-button--outlined">
+    </button> 
+    <button *ngIf="this.app.isAdmin==true" class="mdc-button mdc-button--outlined">
       <span class="mdc-button__ripple"></span>
       <span class="mdc-button__label">Logga ut</span>
     </button>
