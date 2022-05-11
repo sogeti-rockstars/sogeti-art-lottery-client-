@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Contestant } from 'src/app/model/contestant';
 
 @Component({
@@ -7,17 +7,16 @@ import { Contestant } from 'src/app/model/contestant';
     styleUrls: ['./contestant-row.component.css'],
 })
 export class ContestantRowComponent {
-  @Input() data!: Contestant;
-  @Output() clickEvent: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
+    @Input() data!: Contestant;
+    @Output() clickEvent: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
 
-  checkboxHandler( state: boolean ): void {
-      this.clickEvent.emit([this.data, 'checkbox', state]);
-  }
+    checkboxHandler(state: boolean): void {
+        this.clickEvent.emit([this.data, 'checkbox', state]);
+    }
 
-  buttonHandler( event: Event ): void {
-      const elem = event.target as Element;
-      // console.log(elem.id);
-      event.stopPropagation();
-      this.clickEvent.emit([this.data, elem.id, true]);
-  }
+    buttonHandler(event: Event): void {
+        const elem = event.target as Element;
+        event.stopPropagation();
+        this.clickEvent.emit([this.data, elem.id, true]);
+    }
 }
