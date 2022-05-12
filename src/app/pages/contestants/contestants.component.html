@@ -1,9 +1,18 @@
 <span class="contentant-main">
-    <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
-        <mat-label>Search:</mat-label>
-        <input matInput class="search-form-input" type="search" placeholder="Exempel exempeplson" (input)="keyDownFunction($event)" formControlName="query" />
-    </mat-form-field>
-    <mat-selection-list>
-        <app-contestant-row *ngFor="let cont of getVisibleContstants()" (clickEvent)="itemClicked($event)" [data]="cont"></app-contestant-row>
-    </mat-selection-list>
+    <div *ngIf="contestantData !== undefined">
+        <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
+            <mat-label>Search:</mat-label>
+            <input
+                matInput
+                class="search-form-input"
+                type="search"
+                placeholder="Exempel exempeplson"
+                (input)="keyDownFunction($event)"
+                formControlName="query"
+            />
+        </mat-form-field>
+        <mat-selection-list>
+            <app-contestant-row *ngFor="let cont of getVisibleContstants()" (clickEvent)="itemClicked($event)" [data]="cont"></app-contestant-row>
+        </mat-selection-list>
+    </div>
 </span>

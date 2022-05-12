@@ -2,6 +2,7 @@
     align-items: flex-end;
     align-content: flex-end;
 }
+/* .mat- */
 .name {
     display: block;
     float: left;
@@ -9,4 +10,18 @@
 .buttons {
     display: block;
     float: right;
+}
+.contestant-row {
+    height: auto !important;
+}
+
+.contestant-row:hover .cont-button-hover-show {
+    opacity: 1;
+}
+.cont-button-hover-show {
+    /* cursor: pointer; */
+    opacity: 0;
+}
+.list-card {
+    margin: 10px !important;
 }
