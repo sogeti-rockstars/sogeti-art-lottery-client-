@@ -9,12 +9,17 @@ import { Contestant } from 'src/app/model/contestant';
 export class ContestantRowComponent {
     @Input() data!: Contestant;
     @Output() clickEvent: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
+    public expanded = false;
 
-    checkboxHandler(state: boolean): void {
+    public toggleColapse(): void {
+        this.expanded = !this.expanded;
+    }
+
+    public checkboxHandler(state: boolean): void {
         this.clickEvent.emit([this.data, 'checkbox', state]);
     }
 
-    buttonHandler(event: Event): void {
+    public buttonHandler(event: Event): void {
         const elem = event.target as Element;
         event.stopPropagation();
         this.clickEvent.emit([this.data, elem.id, true]);
