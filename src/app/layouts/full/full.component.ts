@@ -3,31 +3,30 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular
 import { MenuItems } from 'src/app/component/menu-items/menu-items';
 
 @Component({
-  selector: 'app-full-layout',
-  templateUrl: 'full.component.html',
-  styleUrls: ['full.component.css'],
+    selector: 'app-full-layout',
+    templateUrl: 'full.component.html',
+    styleUrls: ['full.component.css'],
 })
-export class FullComponent implements OnDestroy, AfterViewInit {
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
-  public sideNavVisible = false;
+export class FullComponent implements OnDestroy {
+    mobileQuery: MediaQueryList;
+    private _mobileQueryListener: () => void;
+    public sideNavVisible = false;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public menuItems: MenuItems) {
-    this.mobileQuery = media.matchMedia('(min-width: 768px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-  }
+    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public menuItems: MenuItems) {
+        this.mobileQuery = media.matchMedia('(min-width: 768px)');
+        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+        this.mobileQuery.addListener(this._mobileQueryListener);
+    }
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-  }
-  ngAfterViewInit() {}
+    ngOnDestroy(): void {
+        this.mobileQuery.removeListener(this._mobileQueryListener);
+    }
 
-  public toggleSideNav() {
-    this.sideNavVisible = !this.sideNavVisible;
-  }
+    public toggleSideNav() {
+        this.sideNavVisible = !this.sideNavVisible;
+    }
 
-  public toggleSideNavValue(visibility: boolean) {
-    this.sideNavVisible = visibility;
-  }
+    public toggleSideNavValue(visibility: boolean) {
+        this.sideNavVisible = visibility;
+    }
 }

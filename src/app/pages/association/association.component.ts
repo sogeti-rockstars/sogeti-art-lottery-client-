@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-association',
   templateUrl: './association.component.html',
   styleUrls: ['./association.component.css']
 })
-export class AssociationComponent implements OnInit {
+export class AssociationComponent  {
 
 
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  
     
   onShow() {
     alert('Show button clicked!');
