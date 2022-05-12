@@ -1,0 +1,26 @@
+h1{
+    background: #2485c1;
+    text-shadow: 1px 1px black;
+    padding: 1em;
+    color: white;
+    text-align: center;
+
+}
+.text1{
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+}
+.text2{
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+
+}
+.bild{
+    width: 600px;
+    margin-left: 310px;
+    margin-top: 20px;
+}

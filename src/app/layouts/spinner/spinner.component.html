@@ -1,0 +1,6 @@
+<div *ngIf="isSpinnerVisible; else mainContent">
+        <mat-spinner></mat-spinner>
+</div>
+<ng-template #mainContent>
+        <router-outlet></router-outlet>
+</ng-template>

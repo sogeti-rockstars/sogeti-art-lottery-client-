@@ -1,0 +1,118 @@
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MaterialRoutes } from './material.routing';
+
+import { CommonModule } from '@angular/common';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatMenuModule } from '@angular/material/menu';
+
+import { ArtItemsListComponent } from './art-items-list/art-items-list.component';
+import { ArtItemsComponent } from '../pages/art-items/art-items.component';
+import { AssociationComponent } from '../pages/association/association.component';
+import { SearchComponent } from './search/search.component';
+import { ThumbnailComponent } from './thumbnail/thumbnail.component';
+import { AppSidebarComponent } from '../layouts/full/sidebar/sidebar.component';
+import { AppHeaderComponent } from '../layouts/full/header/header.component';
+import { FullComponent } from '../layouts/full/full.component';
+import { WinnersComponent } from '../pages/winners/winners.component';
+import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
+import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
+import { MaterialmodalComponent, DialogContentImage, DialogContent } from './modal/materialmodal/materialmodal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { ModalDirective } from './modal/modal.directive';
+import { MatCommonModule, MatLineModule, MatOptionModule } from '@angular/material/core';
+import { ContestantRowComponent } from './contestant-row/contestant-row.component';
+import { SpinnerComponent } from '../layouts/spinner/spinner.component';
+import { ContestantsComponent } from '../pages/contestants/contestants.component';
+
+// import { CdkTableModule } from '@angular/cdk/table';
+// import { FlexLayoutModule } from '@angular/flex-layout';
+// import { MatAutocompleteModule } from '@angular/material/autocomplete';
+// import { MatButtonToggleModule } from '@angular/material/button-toggle';
+// import { MatCardModule } from '@angular/material/card';
+// import { MatCheckboxModule } from '@angular/material/checkbox';
+// import { MatChipsModule } from '@angular/material/chips';
+// import { MatDatepickerModule } from '@angular/material/datepicker';
+// import { MatDialogModule } from '@angular/material/dialog';
+// import { MatExpansionModule } from '@angular/material/expansion';
+// import { MatFormFieldModule } from '@angular/material/form-field';
+// import { MatGridListModule } from '@angular/material/grid-list';
+// import { MatInputModule } from '@angular/material/input';
+// import { MatPaginatorModule } from '@angular/material/paginator';
+// import { MatProgressBarModule } from '@angular/material/progress-bar';
+// import { MatRadioModule } from '@angular/material/radio';
+// import { MatSliderModule } from '@angular/material/slider';
+// import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+// import { MatSnackBarModule } from '@angular/material/snack-bar';
+// import { MatSortModule } from '@angular/material/sort';
+// import { MatTableModule } from '@angular/material/table';
+// import { MatTabsModule } from '@angular/material/tabs';
+// import { MatTooltipModule } from '@angular/material/tooltip';
+// import { MatStepperModule } from '@angular/material/stepper';
+// import { MatBadgeModule } from '@angular/material/badge';
+// import { MatNativeDateModule, MatOptionModule, MatRippleModule, } from '@angular/material/core';
+// import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+
+const modules: Array<any> = [
+  CommonModule,
+  ReactiveFormsModule, // ReactiveFormsModule, MatFormFieldModule & MatInputModule are needed for forms
+  MatFormFieldModule, // ReactiveFormsModule, MatFormFieldModule & MatInputModule are needed for forms
+  MatInputModule, // ReactiveFormsModule, MatFormFieldModule & MatInputModule are needed for forms
+  MatOptionModule,
+  MatSelectModule,
+  MatCommonModule,
+  MatLineModule,
+  MatMenuModule,
+  MatListModule,
+  MatButtonModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatToolbarModule,
+  MatDialogModule,
+  MatCardModule,
+  FormsModule,
+  MatCommonModule,
+  MatLineModule,
+  MatMenuModule,
+];
+
+const components: Array<any> = [
+  SpinnerComponent,
+  FullComponent,
+  AppHeaderComponent,
+  AppSidebarComponent,
+  ArtItemsComponent,
+  ThumbnailComponent,
+  SearchComponent,
+  AssociationComponent,
+  ArtItemsListComponent,
+  WinnersComponent,
+  MaterialArtItemFormComponent,
+  FancyImageCardComponent,
+  MaterialmodalComponent,
+  ContestantRowComponent,
+  ContestantsComponent,
+  DialogContentImage,
+  DialogContent,
+  ModalDirective,
+];
+
+@NgModule({
+  imports: modules.concat([RouterModule.forChild(MaterialRoutes)]),
+  exports: modules.concat(components),
+  providers: [],
+  declarations: components,
+})
+export class MaterialComponentsModule {}
