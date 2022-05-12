@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, ComponentRef, Input, Output, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemService } from 'src/app/service/art-item.service';
@@ -16,7 +16,7 @@ import { DialogContentComponent } from './dialog-content/dialog-content.componen
 })
 export class ModalComponent {
     @Output() artItemOutput!: ArtItem;
-    @Input() artItem!: ArtItem;
+    // @Input() artItem!: ArtItem;
     @Input() editItem: boolean = false;
     @Input() addItem: boolean = false;
     @Input() viewItem: boolean = false;
@@ -58,5 +58,16 @@ export class ModalComponent {
 
     closeDialogs() {
         this.dialog.closeAll;
+    }
+
+    openDefaultModal(component: ComponentRef<any>, panelClass: string) {
+        // console.log(component.instance);
+        let dialogRef = this.dialog.open(DialogContentComponent, {
+            data: { component: component },
+            panelClass: panelClass,
+        });
+        dialogRef.afterClosed().subscribe((result) => {
+            console.log(`dialog result: ${result}`);
+        });
     }
 }

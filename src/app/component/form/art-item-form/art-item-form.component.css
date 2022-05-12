@@ -1,0 +1,11 @@
+/* hur i helvete gör man så att mat-form-field inheritar sin width?*/
+
+.mat-dialog-title {
+    max-height: 35vw;
+}
+.mat-dialog-content {
+    max-height: 10vw;
+}
+.form-content {
+    max-height: 50vw;
+}

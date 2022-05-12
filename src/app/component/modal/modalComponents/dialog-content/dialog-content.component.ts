@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, Output, EventEmitter, Inject, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemService } from 'src/app/service/art-item.service';
@@ -8,28 +8,17 @@ import { ArtItemService } from 'src/app/service/art-item.service';
     templateUrl: './dialog-content.component.html',
     styleUrls: ['./dialog-content.component.css'],
 })
-export class DialogContentComponent {
+export class DialogContentComponent implements OnInit {
     @Output() artItemOutput = new EventEmitter<ArtItem>();
     constructor(
         @Inject(MAT_DIALOG_DATA)
         public data: {
-            label: string;
+            component: ComponentRef<any>;
         },
-        private dialogRef: MatDialogRef<DialogContentComponent>,
-        private artItemService: ArtItemService
+        private vcr: ViewContainerRef
     ) {}
-
-    output(artItem: ArtItem) {
-        console.log('diacon' + artItem.itemName);
-        this.saveAddItem(artItem);
-        this.dialogRef.close();
-    }
-
-    saveAddItem(artItem: ArtItem) {
-        console.log('add is' + artItem.itemName);
-        this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
-            console.log(data.id);
-        });
-        this.artItemOutput.emit(artItem);
+    ngOnInit(): void {
+        console.log(this.data.component.instance);
+        this.vcr.insert(this.data.component.hostView);
     }
 }
