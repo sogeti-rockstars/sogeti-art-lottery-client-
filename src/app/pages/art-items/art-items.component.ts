@@ -1,12 +1,4 @@
-import {
-  AfterContentChecked,
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  OnInit,
-} from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
-import { ArtItem } from 'src/app/model/art-item';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-art-items',
@@ -14,6 +6,5 @@ import { ArtItem } from 'src/app/model/art-item';
   styleUrls: ['./art-items.component.css'],
 })
 export class ArtItemsComponent {
-  // public artItems: ArtItem[] = [];
   constructor() {}
 }

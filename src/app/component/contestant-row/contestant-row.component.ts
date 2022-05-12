@@ -1,0 +1,27 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Contestant } from 'src/app/model/contestant';
+
+@Component({
+  selector: 'app-contestant-row',
+  templateUrl: './contestant-row.component.html',
+  styleUrls: ['./contestant-row.component.css'],
+})
+export class ContestantRowComponent implements OnInit {
+  @Input() data!: Contestant;
+  @Output() clickEvent: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
+
+  constructor() {}
+
+  ngOnInit(): void {}
+
+  checkboxHandler(state: boolean): void {
+    this.clickEvent.emit([this.data, 'checkbox', state]);
+  }
+
+  buttonHandler(event: Event): void {
+    let elem = event.target as Element;
+    // console.log(elem.id);
+    event.stopPropagation();
+    this.clickEvent.emit([this.data, elem.id, true]);
+  }
+}
