@@ -10,7 +10,7 @@
 // import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { ReactiveFormsModule } from '@angular/forms';
 
-import { CommonModule, LocationStrategy, PathLocationStrategy, } from '@angular/common';
+import { CommonModule, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -26,6 +26,7 @@ import { ArtItemService } from './service/art-item.service';
 import { appRoutes } from './app.routing';
 import { MaterialComponentsModule } from './component/material.module';
 import { MenuItems } from './component/menu-items/menu-items';
+import { ModalService } from './component/modal/modal.service';
 
 @NgModule({
     declarations: [
@@ -54,7 +55,7 @@ import { MenuItems } from './component/menu-items/menu-items';
     ],
     providers: [
         MenuItems,
-        // ModalService,
+        ModalService,
         ArtItemService,
         {
             provide: LocationStrategy,
@@ -63,4 +64,4 @@ import { MenuItems } from './component/menu-items/menu-items';
     ],
     bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

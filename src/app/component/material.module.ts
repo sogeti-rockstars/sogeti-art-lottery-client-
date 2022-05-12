@@ -72,66 +72,64 @@ import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
 import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
-import { MaterialmodalComponent, DialogContentImage, DialogContent } from './modal/materialmodal/materialmodal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
-import { ModalDirective } from './modal/modal.directive';
-
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { DialogContentImageComponent } from './modal/modalComponents/dialog-content-image/dialog-content-image.component';
+import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
+import { ModalComponent } from './modal/modalComponents/modal.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(MaterialRoutes),
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatListModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    MatInputModule,
-    MatDialogModule,
-    MatCardModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  providers: [],
-  declarations: [
-    FullComponent,
-    AppHeaderComponent,
-    AppSidebarComponent,
-    SpinnerComponent,
-    ArtItemsComponent,
-    ThumbnailComponent,
-    SearchComponent,
-    AssociationComponent,
-    ArtItemsListComponent,
-    WinnersComponent,
-    MaterialArtItemFormComponent,
-    FancyImageCardComponent,
-    MaterialmodalComponent,
-    DialogContentImage,
-    DialogContent,
-    ModalDirective
-
-  ],
-  exports: [
-    FullComponent,
-    AppHeaderComponent,
-    AppSidebarComponent,
-    SpinnerComponent,
-    ArtItemsComponent,
-    ThumbnailComponent,
-    SearchComponent,
-    AssociationComponent,
-    ArtItemsListComponent,
-    WinnersComponent,
-    MaterialArtItemFormComponent,
-    FancyImageCardComponent,
-    MaterialmodalComponent,
-    DialogContentImage,
-    DialogContent
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(MaterialRoutes),
+        MatButtonModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatListModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatInputModule,
+        MatDialogModule,
+        MatCardModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
+    providers: [],
+    declarations: [
+        FullComponent,
+        AppHeaderComponent,
+        AppSidebarComponent,
+        SpinnerComponent,
+        ArtItemsComponent,
+        ThumbnailComponent,
+        SearchComponent,
+        AssociationComponent,
+        ArtItemsListComponent,
+        WinnersComponent,
+        MaterialArtItemFormComponent,
+        FancyImageCardComponent,
+        ModalComponent,
+        DialogContentImageComponent,
+        DialogContentComponent,
+    ],
+    exports: [
+        FullComponent,
+        AppHeaderComponent,
+        AppSidebarComponent,
+        SpinnerComponent,
+        ArtItemsComponent,
+        ThumbnailComponent,
+        SearchComponent,
+        AssociationComponent,
+        ArtItemsListComponent,
+        WinnersComponent,
+        MaterialArtItemFormComponent,
+        FancyImageCardComponent,
+        ModalComponent,
+        DialogContentImageComponent,
+        DialogContentComponent,
+    ],
 })
 export class MaterialComponentsModule {}
