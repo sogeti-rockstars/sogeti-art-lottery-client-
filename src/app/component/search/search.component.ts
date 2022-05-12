@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-search',
@@ -6,7 +7,20 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search.component.css'],
 })
 export class SearchComponent implements OnInit {
+  public searchQuery: string = '';
+  public searchForm!: FormGroup;
+
+  @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
+  
   constructor() {}
 
   ngOnInit(): void {}
+
+  public search() {
+    console.log(this.searchForm.get('query')!.value);
+  }
 }
+
+function keyDownFunction(event: Event | undefined, any: any) {
+    throw new Error('Function not implemented.');
+  }

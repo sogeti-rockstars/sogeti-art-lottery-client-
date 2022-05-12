@@ -1,3 +1,7 @@
+.admin-view-art-items-buttons {
+    margin: 0px;
+    margin-top:25px;
+}
 .main-buttons-a {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     font-size: 12px;
@@ -6,10 +10,12 @@
   }
 .mat-raised-button{
     background-color: white;
-    margin-left: 7px;
-   
+    /*margin-top: -5px;*/
+    margin-left: 1px;
+   margin-right: 10px;
 }  
-.main-buttons-b{
+.main-buttons-b {
     background-color: white;
-    margin-left: 435px;
+    
+    float: right;
 }

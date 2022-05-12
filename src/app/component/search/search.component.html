@@ -1,5 +1,7 @@
-<div class="search-div">
-  <input class="searchfield" type="text" placeholder="" [value]="" />
-  <button>Sök</button>
-</div>
 
+<span class="contentant-main">
+  <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
+    <mat-label>Search:</mat-label>
+    <input matInput class="search-form-input" type="search" placeholder="Exempel exempeplson">
+  </mat-form-field>
+</span>

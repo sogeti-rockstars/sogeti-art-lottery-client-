@@ -19,7 +19,7 @@
     <button mat-raised-button class="main-buttons" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'winners']"> Vinnare</a>
     </button>
-    <button mat-raised-button class="app-association" color="accent">
+    <button *ngIf="this.app.isAdmin==false"mat-raised-button class="app-association" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'association']"> Om föreningen</a>
     </button>
     <button *ngIf="this.app.isAdmin==true" mat-raised-button class="main-buttons" color="accent">

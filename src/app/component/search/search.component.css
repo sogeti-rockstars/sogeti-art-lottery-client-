@@ -1,9 +1,10 @@
-.searchfield {
-    width: 350px;
-    margin-left: 0px;
-}
+.search-form{
+    width: 100%;
+    height: 30px; 
+    margin-top: 1px;
+    /*margin-bottom: -25px;*/
 
-.search-div {
-    
-    margin-bottom: 20px;
+}
+.search-form-input{
+    height: 20px !important;
 }
