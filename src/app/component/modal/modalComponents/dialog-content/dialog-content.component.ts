@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemService } from 'src/app/service/art-item.service';
 
@@ -15,12 +15,14 @@ export class DialogContentComponent {
         public data: {
             label: string;
         },
+        private dialogRef: MatDialogRef<DialogContentComponent>,
         private artItemService: ArtItemService
     ) {}
 
     output(artItem: ArtItem) {
         console.log('diacon' + artItem.itemName);
         this.saveAddItem(artItem);
+        this.dialogRef.close();
     }
 
     saveAddItem(artItem: ArtItem) {

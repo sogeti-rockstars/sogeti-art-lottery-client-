@@ -36,6 +36,7 @@ import { ContestantsComponent } from '../pages/contestants/contestants.component
 import { DialogContentImageComponent } from './modal/modalComponents/dialog-content-image/dialog-content-image.component';
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
+import { ModalService } from './modal/modal.service';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -112,7 +113,7 @@ const components: Array<any> = [
 @NgModule({
     imports: modules.concat([RouterModule.forChild(MaterialRoutes)]),
     exports: modules.concat(components),
-    providers: [],
+    providers: [ModalService],
     declarations: components,
 })
 export class MaterialComponentsModule {}

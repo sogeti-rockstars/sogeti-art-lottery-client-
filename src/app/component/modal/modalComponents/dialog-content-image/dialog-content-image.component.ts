@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
@@ -15,6 +15,7 @@ export class DialogContentImageComponent {
     output(artItem: ArtItem) {
         console.log('diaconima' + artItem.itemName);
         this.saveUpdateItem(artItem);
+        this.dialogRef.close();
     }
 
     constructor(
@@ -23,6 +24,7 @@ export class DialogContentImageComponent {
             label: string;
             artItem: ArtItem;
         },
+        private dialogRef: MatDialogRef<DialogContentImageComponent>,
         private itemApiService: ArtItemApiService,
         private artItemService: ArtItemService
     ) {}
