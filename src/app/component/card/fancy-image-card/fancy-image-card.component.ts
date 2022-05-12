@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -8,7 +8,7 @@ import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
   templateUrl: './fancy-image-card.component.html',
   styleUrls: ['./fancy-image-card.component.css']
 })
-export class FancyImageCardComponent implements OnInit {
+export class FancyImageCardComponent  {
   constructor(@Inject(MAT_DIALOG_DATA) public data: {
     label: string;
     artItem: ArtItem;
@@ -17,7 +17,6 @@ export class FancyImageCardComponent implements OnInit {
 loadImageUrl(): string{
   return this.itemApiService.getArtItemImageUrl(this.data.artItem.id);
 }
-  ngOnInit(): void {
-  }
+  
 
 }

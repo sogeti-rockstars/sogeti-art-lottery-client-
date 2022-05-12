@@ -10,17 +10,18 @@ import { MaterialComponentsModule } from './component/material.module';
 
 import { appRoutes } from './app.routing';
 import { MenuItems } from './component/menu-items/menu-items';
+import { ModalService } from './component/modal/modal.service';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [RouterModule.forRoot(appRoutes), CommonModule, BrowserModule, BrowserAnimationsModule, HttpClientModule, MaterialComponentsModule],
-  providers: [
-    MenuItems,
-    {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy,
-    },
-  ],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent],
+    imports: [RouterModule.forRoot(appRoutes), CommonModule, BrowserModule, BrowserAnimationsModule, HttpClientModule, MaterialComponentsModule],
+    providers: [
+        MenuItems,
+        {
+            provide: LocationStrategy,
+            useClass: PathLocationStrategy,
+        },
+    ],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
