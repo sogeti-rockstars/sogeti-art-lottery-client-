@@ -22,7 +22,10 @@ export class FancyImageCardComponent  {
         this.artItem = this.object;
     }
 
-    constructor(private itemApiService: ArtItemApiService, private vcr: ViewContainerRef) {
+    constructor(private itemApiService: ArtItemApiService) {
         this.panelClass = 'custom-dialog-container';
+    }
+    loadImageUrl(): string {
+        return this.itemApiService.getArtItemImageUrl(this.artItem.id);
     }
 }
