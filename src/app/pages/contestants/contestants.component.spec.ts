@@ -23,3 +23,4 @@ describe('ContestantsComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+ src/app/pages/contestants/contestants.component.ts

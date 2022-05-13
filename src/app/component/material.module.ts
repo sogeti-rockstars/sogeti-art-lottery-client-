@@ -120,3 +120,4 @@ const components: Array<any> = [
     declarations: components,
 })
 export class MaterialComponentsModule {}
+

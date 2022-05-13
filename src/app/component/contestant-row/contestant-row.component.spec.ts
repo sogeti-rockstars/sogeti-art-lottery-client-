@@ -22,3 +22,4 @@ describe('ContestantRowComponent', () => {
         expect(component).toBeTruthy();
     });
 });
+
