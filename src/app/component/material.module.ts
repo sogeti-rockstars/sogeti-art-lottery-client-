@@ -36,6 +36,7 @@ import { DialogContentComponent } from './modal/modalComponents/dialog-content/d
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
+import { AutoCardComponent } from './card/auto-card/auto-card.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -106,6 +107,7 @@ const components: Array<any> = [
     DialogContentComponent,
     ContestantRowComponent,
     ContestantsComponent,
+    AutoCardComponent,
 ];
 
 @NgModule({
