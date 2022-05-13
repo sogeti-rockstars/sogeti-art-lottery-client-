@@ -1,29 +1,36 @@
-import { ComponentFactory, ComponentRef, Injectable, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Injectable, Input, ViewContainerRef } from '@angular/core';
 import { ArtItem } from 'src/app/model/art-item';
 import { ModalComponent } from './modalComponents/modal.component';
 
 @Injectable()
 export class ModalService {
+    private rootViewContainer!: ViewContainerRef;
+
+    setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
+        this.rootViewContainer = viewContainerRef;
+    }
+
     constructor() {}
 
-    loadModal(component: ComponentRef<any>, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const emptyPanelClass = component.instance.panelClass;
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
+    loadExistingArtItemModalCard(artItem: ArtItem) {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.artItem = artItem;
+        componentRef.instance.viewItem = true;
+        componentRef.instance.openFancyItemCard(artItem);
     }
 
-    loadModalWithObject(component: ComponentRef<any>, object: any, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const emptyPanelClass = component.instance.panelClass;
-        component.instance.object = object;
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
+    loadAddNewArtItemModal() {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.addItem = true;
+        componentRef.instance.openNewItemDialog();
     }
 
-    loadModalWithPanelClass(component: ComponentRef<any>, panelClass: string, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, panelClass);
+    loadEditArtItemModal(artItem: ArtItem) {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.editItem = true;
+        componentRef.instance.openEditItemDialogImage(artItem);
     }
 }

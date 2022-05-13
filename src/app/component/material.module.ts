@@ -25,6 +25,7 @@ import { AppHeaderComponent } from '../layouts/full/header/header.component';
 import { FullComponent } from '../layouts/full/full.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
+import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -32,10 +33,10 @@ import { MatCommonModule, MatLineModule, MatOptionModule, MatPseudoCheckboxModul
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
+import { DialogContentImageComponent } from './modal/modalComponents/dialog-content-image/dialog-content-image.component';
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
-import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 
@@ -103,9 +104,10 @@ const components: Array<any> = [
     AssociationComponent,
     ArtItemsListComponent,
     WinnersComponent,
-    ArtItemFormComponent,
+    MaterialArtItemFormComponent,
     FancyImageCardComponent,
     ModalComponent,
+    DialogContentImageComponent,
     DialogContentComponent,
     ContestantRowComponent,
     ContestantsComponent,
