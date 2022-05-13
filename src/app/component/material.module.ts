@@ -39,7 +39,6 @@ import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
-
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
