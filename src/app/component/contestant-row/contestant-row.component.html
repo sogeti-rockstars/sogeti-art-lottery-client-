@@ -35,14 +35,28 @@
     <ng-template [ngTemplateOutlet]="buttons"></ng-template>
 </ng-template>
 
-<mat-list-item matLine checkboxPosition="before" class="contestant-row" (selectionChange)="selectedChanged(undefined, $event)">
-    <mat-pseudo-checkbox [state]="selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
-    <mat-card class="list-card" (click)="toggleColapse($event)">
-        <div *ngIf="expanded; else colapsed">
-            <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
-        </div>
-        <ng-template #colapsed>
-            <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
-        </ng-template>
-    </mat-card>
-</mat-list-item>
+<div *ngIf="inModal; else notInModal">
+    <h1>IN MODAL VIEW</h1>
+    <span class="name" matLine>
+        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+        <mat-label> {{ data.name }} </mat-label>
+        <p>dbId: {{ data.id }}</p>
+        <p>employeeId: {{ data.employeeId }}</p>
+        <p>teleNumber: {{ data.teleNumber }}</p>
+        <p>office: BACKEND WIP</p>
+    </span>
+</div>
+
+<ng-template #notInModal>
+    <mat-list-item matLine checkboxPosition="before" class="contestant-row" (selectionChange)="selectedChanged(undefined, $event)">
+        <mat-pseudo-checkbox [state]="selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
+        <mat-card class="list-card" (click)="toggleColapse($event)">
+            <div *ngIf="expanded; else colapsed">
+                <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
+            </div>
+            <ng-template #colapsed>
+                <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
+            </ng-template>
+        </mat-card>
+    </mat-list-item>
+</ng-template>

@@ -1,7 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
-import { MatColumnDef, MatTable } from '@angular/material/table';
+import { Component, EventEmitter, Inject, Input, Optional, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
-import { ContestantsComponent } from 'src/app/pages/contestants/contestants.component';
+import { AltModalService } from 'src/app/service/alt-modal.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -16,7 +16,25 @@ export class ContestantRowComponent {
     public selected = false;
     public expanded = false;
     // public hidden = false;  // Is it possible? e.g. when the user writes a search query to filter the results
-    // public inModal = false; // Todo: make a layout for when the component is in a modal
+    public inModal = false; // Todo: make a layout for when the component is in a modal
+
+    @ViewChild('firstContainer', { read: ViewContainerRef }) firstContainer!: ViewContainerRef;
+    @ViewChild('myTemplate') template!: TemplateRef<ContestantRowComponent>;
+
+    constructor(
+        private modalService: AltModalService,
+        // private vcf: ViewContainerRef,
+        private dialog?: MatDialog,
+        @Optional()
+        @Inject(MAT_DIALOG_DATA)
+        public data2?: Contestant
+    ) {
+        console.log(data2);
+        if (data2 !== null) {
+            this.data = data2!;
+            this.inModal = true;
+        }
+    }
 
     public toggleColapse(event: Event): void {
         this.expanded = !this.expanded;
@@ -41,6 +59,20 @@ export class ContestantRowComponent {
         event.stopPropagation();
         this.elementClicked.emit([this.data, elem.id, true]);
         if (elem.id == 'expand') this.toggleColapse(event);
+        else if (elem.id == 'edit') this.openDefaultModal();
+    }
+
+    openDefaultModal(): void {
+        let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
+        ref.afterClosed().subscribe(() => {
+            this.data = ref.componentInstance.data;
+            console.log(ref.componentInstance.data);
+        });
+
+        // this.modalService.showModal(this.dialog!, this.data, () => {
+        //     console.log('modal closed');
+        //     // this.data =
+        // });
     }
 
     // Todo: fix so that columns are aligned aligned. This might be one way

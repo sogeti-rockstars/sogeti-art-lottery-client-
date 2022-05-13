@@ -38,6 +38,7 @@ import { ModalService } from './modal/modal.service';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { AltModalService } from '../service/alt-modal.service';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -114,7 +115,7 @@ const components: Array<any> = [
 @NgModule({
     imports: modules.concat([RouterModule.forChild(MaterialRoutes)]),
     exports: modules.concat(components),
-    providers: [ModalService],
+    providers: [ModalService, AltModalService],
     declarations: components,
 })
 export class MaterialComponentsModule {}
