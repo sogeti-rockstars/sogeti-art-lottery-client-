@@ -31,32 +31,4 @@ export class ModalComponent {
             console.log(`dialog result: ${result}`);
         });
     }
-
-    openNewItemDialog() {
-        let dialogRef = this.dialog.open(DialogContentComponent, {
-            data: {
-                label: 'New Item',
-            },
-        });
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(`dialog result: ${result}`);
-        });
-    }
-
-    openFancyItemCard(artItem: ArtItem) {
-        let dialogRef = this.dialog.open(FancyImageCardComponent, {
-            data: {
-                artItem: artItem,
-            },
-            panelClass: 'custom-dialog-container',
-        });
-
-        dialogRef.afterClosed().subscribe((result) => {
-            console.log(`dialog result: ${result}`);
-        });
-    }
-
-    closeDialogs() {
-        this.dialog.closeAll;
-    }
 }
