@@ -1,7 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSelectionListChange } from '@angular/material/list';
-import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
 
@@ -13,8 +11,11 @@ import { ContestantService } from 'src/app/service/contestant.service';
 export class ContestantsComponent implements OnInit {
     public contestantRows!: TemplateRef<ContestantRowComponent>[];
     public contestantData!: [Contestant, boolean][];
+
     public searchQuery = '';
     public searchForm!: FormGroup;
+
+    @Output() onSearch: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private service: ContestantService) {
         this.searchForm = new FormGroup({
@@ -46,26 +47,27 @@ export class ContestantsComponent implements OnInit {
         return this.contestantData.filter((c) => c[1]).map((c) => c[0]);
     }
 
-    @Output() selChange = new EventEmitter<MatSelectionListChange>();
-    public selectedChangeHandler(event: MatSelectionListChange) {
-        // event.source.selectionChange.complete();
-        this.selChange.emit(event);
+    public search() {
+        console.log(this.searchForm.get('query')?.value);
     }
 
-    /** called on each keypress and updates the visible items in the list */
-    public keyDownFunction(event: any) {
+    keyDownFunction(event: any) {
         this.searchQuery = this.searchForm.get('query')?.value;
         this.contestantData.map((c) => {
             c[1] = c[0].name.toLowerCase().includes(this.searchQuery.toLowerCase());
         });
-        if (event.code === 'Enter') console.log(`Enter pressed`);
+        // console.log(event);
+        if (event.code === 'Enter') {
+            this.search();
+        }
     }
 
-    public contRowElementClickedEvent(event: [Contestant, string, boolean]) {
-        console.log(`contRowElementClickedEvent: ${event[1]}: ${event[0].id} ${event[2]}`);
+    public itemClicked(event: [Contestant, string, boolean]) {
+        console.log(`${event[1]}: ${event[0].id} ${event[2]}`);
         if (event[1] == 'remove')
             this.contestantData = this.contestantData.filter((c) => {
                 return c[0].id != event[0].id;
             });
+        console.log(this.contestantData);
     }
 }

@@ -1,7 +1,4 @@
-<div class="form-content">
-<img *ngIf="update==true" mat-dialog-title class="img-display" [src]="loadImageUrl()">
-<p *ngIf="update===true">ID = {{ artItem.id }}</p>
-<form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
+<form [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
 <div class="form-div">
     <mat-form-field appearance="outline" width="inherit">
       <mat-label>Item Name</mat-label>
@@ -38,12 +35,11 @@
     <input matInput type="technique" type="text" formControlName="lotteryId" class="form-control" id="technique" placeholder="e.g. '45'">
     </mat-form-field>
   </div>
-  
+  <p class="modal-footer">
+     <button [disabled]="!profileForm.valid" type="submit">Save</button>
+  </p>
   </form>
-  <div class="modal-footer">
 <div class="form-value">
-     <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Update</button></div>
-     <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" type="submit">Add</button></div>
-  </div>
-</div>
-</div>
+  <p *ngIf="update===true" ><p>Form Value: {{ profileForm.value | json }}</p>
+ <p>Form Status: {{ profileForm.status }}</p>
+ <p>Update status: {{update}}</p></div>

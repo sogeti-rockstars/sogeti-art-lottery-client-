@@ -1,0 +1,14 @@
+/* hur i helvete gör man så att mat-form-field inheritar sin width?*/
+
+.mat-form-field{
+/* width: inherit; */
+}
+.form-div{
+    /* width: inherit */
+}
+.form-group{
+    /* width:inherit */
+}
+.form-value{
+    max-width: 400px;
+}
