@@ -1,9 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input, ViewContainerRef } from '@angular/core';
+import { ArtItem } from 'src/app/model/art-item';
+import { ModalComponent } from './modalComponents/modal.component';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ModalService {
+    private rootViewContainer!: ViewContainerRef;
 
-  constructor() { }
+    setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
+        this.rootViewContainer = viewContainerRef;
+    }
+
+    // loadAddNewArtItemModal() {
+    //     const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+    //     this.rootViewContainer.clear();
+    //     componentRef.instance.addItem = true;
+    //     componentRef.instance.openNewItemDialog();
+    // }
+
+    loadEditArtItemModal(artItem: ArtItem) {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.editItem = true;
+        componentRef.instance.openEditItemDialogImage(artItem);
+    }
 }

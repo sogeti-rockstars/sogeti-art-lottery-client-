@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ContestantRowComponent } from './contestant-row.component';
+import { ModalComponent } from './modal.component';
 
-describe('ContestantRowComponent', () => {
-    let component: ContestantRowComponent;
-    let fixture: ComponentFixture<ContestantRowComponent>;
+describe('ModalComponent', () => {
+    let component: ModalComponent;
+    let fixture: ComponentFixture<ModalComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [ContestantRowComponent],
+            declarations: [ModalComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(ContestantRowComponent);
+        fixture = TestBed.createComponent(ModalComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

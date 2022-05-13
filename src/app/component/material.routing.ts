@@ -5,25 +5,25 @@ import { ContestantsComponent } from '../pages/contestants/contestants.component
 import { WinnersComponent } from '../pages/winners/winners.component';
 
 export const MaterialRoutes: Routes = [
-  {
-    path: '',
-    redirectTo: 'artitems',
-    pathMatch: 'full',
-  },
-  {
-    path: 'artitems',
-    component: ArtItemsComponent,
-  },
-  {
-    path: 'association',
-    component: AssociationComponent,
-  },
-  {
-    path: 'winners',
-    component: WinnersComponent,
-  },
-  {
-    path: 'contestants',
-    component: ContestantsComponent,
-  },
+    {
+        path: '',
+        redirectTo: 'artitems',
+        pathMatch: 'full',
+    },
+    {
+        path: 'artitems',
+        component: ArtItemsComponent,
+    },
+    {
+        path: 'association',
+        component: AssociationComponent,
+    },
+    {
+        path: 'winners',
+        component: WinnersComponent,
+    },
+    {
+        path: 'contestants',
+        component: ContestantsComponent,
+    },
 ];
