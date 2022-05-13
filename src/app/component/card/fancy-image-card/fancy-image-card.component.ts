@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -24,12 +24,5 @@ export class FancyImageCardComponent implements OnInit, ModalObject {
 
     constructor(private itemApiService: ArtItemApiService, private vcr: ViewContainerRef) {
         this.panelClass = 'custom-dialog-container';
-    }
-
-    getVCR(): ViewContainerRef {
-        return this.vcr;
-    }
-    loadImageUrl(): string {
-        return this.itemApiService.getArtItemImageUrl(this.artItem.id);
     }
 }

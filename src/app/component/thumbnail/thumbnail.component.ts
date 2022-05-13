@@ -1,9 +1,5 @@
-import { Component, Input, ViewContainerRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ArtItem } from 'src/app/model/art-item';
-import { Contestant } from 'src/app/model/contestant';
-import { FancyImageCardComponent } from '../card/fancy-image-card/fancy-image-card.component';
-import { ContestantRowComponent } from '../contestant-row/contestant-row.component';
-import { ArtItemFormComponent } from '../form/art-item-form/art-item-form.component';
 import { ModalService } from '../modal/modal.service';
 
 @Component({

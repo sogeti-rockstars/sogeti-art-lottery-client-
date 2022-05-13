@@ -1,16 +1,13 @@
-import { ComponentFactory, ComponentRef, Injectable, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Injectable, Input, ViewContainerRef } from '@angular/core';
 import { ArtItem } from 'src/app/model/art-item';
 import { ModalComponent } from './modalComponents/modal.component';
 
 @Injectable()
 export class ModalService {
-    constructor() {}
+    private rootViewContainer!: ViewContainerRef;
 
-    loadModal(component: ComponentRef<any>, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const emptyPanelClass = component.instance.panelClass;
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
+    setRootViewContainerRef(viewContainerRef: ViewContainerRef) {
+        this.rootViewContainer = viewContainerRef;
     }
 
     loadModalWithObject(component: ComponentRef<any>, object: any, vcr: ViewContainerRef) {
