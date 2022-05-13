@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
 
@@ -62,7 +63,7 @@ export class ContestantsComponent implements OnInit {
         }
     }
 
-    public itemClicked(event: [Contestant, string, boolean]) {
+    public contRowElementClickedEvent(event: [Contestant, string, boolean]) {
         console.log(`${event[1]}: ${event[0].id} ${event[2]}`);
         if (event[1] == 'remove')
             this.contestantData = this.contestantData.filter((c) => {

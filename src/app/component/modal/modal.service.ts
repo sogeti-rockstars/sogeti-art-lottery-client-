@@ -10,12 +10,12 @@ export class ModalService {
         this.rootViewContainer = viewContainerRef;
     }
 
-    loadAddNewArtItemModal() {
-        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
-        this.rootViewContainer.clear();
-        componentRef.instance.addItem = true;
-        componentRef.instance.openNewItemDialog();
-    }
+    // loadAddNewArtItemModal() {
+    //     const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+    //     this.rootViewContainer.clear();
+    //     componentRef.instance.addItem = true;
+    //     componentRef.instance.openNewItemDialog();
+    // }
 
     loadEditArtItemModal(artItem: ArtItem) {
         const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
