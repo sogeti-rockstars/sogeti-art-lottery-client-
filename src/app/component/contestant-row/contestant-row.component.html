@@ -13,30 +13,29 @@
 </ng-template>
 
 <ng-template #contentsExpanded>
-    <span class="name" matLine>
-        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-        <mat-label> {{ data.name }} </mat-label>
-        <p>dbId: {{ data.id }}</p>
-        <p>employeeId: {{ data.employeeId }}</p>
-        <p>teleNumber: {{ data.teleNumber }}</p>
-        <p>office: BACKEND WIP</p>
-    </span>
-    <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    <div matLine>
+        <span class="name" matLine>
+            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+            <mat-label> {{ data.name }} </mat-label>
+            <p>dbId: {{ data.id }}</p>
+            <p>employeeId: {{ data.employeeId }}</p>
+            <p>teleNumber: {{ data.teleNumber }}</p>
+        </span>
+        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    </div>
 </ng-template>
 
 <ng-template #contentsCollapsed>
-    <span class="name" matLine>
-        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-        <mat-label>
-            {{ data.name }}
-            <span class="collapsed-office-name">BACKEND WIP</span>
-        </mat-label>
-    </span>
-    <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    <div matLine>
+        <span class="name" matLine>
+            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+            <mat-label> {{ data.name }} </mat-label>
+        </span>
+        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    </div>
 </ng-template>
 
-<mat-list-item matLine checkboxPosition="before" class="contestant-row" (selectionChange)="selectedChanged(undefined, $event)">
-    <mat-pseudo-checkbox [state]="selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
+<mat-list-option (selectedChange)="selectedChanged($event)" checkboxPosition="before" class="contestant-row">
     <mat-card class="list-card" (click)="toggleColapse($event)">
         <div *ngIf="expanded; else colapsed">
             <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
@@ -45,4 +44,4 @@
             <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
         </ng-template>
     </mat-card>
-</mat-list-item>
+</mat-list-option>

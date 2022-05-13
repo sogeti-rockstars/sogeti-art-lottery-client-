@@ -11,12 +11,8 @@
                 formControlName="query"
             />
         </mat-form-field>
-        <mat-list>
-            <app-contestant-row
-                *ngFor="let cont of getVisibleContstants()"
-                (elementClicked)="contRowElementClickedEvent($event)"
-                [data]="cont"
-            ></app-contestant-row>
-        </mat-list>
+        <mat-selection-list>
+            <app-contestant-row *ngFor="let cont of getVisibleContstants()" (clickEvent)="itemClicked($event)" [data]="cont"></app-contestant-row>
+        </mat-selection-list>
     </div>
 </span>
