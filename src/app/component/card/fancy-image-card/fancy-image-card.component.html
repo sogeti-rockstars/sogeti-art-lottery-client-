@@ -1,18 +1,18 @@
 <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{data.artItem.itemName}}</mat-card-title>
-      <mat-card-subtitle>{{data.artItem.artistName}}</mat-card-subtitle>
+      <mat-card-title>{{artItem.itemName}}</mat-card-title>
+      <mat-card-subtitle>{{artItem.artistName}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image [src]="loadImageUrl()" alt="Photo of item">
     <mat-card-content>
         <p>'Description of item (maybe)'</p>
         <ul class="list-group">
-            <li class="list-group-item">Value: {{data.artItem.value}}</li>
-            <li class="list-group-item">Size: {{data.artItem.size}}</li>
-            <li class="list-group-item">Frame Description: {{data.artItem.frameDescription}}</li>
-            <li class="list-group-item">Technique: {{data.artItem.technique}}</li>
-            <li class="list-group-item">Lottery ID: {{data.artItem.lotteryId}}</li>
+            <li class="list-group-item">Value: {{artItem.value}}</li>
+            <li class="list-group-item">Size: {{artItem.size}}</li>
+            <li class="list-group-item">Frame Description: {{artItem.frameDescription}}</li>
+            <li class="list-group-item">Technique: {{artItem.technique}}</li>
+            <li class="list-group-item">Lottery ID: {{artItem.lotteryId}}</li>
           </ul>
     </mat-card-content>
     <mat-card-actions>
