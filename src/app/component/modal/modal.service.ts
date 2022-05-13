@@ -10,16 +10,6 @@ export class ModalService {
         this.rootViewContainer = viewContainerRef;
     }
 
-    constructor() {}
-
-    loadExistingArtItemModalCard(artItem: ArtItem) {
-        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
-        this.rootViewContainer.clear();
-        componentRef.instance.artItem = artItem;
-        componentRef.instance.viewItem = true;
-        componentRef.instance.openFancyItemCard(artItem);
-    }
-
     loadAddNewArtItemModal() {
         const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
         this.rootViewContainer.clear();
