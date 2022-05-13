@@ -1,16 +1,47 @@
-<mat-list-option checkboxPosition="before" draggable="true" (selectedChange)="checkboxHandler($event)">
-  <div matLine>
-    <span class="name" matLine>
-      <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-      <mat-label>
-        {{ data.name }}
-      </mat-label>
-    </span>
-
+<ng-template #buttons>
     <span class="buttons">
-      <button mat-icon-button id="info" aria-label="Mer info"><mat-icon id="info" (click)="buttonHandler($event)">open_in_full</mat-icon></button>
-      <button mat-icon-button id="edit" aria-label="Redigera"><mat-icon id="edit" (click)="buttonHandler($event)">edit</mat-icon></button>
-      <button mat-icon-button id="remove" aria-label="Ta bort"><mat-icon id="remove" (click)="buttonHandler($event)">delete</mat-icon></button>
+        <button mat-icon-button class="cont-button-hover-show" aria-label="Redigera">
+            <mat-icon id="edit" (click)="buttonHandler($event)">edit</mat-icon>
+        </button>
+        <button mat-icon-button class="cont-button-hover-show" aria-label="Ta bort">
+            <mat-icon id="remove" (click)="buttonHandler($event)">delete</mat-icon>
+        </button>
+        <button mat-icon-button class="cont-button" aria-label="Mer info">
+            <mat-icon id="expand" (click)="buttonHandler($event)">open_in_full</mat-icon>
+        </button>
     </span>
-  </div>
+</ng-template>
+
+<ng-template #contentsExpanded>
+    <div matLine>
+        <span class="name" matLine>
+            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+            <mat-label> {{ data.name }} </mat-label>
+            <p>dbId: {{ data.id }}</p>
+            <p>employeeId: {{ data.employeeId }}</p>
+            <p>teleNumber: {{ data.teleNumber }}</p>
+        </span>
+        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    </div>
+</ng-template>
+
+<ng-template #contentsCollapsed>
+    <div matLine>
+        <span class="name" matLine>
+            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+            <mat-label> {{ data.name }} </mat-label>
+        </span>
+        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    </div>
+</ng-template>
+
+<mat-list-option (selectedChange)="selectedChanged($event)" checkboxPosition="before" class="contestant-row">
+    <mat-card class="list-card" (click)="toggleColapse($event)">
+        <div *ngIf="expanded; else colapsed">
+            <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
+        </div>
+        <ng-template #colapsed>
+            <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
+        </ng-template>
+    </mat-card>
 </mat-list-option>

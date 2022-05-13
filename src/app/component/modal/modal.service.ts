@@ -10,17 +10,17 @@ export class ModalService {
         this.rootViewContainer = viewContainerRef;
     }
 
-    loadModalWithObject(component: ComponentRef<any>, object: any, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const emptyPanelClass = component.instance.panelClass;
-        component.instance.object = object;
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
+    loadAddNewArtItemModal() {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.addItem = true;
+        componentRef.instance.openNewItemDialog();
     }
 
-    loadModalWithPanelClass(component: ComponentRef<any>, panelClass: string, vcr: ViewContainerRef) {
-        // console.log(component.instance);
-        const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, panelClass);
+    loadEditArtItemModal(artItem: ArtItem) {
+        const componentRef = this.rootViewContainer.createComponent<ModalComponent>(ModalComponent);
+        this.rootViewContainer.clear();
+        componentRef.instance.editItem = true;
+        componentRef.instance.openEditItemDialogImage(artItem);
     }
 }

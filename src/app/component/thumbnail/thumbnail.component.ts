@@ -14,31 +14,9 @@ export class ThumbnailComponent {
     constructor(private modalService: ModalService, private viewContainerRef: ViewContainerRef) {
         this.cssClass = 'thumbnailImg';
     }
-
-    // Med objekt direkt i metoden
-    // loadModal(artItem: ArtItem) {
-    //     console.log(artItem.itemName);
-    //     const component = this.viewContainerRef.createComponent<FancyImageCardComponent>(FancyImageCardComponent);
-    //     component.instance.artItem = artItem;
-    //     this.modalService.loadModal(component, this.viewContainerRef);
-    // }
-
-    // Med objekt i service
     loadModal(artItem: ArtItem) {
         console.log(artItem.itemName);
-        const component = this.viewContainerRef.createComponent<FancyImageCardComponent>(FancyImageCardComponent);
-        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
-    }
-
-    // Dessa är tillfälliga, för test-syften
-    editModal(artItem: ArtItem) {
-        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        component.instance.artItem = artItem;
-        this.modalService.loadModal(component, this.viewContainerRef);
-    }
-
-    addModal() {
-        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        this.modalService.loadModal(component, this.viewContainerRef);
+        this.modalService.setRootViewContainerRef(this.viewContainerRef);
+        this.modalService.loadExistingArtItemModalCard(artItem);
     }
 }
