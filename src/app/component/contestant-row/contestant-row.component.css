@@ -2,15 +2,16 @@
     align-items: flex-end;
     align-content: flex-end;
 }
-/* .mat- */
+
 .name {
-    display: block;
     float: left;
 }
+
 .buttons {
     display: block;
     float: right;
 }
+
 .contestant-row {
     height: auto !important;
 }
@@ -18,10 +19,29 @@
 .contestant-row:hover .cont-button-hover-show {
     opacity: 1;
 }
+
 .cont-button-hover-show {
     /* cursor: pointer; */
     opacity: 0;
 }
+
 .list-card {
-    margin: 10px !important;
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 4px;
+    margin-left: 10px;
+}
+
+.collapsed-office-name {
+    display: contents;
+    /* display: table; */
+    /* align-items: flex-end; */
+    /* color: blue; */
+}
+
+@media (max-width: 50em) {
+    .collapsed-office-name {
+        display: none;
+        /* color: red; */
+    }
 }

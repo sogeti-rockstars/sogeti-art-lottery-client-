@@ -29,7 +29,7 @@ import { MaterialArtItemFormComponent } from './form/material-art-item-form/mate
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { MatCommonModule, MatLineModule, MatOptionModule } from '@angular/material/core';
+import { MatCommonModule, MatLineModule, MatOptionModule, MatPseudoCheckboxModule } from '@angular/material/core';
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
@@ -37,13 +37,14 @@ import { DialogContentImageComponent } from './modal/modalComponents/dialog-cont
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatButtonToggleModule } from '@angular/material/button-toggle';
 // import { MatCardModule } from '@angular/material/card';
-// import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { MatChipsModule } from '@angular/material/chips';
 // import { MatDatepickerModule } from '@angular/material/datepicker';
 // import { MatDialogModule } from '@angular/material/dialog';
@@ -58,7 +59,6 @@ import { ModalService } from './modal/modal.service';
 // import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { MatSortModule } from '@angular/material/sort';
-// import { MatTableModule } from '@angular/material/table';
 // import { MatTabsModule } from '@angular/material/tabs';
 // import { MatTooltipModule } from '@angular/material/tooltip';
 // import { MatStepperModule } from '@angular/material/stepper';
@@ -88,6 +88,9 @@ const modules: Array<any> = [
     MatCommonModule,
     MatLineModule,
     MatMenuModule,
+    MatCheckboxModule,
+    MatPseudoCheckboxModule,
+    MatTableModule,
 ];
 
 const components: Array<any> = [
