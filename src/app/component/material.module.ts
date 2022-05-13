@@ -32,7 +32,6 @@ import { MatCommonModule, MatLineModule, MatOptionModule } from '@angular/materi
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
-import { DialogContentImageComponent } from './modal/modalComponents/dialog-content-image/dialog-content-image.component';
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
@@ -104,7 +103,6 @@ const components: Array<any> = [
     ArtItemFormComponent,
     FancyImageCardComponent,
     ModalComponent,
-    DialogContentImageComponent,
     DialogContentComponent,
     ContestantRowComponent,
     ContestantsComponent,
