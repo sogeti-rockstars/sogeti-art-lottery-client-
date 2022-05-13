@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, TemplateRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
@@ -9,6 +9,7 @@ import { ContestantService } from 'src/app/service/contestant.service';
     styleUrls: ['./contestants.component.css'],
 })
 export class ContestantsComponent implements OnInit {
+    public contestantRows!: TemplateRef<ContestantRowComponent>[];
     public contestantData!: [Contestant, boolean][];
 
     public searchQuery = '';
@@ -29,6 +30,13 @@ export class ContestantsComponent implements OnInit {
     private loadContestants(): void {
         this.service.getContestants().subscribe({
             next: (resp) => {
+                // this.contestantRows = new Array(resp.length);
+                // resp.map((c, i) => {
+                //     let cont = new ContestantRowComponent();
+                //     cont.data = c;
+                //     this.contestantRows[i] = cont.template;
+                // });
+
                 this.contestantData = new Array(resp.length);
                 resp.map((c, i) => (this.contestantData[i] = [c, true]));
             },
