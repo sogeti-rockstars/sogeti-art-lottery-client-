@@ -1,7 +1,7 @@
 export class Contestant {
-  id!: number;
-  employeeId: string = '';
-  name: string = '';
-  email: string = '';
-  teleNumber: string = '';
+    id!: number;
+    employeeId = '';
+    name = '';
+    email = '';
+    teleNumber = '';
 }
