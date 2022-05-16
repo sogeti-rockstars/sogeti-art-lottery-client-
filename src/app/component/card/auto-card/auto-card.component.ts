@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 
@@ -29,15 +30,7 @@ export class AutoCardComponent implements OnInit {
         console.log(this.profileForm);
     }
 
-    get aliases() {
-        return this.profileForm.get('aliases') as FormArray;
-    }
-
-    addAlias(value: string) {
-        this.aliases.push(this.fb.control(value));
-    }
-
-    onSubmit(object: any) {
+    onSubmit(object: ArtItem) {
         console.log(object);
         this.artItemService.observeUpdateArtItem(object).subscribe((data) => {
             console.log(data.id);
@@ -52,11 +45,14 @@ export class AutoCardComponent implements OnInit {
         this.values = this.objectContent.map(function (value, index) {
             return value[1];
         });
+        console.log('values' + this.values);
         this.variableNames = this.objectContent.map(function (value, index) {
             return value[0];
         });
+        console.log('variableNames' + this.variableNames);
         for (let i = 0; i < this.objectContent.length; i++) {
             this.profileForm.addControl(this.variableNames[i], this.fb.control(this.values[i]));
+            console.log('profileForm' + this.variableNames[i] + this.values[i]);
         }
         for (let i = 0; i < this.variableNames.length; i++) {
             this.prettyVarNames[i] = this.variableNames[i].replace(/([A-Z])/g, ' $1');

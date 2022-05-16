@@ -29,7 +29,7 @@
     <mat-card-actions>
       
       <div *ngIf="editMode == false"><button mat-button (click)="enableEdit()">Edit</button></div>
-      <div *ngIf="editMode == true"><button mat-button (click)="enableEdit()">Update</button></div>
+      <div *ngIf="editMode == true"><button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button></div>
       <!-- <button mat-button>SHARE</button> -->
     </mat-card-actions>
   </mat-card>
