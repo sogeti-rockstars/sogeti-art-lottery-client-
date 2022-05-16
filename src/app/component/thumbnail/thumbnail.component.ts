@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { MaterialmodalComponent } from '../modal/materialmodal/materialmodal.component';
@@ -15,16 +21,21 @@ export class ThumbnailComponent implements OnInit {
   @Input() cssClass: string;
   @Input() artItem!: ArtItem;
 
-  loadModal(){
-    const componentRef = this.viewContainerRef.createComponent<MaterialmodalComponent>(MaterialmodalComponent);
+  loadModal() {
+    const componentRef =
+      this.viewContainerRef.createComponent<MaterialmodalComponent>(
+        MaterialmodalComponent
+      );
     this.viewContainerRef.clear();
-    componentRef.instance.artItem = this.artItem; 
+    componentRef.instance.artItem = this.artItem;
     componentRef.instance.viewItem = true;
     componentRef.instance.openFancyItemCard(this.artItem);
-   
   }
 
-  constructor(private viewContainerRef:ViewContainerRef,public app: AppComponent) {
+  constructor(
+    private viewContainerRef: ViewContainerRef,
+    public app: AppComponent
+  ) {
     this.cssClass = 'thumbnailImg';
   }
 
@@ -32,4 +43,3 @@ export class ThumbnailComponent implements OnInit {
     console.log(this);
   }
 }
-

@@ -18,32 +18,36 @@ import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 export class ArtItemsComponent {
   // public artItems: ArtItem[] = [];
   allIsChecked = false;
-  constructor(public app: AppComponent, private artItemService: ArtItemApiService) {}
+  constructor(
+    public app: AppComponent,
+    private artItemService: ArtItemApiService
+  ) {}
 
-  public selectAll() : void {
-    var allCheckboxes = document.getElementsByName("artItemCheckbox");
+  public selectAll(): void {
+    var allCheckboxes = document.getElementsByName('artItemCheckbox');
     var cbox;
-    for(var i=0; i<allCheckboxes.length; i++) {
-      cbox = <any> allCheckboxes[i];
+    for (var i = 0; i < allCheckboxes.length; i++) {
+      cbox = <any>allCheckboxes[i];
       cbox.checked = this.allIsChecked ? false : true;
     }
     this.allIsChecked = !this.allIsChecked ? true : false;
   }
 
   public removeSelectedArtItems() {
-    if(confirm("Are you sure to delete ")) {
-      var allCheckboxes = document.getElementsByName("artItemCheckbox");
-    var cbox;
-    var arrSelected = [];
-    for(var i=0; i<allCheckboxes.length; i++) {
-      cbox = <any> allCheckboxes[i];
-      cbox.checked ? this.artItemService.deleteArtItem(cbox.value).subscribe({
-        complete: () => {
-          this.app.loadPaintings();
-        },
-      }): void(0);
-    }
+    if (confirm('Are you sure to delete ')) {
+      var allCheckboxes = document.getElementsByName('artItemCheckbox');
+      var cbox;
+      var arrSelected = [];
+      for (var i = 0; i < allCheckboxes.length; i++) {
+        cbox = <any>allCheckboxes[i];
+        cbox.checked
+          ? this.artItemService.deleteArtItem(cbox.value).subscribe({
+              complete: () => {
+                this.app.loadPaintings();
+              },
+            })
+          : void 0;
+      }
     }
   }
-
 }

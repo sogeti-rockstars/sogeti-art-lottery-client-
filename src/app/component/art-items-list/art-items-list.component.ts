@@ -20,5 +20,4 @@ export class ArtItemsListComponent implements AfterContentChecked {
   ngAfterContentChecked(): void {
     this.artItems = this.app.paintings;
   }
-
 }

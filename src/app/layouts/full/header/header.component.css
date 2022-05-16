@@ -2,7 +2,6 @@
   margin: auto;
   display: flex;
   justify-content: right;
-  
 }
 .topbar {
   background-color: white;
@@ -19,7 +18,7 @@
 
 .main-buttons {
   color: #000000;
-  background-color:white;
+  background-color: white;
   margin: 1em;
 }
 
@@ -27,7 +26,6 @@
   color: black;
   text-decoration: none;
 }
-.mat-raised-button{
+.mat-raised-button {
   background-color: white;
 }
-
