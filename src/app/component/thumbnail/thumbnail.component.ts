@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/
 import { ArtItem } from 'src/app/model/art-item';
 import { Contestant } from 'src/app/model/contestant';
 import { AutoCardComponent } from '../card/auto-card/auto-card.component';
-import { FancyImageCardComponent } from '../card/fancy-image-card/fancy-image-card.component';
 import { ContestantRowComponent } from '../contestant-row/contestant-row.component';
 import { ModalService } from '../modal/modal.service';
 
@@ -21,7 +20,7 @@ export class ThumbnailComponent {
     loadModal(artItem: ArtItem) {
         console.log(artItem.itemName);
         const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
-        // this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
+        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
     }
 
     // Dessa är tillfälliga, för test-syften

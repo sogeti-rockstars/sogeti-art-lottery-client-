@@ -24,7 +24,6 @@ import { AppSidebarComponent } from '../layouts/full/sidebar/sidebar.component';
 import { AppHeaderComponent } from '../layouts/full/header/header.component';
 import { FullComponent } from '../layouts/full/full.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
-import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
@@ -104,7 +103,6 @@ const components: Array<any> = [
     AssociationComponent,
     ArtItemsListComponent,
     WinnersComponent,
-    FancyImageCardComponent,
     ModalComponent,
     DialogContentImageComponent,
     DialogContentComponent,
