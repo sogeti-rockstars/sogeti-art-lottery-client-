@@ -28,7 +28,7 @@ export class ThumbnailComponent {
     editModal(artItem: ArtItem) {
         const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
         component.instance.artItem = artItem;
-        this.modalService.loadModalWithPanelClass(component, '.modal-edit-image', this.viewContainerRef);
+        this.modalService.loadModalWithPanelClass(component, 'modal-edit-image', this.viewContainerRef);
     }
 
     addModal() {

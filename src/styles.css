@@ -12,12 +12,41 @@ body {
     padding: 0px;
 }
 
+:root {
+    --image-height: 30vw;
+    --root-height: 50vw;
+}
+
+.modal-edit-image #flex-form-container {
+    display: flex;
+    height: 800px;
+    flex-direction: column;
+}
+.modal-edit-image #flex-form-container div {
+    flex-basis: 40%;
+    border: 3px solid rgba(0, 0, 0, 0.2);
+}
+/* .modal-edit-image .mat-dialog-container {
+    flex-basis: 45vh;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90vh;
+} */
+
+.modal-edit-image .flex-form-image {
+    flex-shrink: 500;
+}
+.modal-edit-image .flex-form-content {
+    flex-shrink: 5;
+}
 .modal-edit-image .mat-dialog-title {
-    max-height: 35vw;
+    flex-shrink: 1;
 }
-.mat-dialog-content {
-    max-height: 10vw;
-}
-.form-content {
-    max-height: 50vw;
-}
+/* .modal-edit-image .mat-dialog-content {
+    max-height: calc(var(--root-height) - calc(var(--image-height) + 10vw));
+    height: calc(var(--root-height) - calc(var(--image-height) + 10vw));
+    max-height: 35vh;
+    flex-shrink: 2;
+} */
