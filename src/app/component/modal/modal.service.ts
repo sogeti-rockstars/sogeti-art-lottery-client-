@@ -1,16 +1,17 @@
-import { ComponentFactory, ComponentRef, Injectable, Type, ViewChild, ViewContainerRef } from '@angular/core';
-import { ArtItem } from 'src/app/model/art-item';
+import { ComponentRef, Injectable, ViewContainerRef } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { DialogContentComponent } from './modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modalComponents/modal.component';
 
 @Injectable()
 export class ModalService {
     constructor() {}
 
-    loadModal(component: ComponentRef<any>, vcr: ViewContainerRef) {
+    loadModal(component: ComponentRef<any>, vcr: ViewContainerRef): MatDialogRef<DialogContentComponent, any> {
         // console.log(component.instance);
         const emptyPanelClass = component.instance.panelClass;
         const modalComponentRef = vcr.createComponent<ModalComponent>(ModalComponent);
-        modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
+        return modalComponentRef.instance.openDefaultModal(component, emptyPanelClass);
     }
 
     loadModalWithObject(component: ComponentRef<any>, object: any, vcr: ViewContainerRef) {
