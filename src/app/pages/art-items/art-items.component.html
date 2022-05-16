@@ -16,7 +16,7 @@
     class="main-buttons"
     color="accent"
   >
-    <a class="main-buttons-a" [routerLink]="['.', 'applottery']">Välj alla</a>
+    <a class="main-buttons-a" (click)="selectAll()">Välj alla</a>
   </button>
   <button
     *ngIf="this.app.isAdmin == true"

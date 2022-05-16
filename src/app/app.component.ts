@@ -9,22 +9,24 @@ import { ArtItemService } from './service/art-item.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'sogeti-art-lottery-client';
-  paintings: ArtItem[]=[];
-  isImageLoading: boolean=false;
-  isAdmin:boolean = location.search.indexOf("adminview") != -1;
+  paintings: ArtItem[] = [];
+  isImageLoading: boolean = false;
+  isAdmin: boolean = location.search.indexOf('adminview') != -1;
 
-  constructor(private artItemApiService: ArtItemApiService, private artItemService: ArtItemService, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private artItemApiService: ArtItemApiService,
+    private artItemService: ArtItemService,
+    private viewContainerRef: ViewContainerRef
+  ) {}
   ngOnInit(): void {
     this.loadPaintings();
     this.artItemService.artItemSubject$.subscribe(() => {
       this.loadPaintings();
-    })
+    });
   }
- 
 
- 
   // Example code on how to use painting service:
   public loadPaintings(): void {
     this.artItemApiService.getArtItems().subscribe({
@@ -42,37 +44,36 @@ export class AppComponent implements OnInit{
 
   imageToShow: any;
 
-// <<<<<<< material_bootstrap_mush
-//   public getImageUrl(id: number): string {
-//     return this.artItemService.getArtItemImageUrl(id);
-// =======
-  public getImageUrl(id:number): string{
+  // <<<<<<< material_bootstrap_mush
+  //   public getImageUrl(id: number): string {
+  //     return this.artItemService.getArtItemImageUrl(id);
+  // =======
+  public getImageUrl(id: number): string {
     return this.artItemApiService.getArtItemImageUrl(id);
   }
 
-
   //WIP: loading an image from blob
-// createImageFromBlob(image: Blob) {
-//    let reader = new FileReader();
-//    reader.addEventListener("load", () => {
-//       this.imageToShow = reader.result;
-//    }, false);
+  // createImageFromBlob(image: Blob) {
+  //    let reader = new FileReader();
+  //    reader.addEventListener("load", () => {
+  //       this.imageToShow = reader.result;
+  //    }, false);
 
-//    if (image) {
-//       reader.readAsDataURL(image);
-//    }
-// }
+  //    if (image) {
+  //       reader.readAsDataURL(image);
+  //    }
+  // }
 
-//   getImageFromService(artItem:ArtItem) {
-//     this.isImageLoading = true;
-//     this.artItemApiService.getArtItemImage(artItem.id).subscribe(data => {
-//       this.createImageFromBlob(data);
-//       this.isImageLoading = false;
-//     }, error => {
-//       this.isImageLoading = false;
-//       console.log(error);
-//     });
-// }
+  //   getImageFromService(artItem:ArtItem) {
+  //     this.isImageLoading = true;
+  //     this.artItemApiService.getArtItemImage(artItem.id).subscribe(data => {
+  //       this.createImageFromBlob(data);
+  //       this.isImageLoading = false;
+  //     }, error => {
+  //       this.isImageLoading = false;
+  //       console.log(error);
+  //     });
+  // }
 
   // public addArtItem(e: any){
   //   e.preventDefault();
@@ -99,12 +100,12 @@ export class AppComponent implements OnInit{
   //   this.modalService.itemImageModal(artItem, 'Image modal');
   // }
 
-  public deleteArtItem(e: any, artItem: ArtItem){
+  public deleteArtItem(e: any, artItem: ArtItem) {
     e.preventDefault();
     this.artItemApiService.deleteArtItem(artItem.id).subscribe({
       complete: () => {
         this.loadPaintings();
-      }
-    })
+      },
+    });
   }
 }

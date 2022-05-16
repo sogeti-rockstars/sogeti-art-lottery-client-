@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { MaterialmodalComponent } from '../modal/materialmodal/materialmodal.component';
 import { ModalDirective } from '../modal/modal.directive';
+import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'thumbnail',
@@ -10,7 +11,7 @@ import { ModalDirective } from '../modal/modal.directive';
   templateUrl: './thumbnail.component.html',
 })
 export class ThumbnailComponent implements OnInit {
-  @Input() id: number;
+  @Input() id!: number;
   @Input() cssClass: string;
   @Input() artItem!: ArtItem;
 
@@ -23,8 +24,7 @@ export class ThumbnailComponent implements OnInit {
    
   }
 
-  constructor(private viewContainerRef:ViewContainerRef) {
-    this.id = 0;
+  constructor(private viewContainerRef:ViewContainerRef,public app: AppComponent) {
     this.cssClass = 'thumbnailImg';
   }
 

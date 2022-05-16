@@ -46,13 +46,8 @@
         >Starta lotteri</a
       >
     </button>
-    <button
-      *ngIf="this.app.isAdmin == true"
-      class="mdc-button mdc-button--outlined"
-    >
-      <span class="mdc-button__ripple"></span>
-      <span class="mdc-button__label">Logga ut</span>
-    </button>
+
+    <button *ngIf="this.app.isAdmin == true" disabled class="logOut">Logga ut</button>
   </mat-toolbar>
 
   <div class="navbar-brand">
