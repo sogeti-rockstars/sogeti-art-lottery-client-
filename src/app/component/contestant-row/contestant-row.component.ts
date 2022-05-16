@@ -66,19 +66,21 @@ export class ContestantRowComponent {
     }
 
     openDefaultModal(): void {
-        // const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
-        // this.modService.loadModal(component, this.vcr);
-        // this.modService.loadModalWithObject(component, this.data, this.vcr);
+        const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
+        component.instance.inModal = true;
+        component.instance.data = this.data;
+        this.modService
+            .loadModal(component, this.vcr)
+            .afterClosed()
+            .subscribe(() => {
+                this.data = component.instance.data;
+                console.log('Hello');
+            });
 
-        let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
-        ref.afterClosed().subscribe(() => {
-            this.data = ref.componentInstance.data;
-            console.log(ref.componentInstance.data);
-        });
-
-        // this.modalService.showModal(this.dialog!, this.data, () => {
-        //     console.log('modal closed');
-        //     // this.data =
+        // let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
+        // ref.afterClosed().subscribe(() => {
+        //     this.data = ref.componentInstance.data;
+        //     console.log(ref.componentInstance.data);
         // });
     }
 
