@@ -4,7 +4,6 @@
   <div style="max-width: 800px" class="row" *ngIf="i % 5 === 0">
     <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
       <div class="column" *ngIf="i + pos < artItems.length">
-        <app-modal [artItem]="artItems[i + pos]"></app-modal>
         <thumbnail [artItem]="artItems[i + pos]" cssClass="thumbnailImg"></thumbnail>
       </div>
     </ng-container>
