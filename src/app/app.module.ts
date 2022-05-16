@@ -26,6 +26,7 @@ import { ArtItemService } from './service/art-item.service';
 import { appRoutes } from './app.routing';
 import { MaterialComponentsModule } from './component/material.module';
 import { MenuItems } from './component/menu-items/menu-items';
+//import { DialogComponent } from './component/dialog/dialog.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { MenuItems } from './component/menu-items/menu-items';
         MaterialComponentsModule,
         BrowserAnimationsModule,
         RouterModule.forRoot(appRoutes),
+        //DialogComponent,
         // NgbModule,
         // ReactiveFormsModule
         // FormsModule,

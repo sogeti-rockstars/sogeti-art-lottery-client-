@@ -29,7 +29,22 @@ export class ArtItemsComponent {
     this.allIsChecked = !this.allIsChecked ? true : false;
   }
 
+  public removeSelectedArtItems() {
+    if(confirm("Are you sure to delete ")) {
+      var allCheckboxes = document.getElementsByName("artItemCheckbox");
+    var cbox;
+    var arrSelected = [];
+    for(var i=0; i<allCheckboxes.length; i++) {
+      cbox = <any> allCheckboxes[i];
+      cbox.checked ? arrSelected.push(cbox.id) : void(0);
+    }
+      console.log(arrSelected);
+    }
+  }
+
 }
+
+
 
 
 
