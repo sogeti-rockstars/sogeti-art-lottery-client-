@@ -8,6 +8,7 @@ import {
 import { CheckboxControlValueAccessor } from '@angular/forms';
 import { AppComponent } from 'src/app/app.component';
 import { ArtItem } from 'src/app/model/art-item';
+import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 
 @Component({
   selector: 'app-art-items',
@@ -17,7 +18,7 @@ import { ArtItem } from 'src/app/model/art-item';
 export class ArtItemsComponent {
   // public artItems: ArtItem[] = [];
   allIsChecked = false;
-  constructor(public app: AppComponent) {}
+  constructor(public app: AppComponent, private artItemService: ArtItemApiService) {}
 
   public selectAll() : void {
     var allCheckboxes = document.getElementsByName("artItemCheckbox");
@@ -36,16 +37,13 @@ export class ArtItemsComponent {
     var arrSelected = [];
     for(var i=0; i<allCheckboxes.length; i++) {
       cbox = <any> allCheckboxes[i];
-      cbox.checked ? arrSelected.push(cbox.id) : void(0);
+      cbox.checked ? this.artItemService.deleteArtItem(cbox.value).subscribe({
+        complete: () => {
+          this.app.loadPaintings();
+        },
+      }): void(0);
     }
-      console.log(arrSelected);
     }
   }
 
 }
-
-
-
-
-
-
