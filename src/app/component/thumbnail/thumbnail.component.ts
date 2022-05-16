@@ -3,6 +3,7 @@ import { ArtItem } from 'src/app/model/art-item';
 import { Contestant } from 'src/app/model/contestant';
 import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ContestantRowComponent } from '../contestant-row/contestant-row.component';
+import { ArtItemFormComponent } from '../form/art-item-form/art-item-form.component';
 import { ModalService } from '../modal/modal.service';
 
 @Component({
@@ -25,13 +26,13 @@ export class ThumbnailComponent {
 
     // Dessa är tillfälliga, för test-syften
     editModal(artItem: ArtItem) {
-        // const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        // component.instance.artItem = artItem;
-        // this.modalService.loadModal(component, this.viewContainerRef);
+        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
+        component.instance.artItem = artItem;
+        this.modalService.loadModalWithPanelClass(component, '.modal-edit-image', this.viewContainerRef);
     }
 
     addModal() {
-        // const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        // this.modalService.loadModal(component, this.viewContainerRef);
+        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
+        this.modalService.loadModal(component, this.viewContainerRef);
     }
 }
