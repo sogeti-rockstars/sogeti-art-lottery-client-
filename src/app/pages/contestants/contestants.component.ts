@@ -31,13 +31,6 @@ export class ContestantsComponent implements OnInit {
     private loadContestants(): void {
         this.service.getContestants().subscribe({
             next: (resp) => {
-                // this.contestantRows = new Array(resp.length);
-                // resp.map((c, i) => {
-                //     let cont = new ContestantRowComponent();
-                //     cont.data = c;
-                //     this.contestantRows[i] = cont.template;
-                // });
-
                 this.contestantData = new Array(resp.length);
                 resp.map((c, i) => (this.contestantData[i] = [c, true]));
             },
@@ -57,7 +50,7 @@ export class ContestantsComponent implements OnInit {
         this.contestantData.map((c) => {
             c[1] = c[0].name.toLowerCase().includes(this.searchQuery.toLowerCase());
         });
-        // console.log(event);
+
         if (event.code === 'Enter') {
             this.search();
         }

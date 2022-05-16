@@ -17,17 +17,11 @@ export class ContestantRowComponent {
 
     public selected = false;
     public expanded = false;
-    // public hidden = false;  // Is it possible? e.g. when the user writes a search query to filter the results
     public inModal = false; // Todo: make a layout for when the component is in a modal
 
-    @ViewChild('firstContainer', { read: ViewContainerRef }) firstContainer!: ViewContainerRef;
-    @ViewChild('myTemplate') template!: TemplateRef<ContestantRowComponent>;
-
     constructor(
-        private modalService: AltModalService,
         private modService: ModalService,
         private vcr: ViewContainerRef,
-        private dialog?: MatDialog,
         @Optional()
         @Inject(MAT_DIALOG_DATA)
         public data2?: Contestant
