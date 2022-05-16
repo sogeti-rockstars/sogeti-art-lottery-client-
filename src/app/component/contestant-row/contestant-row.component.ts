@@ -2,6 +2,8 @@ import { Component, EventEmitter, Inject, Input, Optional, Output, TemplateRef, 
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
 import { AltModalService } from 'src/app/service/alt-modal.service';
+import { AutoCardComponent } from '../card/auto-card/auto-card.component';
+import { ModalService } from '../modal/modal.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -23,7 +25,8 @@ export class ContestantRowComponent {
 
     constructor(
         private modalService: AltModalService,
-        // private vcf: ViewContainerRef,
+        private modService: ModalService,
+        private vcr: ViewContainerRef,
         private dialog?: MatDialog,
         @Optional()
         @Inject(MAT_DIALOG_DATA)
@@ -63,6 +66,10 @@ export class ContestantRowComponent {
     }
 
     openDefaultModal(): void {
+        // const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
+        // this.modService.loadModal(component, this.vcr);
+        // this.modService.loadModalWithObject(component, this.data, this.vcr);
+
         let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
         ref.afterClosed().subscribe(() => {
             this.data = ref.componentInstance.data;
