@@ -1,5 +1,4 @@
 import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
@@ -13,17 +12,14 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
     public contData = new Map<number, [Contestant, boolean, boolean, ContestantRowComponent | undefined, number[]]>();
     //                                  filteredout-^^^^^    ^^^^^-removed
 
-    public searchQuery = '';
-    public searchForm!: FormGroup;
-
     public columnPositions!: number[];
     private ignoreReports = false;
 
-    constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {
-        this.searchForm = new FormGroup({
-            query: new FormControl('', Validators.minLength(2)),
-        });
-    }
+    public filterDataFunction = (val: any, query: string) => {
+        val[1] = !val[0].name.toLowerCase().includes(query);
+    };
+
+    constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.loadContestants();
@@ -50,20 +46,9 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         this.contData.set(comp.data.id, oldVals);
     }
 
-    public keyDownFunction(event: any) {
-        this.searchQuery = this.searchForm.get('query')?.value;
-
-        this.contData.forEach((val, _) => {
-            val[1] = !val[0].name.toLowerCase().includes(this.searchQuery.toLowerCase());
-        });
-
-        if (event.code === 'Enter') console.log('enter pressed');
-    }
-
     public contRowElementClickedEvent(event: [Contestant, string, boolean]) {
         if (event[1] == 'remove') {
             let contId = event[0].id;
-
             this.contData.delete(contId);
         }
     }
