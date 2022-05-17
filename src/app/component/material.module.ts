@@ -39,6 +39,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { AltModalService } from '../service/alt-modal.service';
 import { AutoCardComponent } from './card/auto-card/auto-card.component';
+import { FilterListComponent } from './filter-list/filter-list.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -109,6 +110,7 @@ const components: Array<any> = [
     ContestantRowComponent,
     ContestantsComponent,
     AutoCardComponent,
+    FilterListComponent,
 ];
 
 @NgModule({
