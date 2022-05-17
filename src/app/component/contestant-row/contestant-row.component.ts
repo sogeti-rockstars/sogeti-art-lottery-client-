@@ -31,6 +31,8 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
     public expanded = false;
     public inModal = false;
 
+    @Output() public selectedChanged = new EventEmitter<boolean>();
+
     @Input() public columnPositions: number[] = [];
     @Output() widthsDrawn: EventEmitter<[ContestantRowComponent, number[]]> = new EventEmitter();
     @ViewChild('contInfoItems') contInfoItems!: ElementRef<HTMLElement>;
@@ -88,13 +90,8 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
     public setSelected(value?: boolean) {
         if (value === undefined) value = !this.selected;
         this.selected = value;
-    }
-
-    /** Todo: make an eventEmitter? Called */
-    public selectedChanged(bEvent?: boolean, event?: Event): void {
-        console.log('selectedChanged');
-        console.log(bEvent!);
-        console.log(event!);
+        console.log(this.selected);
+        this.selectedChanged.emit(this.selected);
     }
 
     public buttonHandler(event: Event): void {

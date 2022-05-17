@@ -58,7 +58,7 @@
 </div>
 
 <ng-template #notInModal>
-    <mat-list-item matLine checkboxPosition="before" class="contestant-row" (selectionChange)="selectedChanged(undefined, $event)">
+    <mat-list-item matLine checkboxPosition="before" class="contestant-row">
         <mat-pseudo-checkbox [state]="selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
         <mat-card class="list-card" (click)="toggleColapse($event)">
             <div *ngIf="expanded; else colapsed">
