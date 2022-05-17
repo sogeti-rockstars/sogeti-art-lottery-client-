@@ -1,27 +1,6 @@
-import {
-    AfterContentChecked,
-    AfterContentInit,
-    AfterViewChecked,
-    AfterViewInit,
-    ApplicationRef,
-    ChangeDetectorRef,
-    Component,
-    ContentChild,
-    ContentChildren,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    QueryList,
-    TemplateRef,
-    ViewChild,
-    ViewChildren,
-    ViewContainerRef,
-} from '@angular/core';
+import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
-import { ModalService } from 'src/app/component/modal/modal.service';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
 
