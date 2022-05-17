@@ -1,23 +1,42 @@
-import { Component, EventEmitter, Inject, Input, Optional, Output, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+    AfterContentChecked,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Inject,
+    Input,
+    OnChanges,
+    OnInit,
+    Optional,
+    Output,
+    SimpleChanges,
+    ViewChild,
+    ViewContainerRef,
+} from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
-import { AltModalService } from 'src/app/service/alt-modal.service';
-import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ModalService } from '../modal/modal.service';
 
 @Component({
     selector: 'app-contestant-row',
     templateUrl: './contestant-row.component.html',
     styleUrls: ['./contestant-row.component.css'],
+    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContestantRowComponent {
+export class ContestantRowComponent implements OnInit, AfterContentChecked, OnChanges {
     @Input() data!: Contestant;
-    // On internal element is clicked, e.g: parent needs to be informed of the delete button being clicked
-    @Output() elementClicked: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
 
     public selected = false;
     public expanded = false;
-    public inModal = false; // Todo: make a layout for when the component is in a modal
+    public inModal = false;
+
+    @Input() public columnPositions: number[] = [];
+    @Output() widthsDrawn: EventEmitter<[ContestantRowComponent, number[]]> = new EventEmitter();
+    @ViewChild('contInfoItems') contInfoItems!: ElementRef<HTMLElement>;
+
+    // On internal element is clicked, e.g: parent needs to be informed of the delete button being clicked
+    @Output() elementClicked: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
 
     constructor(
         private modService: ModalService,
@@ -26,11 +45,38 @@ export class ContestantRowComponent {
         @Inject(MAT_DIALOG_DATA)
         public data2?: Contestant
     ) {
-        console.log(data2);
+        // When injected from modal service!
         if (data2 !== null) {
             this.data = data2!;
             this.inModal = true;
         }
+    }
+
+    ngOnInit(): void {}
+
+    ngAfterContentChecked(): void {
+        this.widthsDrawn.emit([this, this.getAllColumnWidths()]);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        // console.log('changes' + changes);
+        this.widthsDrawn.emit([this, this.getAllColumnWidths()]);
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+        // Todo: recalculate widths on resize event
+        (event.target as Window).innerWidth;
+    }
+
+    private getAllColumnWidths(): number[] {
+        let elem = this.contInfoItems?.nativeElement.children.item(0);
+        let widths = [];
+        while (elem != null) {
+            widths.push(elem.clientWidth);
+            elem = elem.nextElementSibling;
+        }
+        return widths;
     }
 
     public toggleColapse(event: Event): void {
@@ -59,7 +105,7 @@ export class ContestantRowComponent {
         else if (elem.id == 'edit') this.openDefaultModal();
     }
 
-    openDefaultModal(): void {
+    public openDefaultModal(): void {
         const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
         component.instance.inModal = true;
         component.instance.data = this.data;
@@ -71,6 +117,7 @@ export class ContestantRowComponent {
                 console.log('Hello');
             });
 
+        // Alternative of how to use without service:
         // let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
         // ref.afterClosed().subscribe(() => {
         //     this.data = ref.componentInstance.data;

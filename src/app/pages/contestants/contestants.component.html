@@ -1,22 +1,20 @@
 <span class="contentant-main">
-    <div *ngIf="contestantData !== undefined">
-        <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
-            <mat-label>Search:</mat-label>
-            <input
-                matInput
-                class="search-form-input"
-                type="search"
-                placeholder="Exempel exempeplson"
-                (input)="keyDownFunction($event)"
-                formControlName="query"
-            />
-        </mat-form-field>
-        <mat-list>
-            <app-contestant-row
-                *ngFor="let cont of getVisibleContstants()"
-                (elementClicked)="contRowElementClickedEvent($event)"
-                [data]="cont"
-            ></app-contestant-row>
-        </mat-list>
-    </div>
+    <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
+        <mat-label>Search:</mat-label>
+        <input matInput class="search-form-input" type="search" placeholder="Exempel exempeplson" (input)="keyDownFunction($event)" formControlName="query" />
+    </mat-form-field>
+
+    <mat-list>
+        <div *ngIf="contData.size>0">
+            <div *ngFor="let cont of contData | keyvalue; let idx=index">
+                <app-contestant-row
+                    *ngIf="!cont.value[1] && !cont.value[2]"
+                    (elementClicked)="contRowElementClickedEvent($event)"
+                    (widthsDrawn)="readReportedWidths($event)"
+                    [data]="cont.value[0]"
+                    [columnPositions]="getColumnPositions()"
+                ></app-contestant-row>
+            </div>
+        </div>
+    </mat-list>
 </span>
