@@ -39,9 +39,9 @@ import { AltModalService } from '../service/alt-modal.service';
 import { AutoCardComponent } from './card/auto-card/auto-card.component';
 import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
-// import { MatCheckboxModule } from '@angular/material/checkbox';
-// import { MatTableModule } from '@angular/material/table';
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -92,6 +92,8 @@ const modules: Array<any> = [
     MatCommonModule,
     MatLineModule,
     MatMenuModule,
+    MatCheckboxModule,
+    MatTableModule,
 ];
 
 const components: Array<any> = [
