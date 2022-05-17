@@ -12,7 +12,7 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
     public contData = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined, number[]]>();
     //                                  filteredout-^^^^^                                        ^^^^^-col. widths
 
-    public columnPositions!: number[];
+    public columnPositions = [0, 0, 0, 0, 0, 0];
     private ignoreReports = false;
 
     public filterDataFunction = (val: any, query: string) => {
@@ -25,17 +25,14 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         this.loadContestants();
         this.ignoreReports = true;
     }
+
     ngAfterContentChecked(): void {
         this.ignoreReports = false;
     }
+
     ngAfterViewChecked(): void {
         this.columnPositions = this.getCalculatedColumnStartPositions();
         this.cdr.detectChanges();
-    }
-
-    public getColumnPositions(): number[] {
-        if (this.columnPositions === undefined) return [0, 0, 0, 0, 0, 0];
-        else return this.columnPositions;
     }
 
     public readReportedWidths([comp, colWidths]: [ContestantRowComponent, number[]]): void {
@@ -51,6 +48,10 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
             let contId = event[0].id;
             this.contData.delete(contId);
         }
+    }
+
+    public selChangeListener([id, value]: [number, boolean]): void {
+        // console.log(`${id} => ${value}`); // Useful
     }
 
     private loadContestants(): void {

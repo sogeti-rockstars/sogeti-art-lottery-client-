@@ -31,7 +31,7 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
     public expanded = false;
     public inModal = false;
 
-    @Output() public selectedChanged = new EventEmitter<boolean>();
+    @Output() public selectedChanged = new EventEmitter<[number, boolean]>();
 
     @Input() public columnPositions: number[] = [];
     @Output() widthsDrawn: EventEmitter<[ContestantRowComponent, number[]]> = new EventEmitter();
@@ -90,8 +90,7 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
     public setSelected(value?: boolean) {
         if (value === undefined) value = !this.selected;
         this.selected = value;
-        console.log(this.selected);
-        this.selectedChanged.emit(this.selected);
+        this.selectedChanged.emit([this.data.id, this.selected]);
     }
 
     public buttonHandler(event: Event): void {

@@ -7,7 +7,8 @@
                 (elementClicked)="contRowElementClickedEvent($event)"
                 (widthsDrawn)="readReportedWidths($event)"
                 [data]="cont.value[0]"
-                [columnPositions]="getColumnPositions()"
+                [columnPositions]="columnPositions"
+                (selectedChanged)="selChangeListener($event)"
             ></app-contestant-row>
         </div>
     </mat-list>
