@@ -36,7 +36,7 @@ export class FilterListComponent implements OnInit {
     }
 
     private filterMap(query: string, dataMap: Map<number, any>) {
-        dataMap.forEach((val, _) => this.mapFunction(val, query));
+        dataMap.forEach((val) => this.mapFunction(val, query));
         console.log(dataMap);
         return dataMap;
     }
