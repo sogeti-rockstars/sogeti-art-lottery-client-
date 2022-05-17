@@ -24,7 +24,7 @@ export class ThumbnailComponent {
         this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
     }
 
-    // Dessa är tillfälliga, för test-syften
+    // Dessa (editModal och addModal) är tillfälliga, för test-syften
     editModal(artItem: ArtItem) {
         const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
         component.instance.artItem = artItem;

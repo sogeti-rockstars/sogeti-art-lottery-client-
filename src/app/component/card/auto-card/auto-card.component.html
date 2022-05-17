@@ -14,7 +14,7 @@
                     <div *ngIf="editMode == true"><form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
                     <li class="list-group-item">
                       <div *ngIf="editMode == true">
-                        {{prettyVarNames[i]}}: <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" value="{{value}}" >
+                        {{prettyVarNames[i]}}: <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}">
                       </div>
                     </li>
                   </form></div>

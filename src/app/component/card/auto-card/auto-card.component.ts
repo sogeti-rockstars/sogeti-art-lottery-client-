@@ -19,7 +19,7 @@ export class AutoCardComponent implements OnInit {
     panelClass: string;
     editMode!: boolean;
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
-    profileForm = this.fb.group(this.fb.control(''));
+    profileForm = this.fb.group(this.fb.control('wtf'));
 
     constructor(private fb: FormBuilder, private itemApiService: ArtItemApiService, private artItemService: ArtItemService, private matDialog: MatDialog) {
         this.panelClass = 'custom-dialog-container';
@@ -39,28 +39,29 @@ export class AutoCardComponent implements OnInit {
     }
     ngOnInit(): void {
         this.editMode = false;
-        console.log(typeof this.object);
-        this.objectContent = Object.entries(this.object);
+        this.objectValueExtraction();
+        this.formCreation();
+    }
 
+    private formCreation() {
+        for (let i = 0; i < this.objectContent.length; i++) {
+            this.profileForm.addControl(this.variableNames[i], this.fb.control(this.values[i]));
+        }
+        this.profileForm.patchValue({ value: this.values[6] });
+    }
+
+    private objectValueExtraction() {
+        this.objectContent = Object.entries(this.object);
         this.values = this.objectContent.map(function (value, index) {
             return value[1];
         });
-        console.log('values' + this.values);
         this.variableNames = this.objectContent.map(function (value, index) {
             return value[0];
         });
-        console.log('variableNames' + this.variableNames);
-        for (let i = 0; i < this.objectContent.length; i++) {
-            this.profileForm.addControl(this.variableNames[i], this.fb.control(this.values[i]));
-            console.log('profileForm' + this.variableNames[i] + this.values[i]);
-        }
         for (let i = 0; i < this.variableNames.length; i++) {
             this.prettyVarNames[i] = this.variableNames[i].replace(/([A-Z])/g, ' $1');
             this.prettyVarNames[i] = this.prettyVarNames[i].charAt(0).toUpperCase() + this.prettyVarNames[i].slice(1);
         }
-        console.log(this.values);
-        console.log(this.variableNames);
-        console.log(this.prettyVarNames);
     }
 
     loadImageUrl() {
