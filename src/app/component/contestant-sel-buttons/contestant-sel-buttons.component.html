@@ -1,0 +1,7 @@
+<div *ngIf="selectedItemsAmount == 0; else withSelection">
+    <button>Välj alla</button>
+</div>
+<ng-template #withSelection>
+    <button>Välj ingen</button>
+    <button>Ta bort valda</button>
+</ng-template>

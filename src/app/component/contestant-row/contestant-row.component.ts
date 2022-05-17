@@ -1,5 +1,6 @@
 import {
     AfterContentChecked,
+    AfterViewChecked,
     Component,
     ElementRef,
     EventEmitter,
@@ -7,24 +8,25 @@ import {
     Inject,
     Input,
     OnChanges,
+    OnDestroy,
     OnInit,
     Optional,
     Output,
-    SimpleChanges,
     ViewChild,
     ViewContainerRef,
 } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { Contestant } from 'src/app/model/contestant';
+import { ContestantsComponent } from 'src/app/pages/contestants/contestants.component';
 import { ModalService } from '../modal/modal.service';
 
 @Component({
     selector: 'app-contestant-row',
     templateUrl: './contestant-row.component.html',
     styleUrls: ['./contestant-row.component.css'],
-    // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContestantRowComponent implements OnInit, AfterContentChecked, OnChanges {
+export class ContestantRowComponent implements OnInit, AfterContentChecked, OnChanges, AfterViewChecked, OnDestroy {
     @Input() data!: Contestant;
 
     public selected = false;
@@ -33,12 +35,15 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
 
     @Output() public selectedChanged = new EventEmitter<[number, boolean]>();
 
-    @Input() public columnPositions: number[] = [];
-    @Output() widthsDrawn: EventEmitter<[ContestantRowComponent, number[]]> = new EventEmitter();
-    @ViewChild('contInfoItems') contInfoItems!: ElementRef<HTMLElement>;
-
     // On internal element is clicked, e.g: parent needs to be informed of the delete button being clicked
     @Output() elementClicked: EventEmitter<[Contestant, string, boolean]> = new EventEmitter();
+
+    @ViewChild('collapsedItems')
+    collapsedItem!: ElementRef<HTMLElement>;
+
+    @Input()
+    public parent!: ContestantsComponent;
+    private parentSubscription!: Subscription;
 
     constructor(
         private modService: ModalService,
@@ -54,35 +59,39 @@ export class ContestantRowComponent implements OnInit, AfterContentChecked, OnCh
         }
     }
 
-    ngOnInit(): void {}
+    ngAfterViewChecked(): void {}
 
-    ngAfterContentChecked(): void {
-        this.widthsDrawn.emit([this, this.getAllColumnWidths()]);
+    ngOnInit(): void {
+        this.parentSubscription = this.parent.recalculateWidthsEvent.subscribe((_) => this.parent.reportWidths(this.getAllColumnWidths(this.collapsedItem)));
+    }
+    ngOnDestroy(): void {
+        this.parentSubscription!.unsubscribe();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        // console.log('changes' + changes);
-        this.widthsDrawn.emit([this, this.getAllColumnWidths()]);
-    }
+    ngAfterContentChecked(): void {}
 
-    @HostListener('window:resize', ['$event'])
-    onResize(event: Event) {
-        // Todo: recalculate widths on resize event
-        (event.target as Window).innerWidth;
-    }
-
-    private getAllColumnWidths(): number[] {
-        let elem = this.contInfoItems?.nativeElement.children.item(0);
+    public getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
+        let currElem = elem?.nativeElement.children.item(0);
         let widths = [];
-        while (elem != null) {
-            widths.push(elem.clientWidth);
-            elem = elem.nextElementSibling;
+        while (currElem != null) {
+            widths.push(currElem.clientWidth);
+            currElem = currElem.nextElementSibling;
         }
         return widths;
     }
 
+    ngOnChanges(changes: any): void {
+        // console.log('changes');
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+        // (event.target as Window).innerWidth;
+    }
+
     public toggleColapse(event: Event): void {
         this.expanded = !this.expanded;
+        // this.widthsDrawn.emit([this, this.getAllColumnWidths()]);
         event?.stopPropagation();
     }
 

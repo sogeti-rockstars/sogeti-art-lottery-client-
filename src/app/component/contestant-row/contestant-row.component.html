@@ -30,12 +30,12 @@
         <div class="collapsed-contestant-info">
             <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
         </div>
-        <div #contInfoItems class="collapsed-contestant-info-items">
-            <div #contInfoName class="collapsed-contestant-info-item" [ngStyle]="{'left': columnPositions[0]+'px'}">{{ data.name }}</div>
-            <div #contInfoOffice class="collapsed-contestant-info-item" [ngStyle]="{'left': columnPositions[1]+'px'}">kontor: BACKENDWIP</div>
-            <div #contInfoDbId class="collapsed-contestant-info-item" [ngStyle]="{'left': columnPositions[2]+'px'}">dbId: {{ data.id }}</div>
-            <div #contInfoEmplId class="collapsed-contestant-info-item" [ngStyle]="{'left': columnPositions[3]+'px'}">employeeId: {{ data.employeeId }}</div>
-            <div #contInfoTelNum class="collapsed-contestant-info-item" [ngStyle]="{'left': columnPositions[4]+'px'}">teleNumber: {{ data.teleNumber }}</div>
+        <div #collapsedItems class="collapsed-contestant-info-items">
+            <div class="collapsed-item" id="col-1">{{ data.name }}</div>
+            <div class="collapsed-item" id="col-2">kontor: BACKENDWIP</div>
+            <div class="collapsed-item" id="col-3">dbId: {{ data.id }}</div>
+            <div class="collapsed-item" id="col-4">employeeId: {{ data.employeeId }}</div>
+            <div class="collapsed-item" id="col-5">teleNumber: {{ data.teleNumber }}</div>
         </div>
         <div class="collapsed-contestant-buttons-cont">
             <div class="collapsed-contestant-buttons">
@@ -44,18 +44,6 @@
         </div>
     </div>
 </ng-template>
-
-<div *ngIf="inModal; else notInModal">
-    <h1>IN MODAL VIEW</h1>
-    <span class="name" matLine>
-        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-        <mat-label> {{ data.name }} </mat-label>
-        <p>dbId: {{ data.id }}</p>
-        <p>employeeId: {{ data.employeeId }}</p>
-        <p>teleNumber: {{ data.teleNumber }}</p>
-        <p>office: BACKEND WIP</p>
-    </span>
-</div>
 
 <ng-template #notInModal>
     <mat-list-item matLine checkboxPosition="before" class="contestant-row">
@@ -70,3 +58,15 @@
         </mat-card>
     </mat-list-item>
 </ng-template>
+
+<div *ngIf="inModal; else notInModal">
+    <h1>MODAL VIEW:</h1>
+    <span class="name" matLine>
+        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+        <mat-label> {{ data.name }} </mat-label>
+        <p>dbId: {{ data.id }}</p>
+        <p>employeeId: {{ data.employeeId }}</p>
+        <p>teleNumber: {{ data.teleNumber }}</p>
+        <p>office: BACKEND WIP</p>
+    </span>
+</div>

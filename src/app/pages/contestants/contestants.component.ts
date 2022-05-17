@@ -1,4 +1,16 @@
-import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import {
+    AfterContentChecked,
+    AfterViewChecked,
+    ChangeDetectorRef,
+    Component,
+    EventEmitter,
+    Inject,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
@@ -8,82 +20,89 @@ import { ContestantService } from 'src/app/service/contestant.service';
     templateUrl: './contestants.component.html',
     styleUrls: ['./contestants.component.css'],
 })
-export class ContestantsComponent implements OnInit, AfterContentChecked, AfterViewChecked {
-    public contData = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined, number[]]>();
-    //                                  filteredout-^^^^^                                        ^^^^^-col. widths
+export class ContestantsComponent implements OnInit, AfterContentChecked, AfterViewChecked, OnChanges {
+    public contData = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined]>();
 
-    public columnPositions = [0, 0, 0, 0, 0, 0];
-    private ignoreReports = false;
+    public selectedItemsAmount = 0;
+
+    @Output()
+    public recalculateWidthsEvent = new EventEmitter<void>();
+    public this = this;
+    private colWidths = [0, 0, 0, 0, 0];
+    private colGap = 20;
 
     public filterDataFunction = (val: any, query: string) => {
         val[1] = !val[0].name.toLowerCase().includes(query.toLowerCase());
     };
 
-    constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {}
+    constructor(private service: ContestantService, public cdr: ChangeDetectorRef, @Inject(DOCUMENT) private document: Document) {}
+
+    ngOnChanges(changes: SimpleChanges): void {}
 
     ngOnInit(): void {
         this.loadContestants();
-        this.ignoreReports = true;
     }
 
     ngAfterContentChecked(): void {
-        this.ignoreReports = false;
+        this.recalculateWidthsEvent.emit();
     }
 
-    ngAfterViewChecked(): void {
-        this.columnPositions = this.getCalculatedColumnStartPositions();
-        this.cdr.detectChanges();
-    }
+    ngAfterViewChecked(): void {}
 
-    public readReportedWidths([comp, colWidths]: [ContestantRowComponent, number[]]): void {
-        if (this.ignoreReports || colWidths.length == 0) return;
-        let oldVals = this.contData.get(comp.data.id);
-        if (oldVals === undefined) oldVals = [comp.data, false, comp, colWidths];
-        else oldVals[3] = colWidths;
-        this.contData.set(comp.data.id, oldVals);
+    public reportWidths(widths: number[]) {
+        widths.forEach((e, i) => {
+            if (e > this.colWidths[i]) this.colWidths[i] = e;
+        });
+
+        this.setColStartPositions(this.colWidths);
     }
 
     public contRowElementClickedEvent(event: [Contestant, string, boolean]) {
         if (event[1] == 'remove') {
             let contId = event[0].id;
             this.contData.delete(contId);
+            this.recalculateWidths();
         }
     }
 
     public selChangeListener([id, value]: [number, boolean]): void {
         // console.log(`${id} => ${value}`); // Useful
+        this.selectedItemsAmount += value ? +1 : -1;
+        console.log(this.selectedItemsAmount);
+    }
+
+    public filteredItemsChangeListener(newvals: any) {
+        this.contData = newvals;
+        this.recalculateWidths();
     }
 
     private loadContestants(): void {
         this.service.getContestants().subscribe({
             next: (resp) => {
-                this.contData.clear();
+                // let newMap = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined, number[]]>();
+                let newMap = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined]>();
                 resp.forEach((c) => {
-                    this.contData.set(c.id, [c, false, undefined, []]);
+                    newMap.set(c.id, [c, false, undefined]);
                 });
+
+                this.contData = new Map(newMap);
             },
         });
     }
 
-    private getCalculatedColumnStartPositions(): number[] {
-        let colMaxWidths = this.calcMaxWidths();
-
-        let totalWidth = 0;
-        return colMaxWidths.map((v) => {
-            let ret = totalWidth;
-            totalWidth += v + 10;
-            return ret;
-        });
+    private recalculateWidths() {
+        this.cdr.detectChanges();
+        this.colWidths = [0, 0, 0, 0, 0];
+        this.recalculateWidthsEvent.emit();
+        this.setColStartPositions(this.colWidths);
+        console.log('recalculating widths...');
     }
 
-    private calcMaxWidths(): number[] {
-        let colMaxWidths: number[] = [];
-        this.contData.forEach(([_, filteredout, _d, colWidths]) => {
-            if (!filteredout)
-                colWidths.forEach((width: number, i: number) => {
-                    if (colMaxWidths[i] === undefined || colMaxWidths[i] < width) colMaxWidths[i] = width;
-                });
-        });
-        return colMaxWidths;
+    private setColStartPositions(widths: number[]) {
+        this.document.documentElement.style.setProperty(`--item-col-1`, '0px');
+        this.document.documentElement.style.setProperty(`--item-col-2`, this.colGap * 1 + widths.slice(0, 1).reduce((s, t) => s + t) + 'px');
+        this.document.documentElement.style.setProperty(`--item-col-3`, this.colGap * 2 + widths.slice(0, 2).reduce((s, t) => s + t) + 'px');
+        this.document.documentElement.style.setProperty(`--item-col-4`, this.colGap * 3 + widths.slice(0, 3).reduce((s, t) => s + t) + 'px');
+        this.document.documentElement.style.setProperty(`--item-col-5`, this.colGap * 4 + widths.slice(0, 4).reduce((s, t) => s + t) + 'px');
     }
 }

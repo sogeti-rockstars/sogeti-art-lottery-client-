@@ -41,6 +41,7 @@ import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contestant-sel-buttons.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -115,6 +116,7 @@ const components: Array<any> = [
     AutoCardComponent,
     FilterListComponent,
     ArtItemFormComponent,
+    ContestantSelButtonsComponent,
 ];
 
 @NgModule({

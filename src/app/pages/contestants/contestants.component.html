@@ -1,14 +1,14 @@
 <span class="contentant-main">
-    <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="contData=$event"></app-filter-list>
+    <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="filteredItemsChangeListener($event)"></app-filter-list>
+    <app-contestant-sel-buttons [selectedItemsAmount]="selectedItemsAmount"></app-contestant-sel-buttons>
     <mat-list *ngIf="contData.size>0">
-        <div *ngFor="let cont of contData | keyvalue; let idx=index">
+        <div class="cont-rows-table-rows" *ngFor="let cont of contData | keyvalue; let idx=index">
             <app-contestant-row
                 *ngIf="!cont.value[1]"
                 (elementClicked)="contRowElementClickedEvent($event)"
-                (widthsDrawn)="readReportedWidths($event)"
                 [data]="cont.value[0]"
-                [columnPositions]="columnPositions"
                 (selectedChanged)="selChangeListener($event)"
+                [parent]="this"
             ></app-contestant-row>
         </div>
     </mat-list>
