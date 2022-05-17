@@ -1,9 +1,5 @@
 <span class="contentant-main">
-    <mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
-        <mat-label>Search:</mat-label>
-        <input matInput class="search-form-input" type="search" placeholder="Exempel exempeplson" (input)="keyDownFunction($event)" formControlName="query" />
-    </mat-form-field>
-
+    <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="contData=$event"></app-filter-list>
     <mat-list>
         <div *ngIf="contData.size>0">
             <div *ngFor="let cont of contData | keyvalue; let idx=index">

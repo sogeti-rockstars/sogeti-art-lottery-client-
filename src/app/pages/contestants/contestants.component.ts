@@ -1,5 +1,4 @@
 import { AfterContentChecked, AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
@@ -10,20 +9,17 @@ import { ContestantService } from 'src/app/service/contestant.service';
     styleUrls: ['./contestants.component.css'],
 })
 export class ContestantsComponent implements OnInit, AfterContentChecked, AfterViewChecked {
-    public contData = new Map<number, [Contestant, boolean, boolean, ContestantRowComponent | undefined, number[]]>();
-    //                                  filteredout-^^^^^    ^^^^^-removed
-
-    public searchQuery = '';
-    public searchForm!: FormGroup;
+    public contData = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined, number[]]>();
+    //                                  filteredout-^^^^^                                        ^^^^^-col. widths
 
     public columnPositions!: number[];
     private ignoreReports = false;
 
-    constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {
-        this.searchForm = new FormGroup({
-            query: new FormControl('', Validators.minLength(2)),
-        });
-    }
+    public filterDataFunction = (val: any, query: string) => {
+        val[1] = !val[0].name.toLowerCase().includes(query.toLowerCase());
+    };
+
+    constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {}
 
     ngOnInit(): void {
         this.loadContestants();
@@ -45,25 +41,14 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
     public readReportedWidths([comp, colWidths]: [ContestantRowComponent, number[]]): void {
         if (this.ignoreReports || colWidths.length == 0) return;
         let oldVals = this.contData.get(comp.data.id);
-        if (oldVals === undefined) oldVals = [comp.data, false, false, comp, colWidths];
-        else oldVals[4] = colWidths;
+        if (oldVals === undefined) oldVals = [comp.data, false, comp, colWidths];
+        else oldVals[3] = colWidths;
         this.contData.set(comp.data.id, oldVals);
-    }
-
-    public keyDownFunction(event: any) {
-        this.searchQuery = this.searchForm.get('query')?.value;
-
-        this.contData.forEach((val, _) => {
-            val[1] = !val[0].name.toLowerCase().includes(this.searchQuery.toLowerCase());
-        });
-
-        if (event.code === 'Enter') console.log('enter pressed');
     }
 
     public contRowElementClickedEvent(event: [Contestant, string, boolean]) {
         if (event[1] == 'remove') {
             let contId = event[0].id;
-
             this.contData.delete(contId);
         }
     }
@@ -73,7 +58,7 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
             next: (resp) => {
                 this.contData.clear();
                 resp.forEach((c) => {
-                    this.contData.set(c.id, [c, false, false, undefined, []]);
+                    this.contData.set(c.id, [c, false, undefined, []]);
                 });
             },
         });
@@ -92,7 +77,7 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
 
     private calcMaxWidths(): number[] {
         let colMaxWidths: number[] = [];
-        this.contData.forEach(([_, filteredout, _d, _c, colWidths]) => {
+        this.contData.forEach(([_, filteredout, _d, colWidths]) => {
             if (!filteredout)
                 colWidths.forEach((width: number, i: number) => {
                     if (colMaxWidths[i] === undefined || colMaxWidths[i] < width) colMaxWidths[i] = width;

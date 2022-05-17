@@ -35,11 +35,12 @@ import { DialogContentImageComponent } from './modal/modalComponents/dialog-cont
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatTableModule } from '@angular/material/table';
 import { AltModalService } from '../service/alt-modal.service';
 import { AutoCardComponent } from './card/auto-card/auto-card.component';
+import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTableModule } from '@angular/material/table';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -91,6 +92,8 @@ const modules: Array<any> = [
     MatCommonModule,
     MatLineModule,
     MatMenuModule,
+    MatCheckboxModule,
+    MatTableModule,
 ];
 
 const components: Array<any> = [
@@ -110,6 +113,7 @@ const components: Array<any> = [
     ContestantRowComponent,
     ContestantsComponent,
     AutoCardComponent,
+    FilterListComponent,
     ArtItemFormComponent,
 ];
 
