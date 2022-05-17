@@ -1,16 +1,14 @@
 <span class="contentant-main">
     <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="contData=$event"></app-filter-list>
-    <mat-list>
-        <div *ngIf="contData.size>0">
-            <div *ngFor="let cont of contData | keyvalue; let idx=index">
-                <app-contestant-row
-                    *ngIf="!cont.value[1] && !cont.value[2]"
-                    (elementClicked)="contRowElementClickedEvent($event)"
-                    (widthsDrawn)="readReportedWidths($event)"
-                    [data]="cont.value[0]"
-                    [columnPositions]="getColumnPositions()"
-                ></app-contestant-row>
-            </div>
+    <mat-list *ngIf="contData.size>0">
+        <div *ngFor="let cont of contData | keyvalue; let idx=index">
+            <app-contestant-row
+                *ngIf="!cont.value[1]"
+                (elementClicked)="contRowElementClickedEvent($event)"
+                (widthsDrawn)="readReportedWidths($event)"
+                [data]="cont.value[0]"
+                [columnPositions]="getColumnPositions()"
+            ></app-contestant-row>
         </div>
     </mat-list>
 </span>
