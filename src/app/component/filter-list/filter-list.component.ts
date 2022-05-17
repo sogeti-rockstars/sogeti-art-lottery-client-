@@ -15,7 +15,6 @@ export class FilterListComponent implements OnInit {
 
     @Output() public listChanged = new EventEmitter<any>();
 
-    public searchQuery = '';
     public searchForm!: FormGroup;
 
     constructor() {
@@ -34,12 +33,6 @@ export class FilterListComponent implements OnInit {
         else throw new ReferenceError('lacking data');
 
         if (event.code === 'Enter') console.log('enter pressed');
-
-        // let list = this.dataList !== undefined ? this.dataList : this.dataMap !== undefined ? Array.from(this.dataMap.values()) : undefined;
-        // if (list === undefined)
-        // let visibleItems = list.filter((val, _) => this.filterFunction(val, this.searchQuery));
-        // if (this.dataMap !== undefined)
-        // else this.listChanged.emit(visibleItems);
     }
 
     private filterMap(query: string, dataMap: Map<number, any>) {

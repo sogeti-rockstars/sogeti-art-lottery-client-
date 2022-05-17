@@ -9,14 +9,14 @@ import { ContestantService } from 'src/app/service/contestant.service';
     styleUrls: ['./contestants.component.css'],
 })
 export class ContestantsComponent implements OnInit, AfterContentChecked, AfterViewChecked {
-    public contData = new Map<number, [Contestant, boolean, boolean, ContestantRowComponent | undefined, number[]]>();
-    //                                  filteredout-^^^^^    ^^^^^-removed
+    public contData = new Map<number, [Contestant, boolean, ContestantRowComponent | undefined, number[]]>();
+    //                                  filteredout-^^^^^                                        ^^^^^-col. widths
 
     public columnPositions!: number[];
     private ignoreReports = false;
 
     public filterDataFunction = (val: any, query: string) => {
-        val[1] = !val[0].name.toLowerCase().includes(query);
+        val[1] = !val[0].name.toLowerCase().includes(query.toLowerCase());
     };
 
     constructor(private service: ContestantService, public cdr: ChangeDetectorRef) {}
@@ -41,8 +41,8 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
     public readReportedWidths([comp, colWidths]: [ContestantRowComponent, number[]]): void {
         if (this.ignoreReports || colWidths.length == 0) return;
         let oldVals = this.contData.get(comp.data.id);
-        if (oldVals === undefined) oldVals = [comp.data, false, false, comp, colWidths];
-        else oldVals[4] = colWidths;
+        if (oldVals === undefined) oldVals = [comp.data, false, comp, colWidths];
+        else oldVals[3] = colWidths;
         this.contData.set(comp.data.id, oldVals);
     }
 
@@ -58,7 +58,7 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
             next: (resp) => {
                 this.contData.clear();
                 resp.forEach((c) => {
-                    this.contData.set(c.id, [c, false, false, undefined, []]);
+                    this.contData.set(c.id, [c, false, undefined, []]);
                 });
             },
         });
@@ -77,7 +77,7 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
 
     private calcMaxWidths(): number[] {
         let colMaxWidths: number[] = [];
-        this.contData.forEach(([_, filteredout, _d, _c, colWidths]) => {
+        this.contData.forEach(([_, filteredout, _d, colWidths]) => {
             if (!filteredout)
                 colWidths.forEach((width: number, i: number) => {
                     if (colMaxWidths[i] === undefined || colMaxWidths[i] < width) colMaxWidths[i] = width;
