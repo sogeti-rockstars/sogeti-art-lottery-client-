@@ -34,7 +34,7 @@ export class ArtItemsComponent {
   }
 
   public removeSelectedArtItems() {
-    if (confirm('Are you sure to delete ')) {
+    if (confirm('Är du säker på att du vill radera?')) {
       var allCheckboxes = document.getElementsByName('artItemCheckbox');
       var cbox;
       var arrSelected = [];
