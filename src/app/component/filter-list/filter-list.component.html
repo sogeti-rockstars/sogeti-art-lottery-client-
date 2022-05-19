@@ -1,0 +1,4 @@
+<mat-form-field matLine class="search-form" appearance="outline" [formGroup]="searchForm">
+    <mat-label>Search:</mat-label>
+    <input matInput class="search-form-input" type="search" placeholder="Exempel exempeplson" (input)="keyDownFunction($event)" formControlName="query" />
+</mat-form-field>

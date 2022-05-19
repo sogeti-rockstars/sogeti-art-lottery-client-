@@ -5,9 +5,9 @@ import { ArtItemApiService } from './service/api/art-item-api.service';
 import { ArtItemService } from './service/art-item.service';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   title = 'sogeti-art-lottery-client';

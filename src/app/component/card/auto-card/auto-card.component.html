@@ -1,0 +1,34 @@
+<mat-card class="example-card">
+    <mat-card-header>
+      <!-- <div mat-card-avatar class="example-header-image"></div> -->
+      <mat-card-title>{{object.itemName}}</mat-card-title>
+      <mat-card-subtitle>{{object.artistName}}</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="loadImageUrl()" alt="Photo of item">
+    <mat-card-content class="mat-card-body">
+        <ul class="list-group">
+            <div *ngIf="objectContent[1][0]=='itemName'">
+                <div *ngFor="let value of values; let i=index">
+                  <div class="form-group">
+                    <div *ngIf="editMode == true"><form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+                    <li class="list-group-item">
+                      <div *ngIf="editMode == true">
+                        {{prettyVarNames[i]}}: <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}">
+                      </div>
+                    </li>
+                  </form></div>
+                </div><div *ngIf="editMode == false">
+                  <li class="list-group-item">
+                    {{prettyVarNames[i]}}: {{value}}
+                  </li></div>
+              </div>
+            </div>
+          </ul>
+    </mat-card-content>
+    <mat-card-actions>
+      
+      <div *ngIf="editMode == false"><button mat-button (click)="enableEdit()">Edit</button></div>
+      <div *ngIf="editMode == true"><button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button></div>
+      <!-- <button mat-button>SHARE</button> -->
+    </mat-card-actions>
+  </mat-card>

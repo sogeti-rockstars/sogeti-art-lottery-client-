@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'winners',
   templateUrl: './winners.component.html',
   styleUrls: ['./winners.component.css']
 })
-export class WinnersComponent implements OnInit {
+export class WinnersComponent  {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  
 
 }

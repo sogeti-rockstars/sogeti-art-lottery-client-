@@ -1,0 +1,119 @@
+* {
+    align-items: flex-end;
+    align-content: flex-end;
+}
+
+.name {
+    float: left;
+}
+
+.buttons {
+    display: block;
+    float: right;
+}
+
+.contestant-row {
+    height: auto !important;
+}
+
+.contestant-row:hover .cont-button-hover-show {
+    opacity: 1;
+}
+
+.cont-button-hover-show {
+    /* cursor: pointer; */
+    opacity: 0;
+}
+
+.list-card {
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 4px;
+    margin-left: 10px;
+}
+
+.collapsed-contestant-info-float {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    display: flex;
+    width: 100%;
+
+    /* display: table; */
+    /* align-content: flex-start; */
+    /* height: 100px; */
+    /* padding: 20px; */
+    /* vertical-align: middle; */
+    /* align-items: center; */
+}
+
+.collapsed-contestant-info {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    float: left;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.collapsed-contestant-info-items {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    margin-top: auto;
+    margin-bottom: auto;
+
+    position: relative;
+    height: 30px;
+
+    overflow: hidden;
+    width: 100%;
+}
+.collapsed-contestant-info-item {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    /* height: 30px; */
+    position: absolute;
+
+    overflow: hidden;
+    white-space: nowrap;
+
+    margin-top: auto;
+    margin-bottom: auto;
+
+    width: fit-content;
+    height: fit-content;
+    min-width: 0px;
+
+    top: 0;
+    bottom: 0;
+}
+
+.collapsed-contestant-buttons-cont {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    min-width: fit-content;
+}
+.collapsed-contestant-buttons {
+    /* box-shadow: 1px solid #ff0000; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
+    float: right;
+}
+
+.collapsing-items {
+    position: relative;
+}
+
+.collapsing-office {
+    display: contents;
+    position: fixed;
+    top: 100px;
+    left: 400px;
+    /* display: table; */
+    /* align-items: flex-end; */
+    /* color: blue; */
+}
+
+@media (max-width: 50em) {
+    .collapsing-office {
+        display: none;
+        /* color: red; */
+    }
+}

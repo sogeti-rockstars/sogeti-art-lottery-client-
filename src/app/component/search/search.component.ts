@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+=======
+import { Component } from '@angular/core';
+>>>>>>> dev
 
 @Component({
   selector: 'app-search',

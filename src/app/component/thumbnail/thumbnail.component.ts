@@ -12,9 +12,9 @@ import { ModalDirective } from '../modal/modal.directive';
 import { AppComponent } from 'src/app/app.component';
 
 @Component({
-  selector: 'thumbnail',
-  styleUrls: ['./thumbnail.component.css'],
-  templateUrl: './thumbnail.component.html',
+    selector: 'thumbnail',
+    styleUrls: ['./thumbnail.component.css'],
+    templateUrl: './thumbnail.component.html',
 })
 export class ThumbnailComponent implements OnInit {
   @Input() id!: number;
@@ -39,7 +39,8 @@ export class ThumbnailComponent implements OnInit {
     this.cssClass = 'thumbnailImg';
   }
 
-  ngOnInit(): void {
-    console.log(this);
-  }
+    addModal() {
+        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
+        this.modalService.loadModal(component, this.viewContainerRef);
+    }
 }
