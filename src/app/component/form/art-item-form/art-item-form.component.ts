@@ -18,7 +18,7 @@ export class ArtItemFormComponent implements OnInit {
     update: boolean = false;
     profileForm = this.fb.group({
         id: [''],
-        lotteryId: [''],
+        lottery_id: [''],
         itemName: ['', Validators.required],
         pictureUrl: [''],
         artistName: [''],
@@ -53,7 +53,7 @@ export class ArtItemFormComponent implements OnInit {
     updateForm() {
         this.profileForm.patchValue({
             id: this.artItem.id,
-            lotteryId: this.artItem.lotteryId,
+            lottery_id: this.artItem.lottery_id,
             itemName: this.artItem.itemName,
             artistName: this.artItem.artistName,
             size: this.artItem.size,
