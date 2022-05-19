@@ -27,7 +27,7 @@ import { WinnersComponent } from '../pages/winners/winners.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
-import { MatCommonModule, MatLineModule, MatOptionModule } from '@angular/material/core';
+import { MatCommonModule, MatLineModule, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
@@ -41,6 +41,8 @@ import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { LotteryFormComponent } from './form/lottery-form/lottery-form.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { FlexLayoutModule } from '@angular/flex-layout';
@@ -94,6 +96,9 @@ const modules: Array<any> = [
     MatMenuModule,
     MatCheckboxModule,
     MatTableModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCheckboxModule,
 ];
 
 const components: Array<any> = [
@@ -115,6 +120,7 @@ const components: Array<any> = [
     AutoCardComponent,
     FilterListComponent,
     ArtItemFormComponent,
+    LotteryFormComponent,
 ];
 
 @NgModule({
