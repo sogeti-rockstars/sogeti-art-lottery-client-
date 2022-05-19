@@ -1,5 +1,9 @@
 <app-header (toggleSideNav)="toggleSideNav()"></app-header>
-<app-sidebar [visible]="sideNavVisible" (visibility)="toggleSideNavValue($event)"></app-sidebar>
+
+<app-sidebar
+  [visible]="sideNavVisible"
+  (visibility)="toggleSideNavValue($event)"
+></app-sidebar>
 <div class="main-container">
   <mat-sidenav-container
     class="example-sidenav-container"

@@ -31,7 +31,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatButtonToggleModule } from '@angular/material/button-toggle';
 // import { MatCardModule } from '@angular/material/card';
@@ -43,7 +43,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { MatFormFieldModule } from '@angular/material/form-field';
 // import { MatGridListModule } from '@angular/material/grid-list';
 // import { MatInputModule } from '@angular/material/input';
-// import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 // import { MatPaginatorModule } from '@angular/material/paginator';
 // import { MatProgressBarModule } from '@angular/material/progress-bar';
 // import { MatRadioModule } from '@angular/material/radio';
@@ -72,10 +72,14 @@ import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 import { FancyImageCardComponent } from './card/fancy-image-card/fancy-image-card.component';
 import { MaterialArtItemFormComponent } from './form/material-art-item-form/material-art-item-form.component';
-import { MaterialmodalComponent, DialogContentImage, DialogContent } from './modal/materialmodal/materialmodal.component';
+import {
+  MaterialmodalComponent,
+  DialogContentImage,
+  DialogContent,
+} from './modal/materialmodal/materialmodal.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
 import { ModalDirective } from './modal/modal.directive';
 import { MembersComponent } from '../pages/members/members.component';
 
@@ -96,6 +100,8 @@ import { MembersComponent } from '../pages/members/members.component';
     MatCardModule,
     FormsModule,
     ReactiveFormsModule,
+    FlexLayoutModule,
+    MatMenuModule,
   ],
   providers: [],
   declarations: [
@@ -115,7 +121,8 @@ import { MembersComponent } from '../pages/members/members.component';
     DialogContentImage,
     DialogContent,
     ModalDirective,
-    MembersComponent
+    MembersComponent,
+
   ],
   exports: [
     FullComponent,
@@ -133,7 +140,7 @@ import { MembersComponent } from '../pages/members/members.component';
     MaterialmodalComponent,
     DialogContentImage,
     DialogContent,
-    MembersComponent
+    MembersComponent,
   ],
 })
 export class MaterialComponentsModule {}

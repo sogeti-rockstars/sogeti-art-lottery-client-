@@ -20,14 +20,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-
+import { MaterialComponentsModule } from './component/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ArtItemService } from './service/art-item.service';
 import { appRoutes } from './app.routing';
-import { MaterialComponentsModule } from './component/material.module';
+
 import { MenuItems } from './component/menu-items/menu-items';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbar } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -48,14 +49,15 @@ import { MatToolbar } from '@angular/material/toolbar';
     HttpClientModule,
     MaterialComponentsModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes), 
 
     //DialogComponent,
     // NgbModule,
     // ReactiveFormsModule
     // FormsModule,
     FlexLayoutModule,
-    MatToolbar
+    MatToolbarModule,
+    MatTableModule,
   ],
   providers: [
     MenuItems,
