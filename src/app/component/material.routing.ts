@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { AssociationComponent } from '../pages/association/association.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
+import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 
 export const MaterialRoutes: Routes = [
@@ -25,5 +26,9 @@ export const MaterialRoutes: Routes = [
     {
         path: 'contestants',
         component: ContestantsComponent,
+    },
+    {
+        path: 'lottery-start',
+        component: LotteryStartComponent,
     },
 ];

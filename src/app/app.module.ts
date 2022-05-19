@@ -11,9 +11,10 @@ import { MaterialComponentsModule } from './component/material.module';
 import { appRoutes } from './app.routing';
 import { MenuItems } from './component/menu-items/menu-items';
 import { ModalService } from './component/modal/modal.service';
+import { LotteryStartComponent } from './pages/lottery-start/lottery-start.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, LotteryStartComponent],
     imports: [RouterModule.forRoot(appRoutes), CommonModule, BrowserModule, BrowserAnimationsModule, HttpClientModule, MaterialComponentsModule],
     providers: [
         MenuItems,
