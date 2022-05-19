@@ -7,7 +7,7 @@
     <img mat-card-image [src]="loadImageUrl()" alt="Photo of item">
     <mat-card-content class="mat-card-body">
         <ul class="list-group">
-            <div *ngIf="objectContent[1][0]=='lotteryId'">
+            <div *ngIf="objectContent[1][0]=='itemName'">
                 <div *ngFor="let value of values; let i=index">
                   <div class="form-group">
                     <div *ngIf="editMode == true"><form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
