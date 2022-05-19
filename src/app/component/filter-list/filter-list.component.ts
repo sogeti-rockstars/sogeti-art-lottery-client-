@@ -13,6 +13,9 @@ export class FilterListComponent implements OnInit {
     @Input() public dataMap: Map<number, any> | undefined;
     @Input() public mapFunction!: (obj: any, query: string) => void;
 
+    @Input() public dataSet: Set<any> | undefined;
+    @Input() public setFunction!: (obj: any, query: string) => void;
+
     @Output() public listChanged = new EventEmitter<any>();
 
     public searchForm!: FormGroup;
@@ -30,6 +33,7 @@ export class FilterListComponent implements OnInit {
 
         if (this.dataList !== undefined) this.listChanged.emit(this.filterList(searchQuery, this.dataList));
         else if (this.dataMap !== undefined) this.listChanged.emit(this.filterMap(searchQuery, this.dataMap));
+        else if (this.dataSet !== undefined) this.listChanged.emit(this.filterSet(searchQuery, this.dataSet));
         else throw new ReferenceError('lacking data');
 
         if (event.code === 'Enter') console.log('enter pressed');
@@ -42,5 +46,13 @@ export class FilterListComponent implements OnInit {
 
     private filterList(query: string, dataList: any[]) {
         return dataList.filter((val, _) => this.filterFunction(val, query));
+    }
+
+    private filterSet(query: string, dataSet: Set<any>): Set<any> {
+        Array.from(dataSet)
+            .filter((r) => this.setFunction(r, query))
+            // .filter((r) => false)
+            .forEach((r) => dataSet.delete(r));
+        return dataSet;
     }
 }

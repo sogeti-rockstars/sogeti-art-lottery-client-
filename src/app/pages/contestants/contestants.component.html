@@ -1,15 +1,37 @@
 <span class="contentant-main">
-    <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="filteredItemsChangeListener($event)"></app-filter-list>
-    <app-contestant-sel-buttons [selectedItemsAmount]="selectedItemsAmount"></app-contestant-sel-buttons>
+    <app-filter-list
+        class="search-bar"
+        [dataMap]="contComp"
+        [mapFunction]="filterMapFunction"
+        (listChanged)="filteredItemsChangeListener($event)"
+    ></app-filter-list>
+    <app-contestant-sel-buttons
+        [selectedItemsAmount]="selectedItemsAmount"
+        [selectAll]="modList.selectAll"
+        [selectNone]="modList.selectNone"
+        [deleteSelected]="modList.deleteSelected"
+    ></app-contestant-sel-buttons>
+
     <mat-list *ngIf="contData.size>0">
-        <div class="cont-rows-table-rows" *ngFor="let cont of contData | keyvalue; let idx=index">
+        <div class="cont-rows-table-rows" *ngFor="let contestant of contData | keyvalue; trackBy:trackByContestant; let idx=index; ">
             <app-contestant-row
-                *ngIf="!cont.value[1]"
-                (elementClicked)="contRowElementClickedEvent($event)"
-                [data]="cont.value[0]"
+                #contRow
+                (elementClicked)="contestantRowButtonClicked($event)"
+                [data]="contestant.value"
                 (selectedChanged)="selChangeListener($event)"
-                [parent]="this"
+                [afterViewInit]="onContestantRowAfterViewInit"
+                [onDestroy]="onContestantRowDestroy"
             ></app-contestant-row>
         </div>
     </mat-list>
+
+    <!-- <mat-list *ngIf="contestants.size>0"> -->
+    <!-- <div class="virtual-scroll-container"> -->
+    <!-- <cdk-virtual-scroll-viewport [itemSize]="1"> -->
+    <!-- <div class="cont-rows-table-rows" *cdkVirtualFor="let contestant of contestants; let idx=index; "> -->
+    <!-- *ngIf="!contComp.get(contestant.value.id)?.viewState?.filtered" -->
+    <!-- [style.display]="!contComp.get(contestant.value.id)?.viewState?.filtered ? 'contents' : 'none'" -->
+    <!-- </div> -->
+    <!-- </cdk-virtual-scroll-viewport> -->
+    <!-- </div> -->
 </span>

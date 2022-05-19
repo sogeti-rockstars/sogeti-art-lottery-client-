@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { ArtItemsListComponent } from './art-items-list/art-items-list.component';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
@@ -95,6 +96,7 @@ const modules: Array<any> = [
     MatMenuModule,
     MatCheckboxModule,
     MatTableModule,
+    ScrollingModule,
 ];
 
 const components: Array<any> = [

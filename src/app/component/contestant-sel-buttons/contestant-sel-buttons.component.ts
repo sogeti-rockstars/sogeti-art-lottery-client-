@@ -8,6 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ContestantSelButtonsComponent implements OnInit {
     @Input() selectedItemsAmount: number = 0;
 
+    @Input() selectAll = (): void => {};
+    @Input() selectNone = (): void => {};
+    @Input() deleteSelected = (): void => {};
+
+    @Input() addNew = (): void => {};
+
     constructor() {}
 
     ngOnInit(): void {}
