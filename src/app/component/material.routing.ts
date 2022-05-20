@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { AssociationComponent } from '../pages/association/association.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
+import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
 import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 import { MembersComponent } from '../pages/members/members.component';
@@ -57,5 +58,9 @@ export const MaterialRoutes: Routes = [
     {
         path: 'lottery-start',
         component: LotteryStartComponent,
+    },
+    {
+        path: 'create-lottery',
+        component: CreateLotteryComponent,
     },
 ];

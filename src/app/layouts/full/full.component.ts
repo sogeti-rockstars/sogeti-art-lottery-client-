@@ -2,15 +2,6 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { MenuItems } from 'src/app/component/menu-items/menu-items';
 
-import {
-  ChangeDetectorRef,
-  Component,
-  OnDestroy,
-  AfterViewInit,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
     selector: 'app-full-layout',
