@@ -43,9 +43,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { LotteryFormComponent } from './form/lottery-form/lottery-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 // import { CdkTableModule } from '@angular/cdk/table';
-import { FlexLayoutModule } from '@angular/flex-layout';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatButtonToggleModule } from '@angular/material/button-toggle';
 // import { MatCardModule } from '@angular/material/card';
@@ -99,7 +99,7 @@ const modules: Array<any> = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    FlexLayoutModule
+    FlexLayoutModule,
 ];
 
 const components: Array<any> = [
