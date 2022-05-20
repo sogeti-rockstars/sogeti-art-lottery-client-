@@ -1,32 +1,64 @@
 <div [style.display]="!viewState.filtered ? 'contents' : 'none'">
-    <ng-template #buttons>
-        <button mat-icon-button class="cont-button-hover-show" aria-label="Redigera">
-            <mat-icon id="edit" (click)="buttonHandler($event)">edit</mat-icon>
-        </button>
-        <button mat-icon-button class="cont-button-hover-show" aria-label="Ta bort">
-            <mat-icon id="remove" (click)="buttonHandler($event)">delete</mat-icon>
-        </button>
-        <button mat-icon-button class="cont-button" aria-label="Mer info">
-            <mat-icon id="expand" (click)="buttonHandler($event)">open_in_full</mat-icon>
-        </button>
-    </ng-template>
+    <div #complElement *ngIf="!light || lightElemHeight!==undefined; else lightPlaceholder">
+        <div *ngIf="viewState.inModal; then inModal; else notInModal"></div>
+    </div>
+</div>
 
-    <ng-template #contentsExpanded>
-        <span class="name" matLine>
-            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-            <mat-label> {{ data.name }} </mat-label>
-            <p>dbId: {{ data.id }}</p>
-            <p>employeeId: {{ data.employeeId }}</p>
-            <p>teleNumber: {{ data.teleNumber }}</p>
-            <p>office: BACKEND WIP</p>
-        </span>
+<ng-template #buttons>
+    <button mat-icon-button class="cont-button-hover-show" aria-label="Redigera">
+        <mat-icon id="edit" (click)="buttonHandler($event)">edit</mat-icon>
+    </button>
+    <button mat-icon-button class="cont-button-hover-show" aria-label="Ta bort">
+        <mat-icon id="remove" (click)="buttonHandler($event)">delete</mat-icon>
+    </button>
+    <button mat-icon-button class="cont-button" aria-label="Mer info">
+        <mat-icon id="expand" (click)="buttonHandler($event)">open_in_full</mat-icon>
+    </button>
+</ng-template>
 
-        <span class="buttons">
-            <ng-template [ngTemplateOutlet]="buttons"></ng-template>
-        </span>
-    </ng-template>
+<ng-template #lightPlaceholder>
+    <!-- 'background-color': 'lime', -->
+    <!-- 'box-shadow': '1px solid lime', -->
+    <!-- '-webkit-box-shadow': 'inset 0px 0px 0px 1px lime' }" -->
+    <div
+        [ngStyle]="{
+       'height':lightElemHeight,
+       'margin':'0px !important',
+       'padding':'opx !important'
+       }"
+    >
+        <p></p>
+    </div>
+</ng-template>
 
-    <ng-template #contentsCollapsed>
+<ng-template #notInModal>
+    <mat-list-item matLine checkboxPosition="before" class="contestant-row">
+        <mat-pseudo-checkbox [state]="viewState.selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
+        <mat-card class="list-card" (click)="toggleColapse($event)">
+            <div *ngIf="viewState.expanded; else colapsed">
+                <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
+            </div>
+            <ng-template #colapsed>
+                <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
+            </ng-template>
+        </mat-card>
+    </mat-list-item>
+</ng-template>
+
+<ng-template #inModal>
+    <h1>MODAL VIEW:</h1>
+    <span class="name" matLine>
+        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+        <mat-label> {{ data.name }} </mat-label>
+        <p>dbId: {{ data.id }}</p>
+        <p>employeeId: {{ data.employeeId }}</p>
+        <p>teleNumber: {{ data.teleNumber }}</p>
+        <p>office: BACKEND WIP</p>
+    </span>
+</ng-template>
+
+<ng-template #contentsCollapsed>
+    <div #fullElement>
         <div class="collapsed-contestant-info-float">
             <div class="collapsed-contestant-info">
                 <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
@@ -44,31 +76,20 @@
                 </div>
             </div>
         </div>
-    </ng-template>
-
-    <ng-template #notInModal>
-        <mat-list-item matLine checkboxPosition="before" class="contestant-row">
-            <mat-pseudo-checkbox [state]="viewState.selected ? 'checked' : 'unchecked'" (click)="setSelected()"></mat-pseudo-checkbox>
-            <mat-card class="list-card" (click)="toggleColapse($event)">
-                <div *ngIf="viewState.expanded; else colapsed">
-                    <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
-                </div>
-                <ng-template #colapsed>
-                    <ng-template [ngTemplateOutlet]="contentsCollapsed"></ng-template>
-                </ng-template>
-            </mat-card>
-        </mat-list-item>
-    </ng-template>
-
-    <div *ngIf="viewState.inModal; else notInModal">
-        <h1>MODAL VIEW:</h1>
-        <span class="name" matLine>
-            <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-            <mat-label> {{ data.name }} </mat-label>
-            <p>dbId: {{ data.id }}</p>
-            <p>employeeId: {{ data.employeeId }}</p>
-            <p>teleNumber: {{ data.teleNumber }}</p>
-            <p>office: BACKEND WIP</p>
-        </span>
     </div>
-</div>
+</ng-template>
+
+<ng-template #contentsExpanded>
+    <span class="name" matLine>
+        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+        <mat-label> {{ data.name }} </mat-label>
+        <p>dbId: {{ data.id }}</p>
+        <p>employeeId: {{ data.employeeId }}</p>
+        <p>teleNumber: {{ data.teleNumber }}</p>
+        <p>office: BACKEND WIP</p>
+    </span>
+
+    <span class="buttons">
+        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+    </span>
+</ng-template>

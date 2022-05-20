@@ -12,16 +12,51 @@
         [deleteSelected]="modList.deleteSelected"
     ></app-contestant-sel-buttons>
 
-    <mat-list *ngIf="contData.size>0">
-        <div class="cont-rows-table-rows" *ngFor="let contestant of contData | keyvalue; trackBy:trackByContestant; let idx=index; ">
-            <app-contestant-row
-                #contRow
-                (elementClicked)="contestantRowButtonClicked($event)"
-                [data]="contestant.value"
-                (selectedChanged)="selChangeListener($event)"
-                [afterViewInit]="onContestantRowAfterViewInit"
-                [onDestroy]="onContestantRowDestroy"
-            ></app-contestant-row>
+    <mat-list *ngIf="contData.length>0">
+        <!-- <div class="fake-items" id="pre" *ngFor="let fakeItemPre of fakeItems.before"> -->
+        <!--     <div -->
+        <!--         class="fake-item-pre" -->
+        <!--         [ngStyle]="{ -->
+        <!--             'height':rowsLightHeight, -->
+        <!--             'margin':'0px !important', -->
+        <!--             'background-color': 'lime', -->
+        <!--             'box-shadow': '1px solid lime', -->
+        <!--             '-webkit-box-shadow': 'inset 0px 0px 0px 1px lime', -->
+        <!--             'padding':'opx !important' -->
+        <!--             }" -->
+        <!--     ></div> -->
+        <!-- </div> -->
+        <!-- <div class="cont-rows-table-rows" *ngFor="let contestant of contData | keyvalue; trackBy:trackByContestant; let idx=index; "> -->
+        <div class="cont-rows-table-rows" *ngFor="let contestant of contData; trackBy:trackByContestant; let idx=index; ">
+            <div #contRowCont class="cont-row-cont" [id]="contestant[2].id">
+                <app-contestant-row
+                    *ngIf="contestant[0]; else fakeRow"
+                    #contRow
+                    class="cont-row"
+                    (elementClicked)="contestantRowButtonClicked($event)"
+                    [data]="contestant[2]"
+                    (selectedChanged)="selChangeListener($event)"
+                ></app-contestant-row>
+                <!-- [light]="newRowsLight" -->
+                <!-- [lightElemHeight]="rowsLightHeight" -->
+                <!-- [afterViewInit]="onContestantRowAfterViewInit" -->
+                <!-- [onDestroy]="onContestantRowDestroy" -->
+                <!-- class="fake-items" id="post" *ngFor="let fakeItemPre of fakeItems.after"> -->
+                <ng-template #fakeRow>
+                    <div
+                        [ngStyle]="{
+                        'height':rowsLightHeight,
+                        'margin':'0px !important',
+                        'background-color': 'lime',
+                        'box-shadow': '1px solid lime',
+                        '-webkit-box-shadow': 'inset 0px 0px 0px 1px lime',
+                        'padding':'opx !important'
+                    }"
+                    >
+                        {{ contestant[2].id }}
+                    </div>
+                </ng-template>
+            </div>
         </div>
     </mat-list>
 

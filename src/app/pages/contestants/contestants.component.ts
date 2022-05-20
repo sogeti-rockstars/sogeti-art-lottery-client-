@@ -4,18 +4,17 @@ import {
     AfterContentInit,
     AfterViewChecked,
     AfterViewInit,
-    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    ElementRef,
     EventEmitter,
     HostListener,
     Inject,
     OnInit,
     Output,
-    ViewChild,
+    QueryList,
     ViewChildren,
 } from '@angular/core';
-import { Scroll } from '@angular/router';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
@@ -29,9 +28,11 @@ import { ContestantService } from 'src/app/service/contestant.service';
 })
 export class ContestantsComponent implements OnInit, AfterContentChecked, AfterViewInit, AfterViewChecked, AfterContentInit {
     public contDataRender: Contestant[] = [];
-    public contDataAll: Contestant[] = [];
+    public contDataNotRendered: Contestant[] = [];
 
-    public contData = new Map<number, Contestant>();
+    // public contData = new Map<number, [boolean, Contestant]>();
+    public contDataMap = new Map<number, number>();
+    public contData: [boolean, boolean, Contestant][] = [];
     public contComp = new Map<number, ContestantRowComponent>();
 
     public selectedItemsAmount = 0;
@@ -41,24 +42,26 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
 
     @Output() public recalculateWidthsEvent = new EventEmitter<void>();
 
-    @ViewChildren('contRow') contRows!: ContestantRowComponent[];
+    @ViewChildren('contRow') contRows!: QueryList<ContestantRowComponent>;
+    @ViewChildren('contRowCont') contRowConts!: QueryList<any>;
 
-    public onContestantRowAfterViewInit = (contRow: ContestantRowComponent) => {
-        contRow.reportWidthsSubscription = this.recalculateWidthsEvent.subscribe(() => {
-            if (contRow.viewState.filtered) return;
-            this.reportWidths(contRow.getAllColumnWidths(contRow.collapsedItem));
-        });
-    };
+    public fakeItems = { before: [] as number[], after: [] as number[], center: [] as number[] };
 
-    public onContestantRowDestroy = (contRow: ContestantRowComponent) => {
-        contRow.reportWidthsSubscription!.unsubscribe();
-    };
+    // public onContestantRowAfterViewInit = (contRow: ContestantRowComponent) => {
+    //     contRow.reportWidthsSubscription = this.recalculateWidthsEvent.subscribe(() => {
+    //         if (contRow.viewState.filtered) return;
+    //         this.reportWidths(contRow.getAllColumnWidths(contRow.collapsedItem));
+    //     });
+    // };
+
+    // public onContestantRowDestroy = (contRow: ContestantRowComponent) => {
+    // contRow.reportWidthsSubscription!.unsubscribe();
+    // };
 
     public filterMapFunction = (val: ContestantRowComponent, query: string) => {
         val.viewState.filtered = !val.data.name.toLowerCase().includes(query.toLowerCase());
     };
 
-    //
     // type contViewData = { data: Contestant; filtered: Boolean; component?: ContestantRowComponent };
     // this.contComponents = new Set();
     // public filterSetFunction = (val: ContestantRowComponent, query: string): void => {
@@ -71,33 +74,22 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         // console.log('ngAfterContentInit');
     }
 
+    private firstRenderFinished = false;
     ngAfterViewChecked(): void {
-        // console.log('ngAfterViewChecked');
+        if (!this.firstRenderFinished && this.contRows.length > 0) {
+            this.firstRenderFinished = true;
+            this.onFinishedRendering();
+        }
     }
+
     ngAfterViewInit(): void {}
 
     ngOnInit(): void {
         this.loadContestants();
+        this.setColStartPositions([200, 150, 65, 150]);
     }
 
-    private oldListLen = 0;
-    ngAfterContentChecked(): void {
-        // if (this.oldListLen == this.contData.size) {
-        // console.log('ngAfterContentChecked exit');
-        // return;
-        // }
-        // console.log('ngAfterContentChecked recalc');
-        // this.cdr.detectChanges();
-        this.redrawList();
-    }
-
-    private async redrawList() {
-        this.recalculateWidths();
-        this.contRows.forEach((c) => {
-            this.contComp.set(c.data.id, c);
-        });
-        this.oldListLen = this.contRows.length;
-    }
+    ngAfterContentChecked(): void {}
 
     private reportWidths(widths: number[]) {
         widths.forEach((e, i) => {
@@ -123,6 +115,10 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
     }
 
     public async filteredItemsChangeListener(newvals: any) {
+        setTimeout(() => {
+            this.hideUnhideRows();
+        }, 10);
+
         // this.contComponents = newvals;
         // this.contestants = newvals;
         // console.log(
@@ -141,18 +137,12 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         // this.contestants.get(id)!.component!.viewState.selected = value;
     }
 
-    // public contestants: Contestant[] = [];
-    // private async loadVisibleContestants() {
-    //     this.contestants = Array.from(this.contData.values());
-    //     // this.contestants = Array.from(this.contData.values()).filter((c) => !this.contComp.get(c.id)?.viewState.filtered);
-    // }
-
     // Todo: maybe do the selection amount tracking through some listener... Couldn't figure it out in a pretty way.
     // The problem is that it needs to be reduced/increased also when adding and removing items!
     public modList = {
         deleteById: (id: number) => {
             this.contComp.delete(id);
-            this.contData.delete(id);
+            this.contData.splice(this.contDataMap.get(id)! - 1, 1);
             this.listChanged();
         },
         getSelected: (): ContestantRowComponent[] => {
@@ -172,63 +162,80 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         addNew: () => console.log('ho'),
     };
 
-    public trackByContestant(_: number, cont: KeyValue<number, Contestant>) {
-        return cont.value.id;
+    // public trackByContestant(_: number, cont: KeyValue<number, [boolean, Contestant]>) {
+    public trackByContestant(_: number, cont: [boolean, boolean, Contestant]) {
+        return cont[2].id;
+    }
+
+    private prevRowsInView: number[] = [];
+
+    @HostListener('window:scroll', ['$event']) // for window scroll events
+    onScroll() {
+        this.hideUnhideRows();
+        // console.log(this.detectRowsInScreen2().join(', '));
+        // if (document.body.scrollHeight - (window.innerHeight + window.scrollY) < 300) {
+        // this.loadMore();
+        // }
+    }
+
+    private async hideUnhideRows() {
+        let [hidden, shown] = [[] as number[], [] as number[]];
+        let rowsInView = this.detectRowsInScreen();
+        rowsInView.forEach((r) => {
+            let idx = this.contDataMap.get(r)!;
+            let elem = this.contData[idx];
+            if (elem === undefined) console.log(r);
+            else elem[0] = true;
+            shown.push(r);
+        });
+
+        let diff = this.prevRowsInView.filter((e) => !rowsInView.includes(e));
+        diff.forEach((r) => {
+            let idx = this.contDataMap.get(r)!;
+            let elem = this.contData[idx];
+            if (elem === undefined) console.log(r);
+            else elem[0] = false;
+            hidden.push(r);
+        });
+
+        this.prevRowsInView = rowsInView;
+    }
+
+    private visRowDetectionMargin = 0;
+
+    private detectRowsInScreen() {
+        let winHgt = window.innerHeight;
+        let [botLimit, topLimit] = [-this.visRowDetectionMargin, winHgt + this.visRowDetectionMargin];
+
+        let rowsNotInView = Array.from(this.contRowConts);
+        let rowsInView: number[] = [];
+
+        Array.from(document.documentElement.getElementsByClassName('cont-row-cont')).forEach((c, i) => {
+            let rect = c.getBoundingClientRect();
+            if (rect.bottom >= botLimit && rect.top <= topLimit) rowsInView.push(+rowsNotInView[i]?.nativeElement?.id);
+        });
+        return rowsInView;
+    }
+
+    public rowsLightHeight? = '10px';
+    private onFinishedRendering() {
+        this.rowsLightHeight = this.contRows.get(0)?.complElement?.nativeElement?.getBoundingClientRect().height! + 'px';
+        this.cdr.detectChanges();
+        console.log(`detected height: ${this.rowsLightHeight}`);
+        setTimeout(() => this.hideUnhideRows(), 100);
+        Array.from(this.contRows).forEach((c) => this.contComp.set(c.data.id, c));
     }
 
     private async loadContestants() {
         this.service.getContestants().subscribe({
             next: (resp) => {
-                // this.contDataAll = resp.slice(0, 10);
-                this.contDataAll = resp;
-                this.loadMore();
-                // this.loadInPieces();
-                // let newMap = new Map<number, Contestant>();
-                // resp.forEach((c, i) => i < 50 && newMap.set(c.id, c));
-                // resp.forEach((c) => newMap.set(c.id, c));
-
-                // this.contData = newMap;
-                // this.loadVisibleContestants();
+                resp.forEach((c, i) => {
+                    this.contData.push([i < 15, true, c]);
+                    this.contDataMap.set(c.id, i);
+                    // this.contData.set(c.id, [i < 15, c]);
+                });
             },
         });
-    }
-
-    @HostListener('window:scroll', ['$event']) // for window scroll events
-    onScroll() {
-        if (document.body.scrollHeight - (window.innerHeight + window.scrollY) < 300) {
-            console.log('MORE');
-            this.loadMore();
-        }
-    }
-
-    // private interval: any;
-    // private async loadInPieces() {
-    //     this.interval = setInterval(() => {
-    //         if (this.contDataAll.length > 0) {
-    //             this.loadMore();
-    //         } else {
-    //             clearInterval(this.interval);
-    //         }
-    //     }, 10);
-    // }
-
-    // private lastRenderedIndex = 0;
-    private async loadMore() {
-        // let renderIndexLast = this.lastRenderedIndex + 50;
-        this.contDataRender = this.contDataRender.concat(this.contDataAll.splice(0, 50));
-        console.log('LOAD MORE');
-        // this.lastRenderedIndex = renderIndexLast;
-        let newMap = new Map<number, Contestant>();
-        this.contDataRender.forEach((c) => newMap.set(c.id, c));
-        this.contData = newMap;
-    }
-
-    private async recalculateWidths() {
-        // console.log('recalculateWidths');
-        this.cdr.detectChanges();
-        this.colWidths = [0, 0, 0, 0, 0];
-        this.recalculateWidthsEvent.emit();
-        this.setColStartPositions(this.colWidths);
     }
 
     private async setColStartPositions(widths: number[]) {
@@ -239,3 +246,167 @@ export class ContestantsComponent implements OnInit, AfterContentChecked, AfterV
         this.document.documentElement.style.setProperty(`--item-col-5`, this.colGap * 4 + widths.slice(0, 4).reduce((s, t) => s + t) + 'px');
     }
 }
+
+/*
+class WtfMate {
+    public contDataRender: Contestant[] = [];
+    public contDataNotRendered: Contestant[] = [];
+
+    public contData = new Map<number, [boolean, Contestant]>();
+    public contComp = new Map<number, ContestantRowComponent>();
+
+    public selectedItemsAmount = 0;
+
+    private colWidths = [0, 0, 0, 0, 0];
+    private colGap = 20;
+
+    @Output() public recalculateWidthsEvent = new EventEmitter<void>();
+
+    @ViewChildren('contRow') contRows!: QueryList<ContestantRowComponent>;
+    @ViewChildren('contRowCont') contRowConts!: QueryList<any>;
+
+    private cdr!: ChangeDetectorRef;
+    public fakeItems = { before: [] as number[], after: [] as number[], center: [] as number[] };
+
+    private async loadMore() {
+        console.log('MORE');
+        this.contDataRender = this.contDataRender.concat(this.contDataNotRendered.splice(0, 50));
+        // this.contDataRender = this.contDataNotRendered;
+        let newMap = new Map<number, [boolean, Contestant]>();
+        this.contDataRender.forEach((c) => newMap.set(c.id, [true, c]));
+        this.contData = newMap;
+    }
+
+    // private oldListLen = 0;
+    private async redrawList() {
+        this.recalculateWidths();
+        this.contRows.forEach((c) => {
+            this.contComp.set(c.data.id, c);
+            // console.log(c.elemHeight);
+        });
+        // this.oldListLen = this.contRows.length;
+    }
+
+    private async setColStartPositions(widths: number[]) {}
+    private async recalculateWidths() {
+        // console.log('recalculateWidths');
+        this.cdr.detectChanges();
+        this.colWidths = [0, 0, 0, 0, 0];
+        this.recalculateWidthsEvent.emit();
+        this.setColStartPositions(this.colWidths);
+    }
+
+    private visRowDetectionMargin = 0;
+    private prevScrollY = 0;
+    private interval: any;
+
+    private async loadInPieces() {
+        this.interval = setInterval(() => {
+            if (this.contDataNotRendered.length > 0) {
+                if (this.contDataNotRendered.length < 50) {
+                    this.contDataRender = this.contDataRender.concat(this.contDataNotRendered);
+                    this.contDataNotRendered = [];
+                } else {
+                    this.contDataRender = this.contDataRender.concat(this.contDataNotRendered.splice(0, 50));
+                }
+                let newMap = new Map<number, [boolean, Contestant]>();
+                this.contDataRender.forEach((c) => newMap.set(c.id, [true, c]));
+                this.contData = newMap;
+                console.log('piece');
+            } else {
+                clearInterval(this.interval);
+            }
+        }, 100);
+    }
+
+    private detectScrollDir(): boolean {
+        let currScrollY = Math.floor(window.scrollY);
+        let scrollDirDown = currScrollY >= this.prevScrollY;
+        this.prevScrollY = currScrollY;
+        return scrollDirDown;
+    }
+
+    private prevRowIdsInView: number[] = [];
+    private detectRowsInScreen2() {
+        if (this.detectScrollDir()) {
+            var fakeRowsApprCls = 'fake-item-post';
+            var fakeRowsLeaveCls = 'fake-item-pre';
+            var fakeRowsApproaching = this.fakeItems.center.concat(this.fakeItems.after);
+            var fakeRowsLeaving = this.fakeItems.before;
+        } else {
+            var fakeRowsApprCls = 'fake-item-pre';
+            var fakeRowsLeaveCls = 'fake-item-post';
+            var fakeRowsApproaching = this.fakeItems.before.concat(this.fakeItems.center);
+            var fakeRowsLeaving = this.fakeItems.after;
+        }
+
+        let winHgt = window.innerHeight;
+        let [botLimit, topLimit] = [-this.visRowDetectionMargin, winHgt + this.visRowDetectionMargin];
+
+        let rowsInView: number[] = [];
+
+        Array.from(document.documentElement.getElementsByClassName(fakeRowsApprCls)).forEach((c, i) => {
+            let rect = c.getBoundingClientRect();
+            if (rect.bottom >= botLimit && rect.top <= topLimit) rowsInView.push(fakeRowsApproaching[i]);
+        });
+        // console.log(rowsInView.map((r) => r.data.id).join(', '));
+        this.prevRowIdsInView = rowsInView;
+        this.fakeItems.center = rowsInView;
+        return rowsInView;
+    }
+
+    private detectRowsInScreen3() {
+        // let [totPxl, winHgt, topPxl] = [Math.floor( document.body.scrollHeight ), Math.floor window.innerHeight, window.scrollY];
+        let [totPxl, winHgt, topPxl] = [Math.floor(document.body.scrollHeight), Math.floor(window.innerHeight), Math.floor(window.scrollY)];
+        let btmPxl = topPxl + winHgt;
+
+        let windowRange = [topPxl, btmPxl];
+        let preScrRange = [0, topPxl];
+        let pstScrRange = [btmPxl, totPxl];
+
+        console.log(`pre: [${preScrRange.join(', ')}]\nwin: [${windowRange.join(', ')}] (${winHgt})\npst: [${pstScrRange.join(', ')}]`);
+
+        let rows = Array.from(this.contRowConts);
+        let res: string[] = [];
+        let inView: number[] = [];
+        Array.from(document.documentElement.getElementsByClassName('cont-row')).forEach((c, i) => {
+            let r = c.getBoundingClientRect();
+            let [h, t, b] = [Math.floor(r.height), Math.floor(r.top), Math.floor(r.bottom)];
+            res.push(`[${t},${b}], (${h})`);
+
+            // if (this.coordinatesInScreen({ srt: t, end: b }, { srt: topPxl, end: btmPxl })) inView.push(rows[i].data.id);
+            if (b >= 0 && t <= winHgt) inView.push(rows[i].data.id);
+        });
+        // console.log(res.join(', '));
+        console.log(inView.join(', '));
+    }
+
+    private coordinatesInScreen(elem: { srt: number; end: number }, scrn: { srt: number; end: number }, extra?: number): boolean {
+        if (extra != undefined) scrn = { srt: scrn.srt + extra, end: scrn.end + extra };
+
+        let compRes = [elem.srt > scrn.srt, elem.srt > scrn.end, elem.end > scrn.srt, elem.end > scrn.end];
+        return !compRes.every((e) => e == compRes[0]);
+
+        // for ( boolean )
+        // compRes.forEach(r=>{break;})
+        // console.log(compRes.join(', '));
+
+        // if (elem.end > scrn.srt && elem.srt < scrn.end) return true;
+
+        // console.log(elem.srt);
+
+        // return false;
+    }
+
+    // private lastRenderedIndex = 0;
+    private async loadOne() {
+        this.contDataRender = this.contDataRender.concat(this.contDataNotRendered.splice(0, 20));
+        // this.contDataRender = this.contDataNotRendered;
+        let newMap = new Map<number, [boolean, Contestant]>();
+        this.contDataRender.forEach((c) => {
+            newMap.set(c.id, [true, c]);
+        });
+        this.contData = newMap;
+    }
+}
+*/

@@ -15,7 +15,7 @@ import {
     ViewChild,
     ViewContainerRef,
 } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantsComponent } from 'src/app/pages/contestants/contestants.component';
@@ -31,15 +31,19 @@ export class ContestantRowComponent implements OnInit, OnDestroy, AfterContentCh
     public reportWidthsSubscription!: Subscription;
 
     @Input() public data!: Contestant;
-    @Input() public onDestroy!: (srcObj: ContestantRowComponent) => void;
-    @Input() public afterViewInit!: (srcObj: ContestantRowComponent) => void;
+    // @Input() public onDestroy!: (srcObj: ContestantRowComponent) => void;
+    // @Input() public afterViewInit!: (srcObj: ContestantRowComponent) => void;
+    @Input() public light = false;
 
     @Output() public selectedChanged = new EventEmitter<[number, boolean]>();
     @Output() public elementClicked: EventEmitter<[ContestantRowComponent, string, boolean]> = new EventEmitter();
 
     @ViewChild('collapsedItems') collapsedItem!: ElementRef<HTMLElement>;
+    @ViewChild('fullElement') fullElement!: ElementRef<HTMLElement>;
+    @ViewChild('complElement') complElement!: ElementRef<HTMLElement>;
 
     constructor(
+        private dialog: MatDialog,
         private modService: ModalService,
         private vcr: ViewContainerRef,
         @Optional()
@@ -49,19 +53,28 @@ export class ContestantRowComponent implements OnInit, OnDestroy, AfterContentCh
         if (data !== null) {
             this.data = data!; // When injected from modal service!
             this.viewState.inModal = true;
+            this.light = false;
+            this.viewState.filtered = false;
         }
     }
 
     ngAfterViewInit(): void {
-        if (this.afterViewInit !== undefined) this.afterViewInit!(this);
+        // console.log('1:' + this.data.id + ':' + this.fullElement?.nativeElement?.getBoundingClientRect().height);
+        // this.elemHeight = this.fullElement?.nativeElement?.getBoundingClientRect().height + 'px';
+        // this.hide(this.fullElement?.nativeElement?.getBoundingClientRect().height);
+        // if (this.afterViewInit !== undefined) this.afterViewInit!(this);
+        // this.waitForSize();
     }
 
     ngOnDestroy(): void {
-        if (this.onDestroy !== undefined) this.onDestroy!(this);
+        // if (this.onDestroy !== undefined) this.onDestroy!(this);
     }
 
     ngOnInit(): void {}
-    ngAfterViewChecked(): void {}
+    ngAfterViewChecked(): void {
+        // this.hideIfSized();
+        // console.log('2:' + this.data.id + ':' + this.fullElement?.nativeElement?.getBoundingClientRect().height);
+    }
     ngAfterContentChecked(): void {}
 
     // @HostListener('window:resize', ['$event'])
@@ -91,28 +104,58 @@ export class ContestantRowComponent implements OnInit, OnDestroy, AfterContentCh
     }
 
     public openDefaultModal(): void {
-        const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
-        component.instance.viewState.inModal = true;
-        component.instance.data = this.data;
-        this.modService
-            .loadModal(component, this.vcr)
-            .afterClosed()
-            .subscribe(() => {
-                this.data = component.instance.data;
-                console.log('Hello');
-            });
+        // const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
+        // component.instance.viewState.inModal = true;
+        // component.instance.data = this.data;
+        // this.modService
+        //     .loadModal(component, this.vcr)
+        //     .afterClosed()
+        //     .subscribe(() => {
+        //         this.data = component.instance.data;
+        //         console.log('Hello');
+        //     });
 
         // Alternative of how to use without service:
-        // let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
-        // ref.afterClosed().subscribe(() => {
-        //     this.data = ref.componentInstance.data;
-        //     console.log(ref.componentInstance.data);
-        // });
+        let ref = this.dialog!.open(ContestantRowComponent, { data: this.data });
+        ref.afterClosed().subscribe(() => {
+            this.data = ref.componentInstance.data;
+            console.log(ref.componentInstance.data);
+        });
     }
 
-    // public hide(){
-    //     this.viewState.filtered = true;
+    // private async waitForSize() {
+    //     let height = this.fullElement?.nativeElement?.getBoundingClientRect().height;
+    //     if (height !== undefined) {
+    //         // console.log('height set');
+    //         this.elemHeight = height + 'px';
+    //         this.viewState.hidden = true;
+    //     } else if (!this.viewState.hidden) {
+    //         // console.log('run again');
+    //         setTimeout(this.waitForSize, 10);
+    //     }
     // }
+
+    // public heightSet = false;
+
+    // private async hideIfSized() {
+    //     let height = this.fullElement?.nativeElement?.getBoundingClientRect().height;
+    // if (!this.heightSet && height !== undefined) {
+    //     this.lightElemHeight = height + 'px';
+    //     this.light = true;
+    //     this.heightSet = true;
+    // }
+    // }
+    //
+    // public async unhide() {
+    //     this.light = false;
+    //     this.lightElemHeight = this.fullElement?.nativeElement?.getBoundingClientRect().height + 'px';
+    // }
+
+    @Input() public lightElemHeight?: string;
+    public async setLight(val: boolean) {
+        // this.lightElemHeight = placeholderHeight!;
+        this.light = true;
+    }
 
     public getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
         let currElem = elem?.nativeElement.children.item(0);
