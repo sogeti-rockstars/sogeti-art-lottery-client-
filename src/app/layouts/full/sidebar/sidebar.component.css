@@ -1,0 +1,17 @@
+.menuitem-button {
+  width: 140px;
+  background-color:white;
+  color: rgb(5, 78, 143);
+  font-family: sans-serif;
+  border-width: 1px;
+}
+.mat-drawer {
+  color: #fff;
+  background-color: white;
+}
+.mat-raised-button{
+    color: rgb(5, 78, 143);
+    background-color: white;
+    margin: 1em;
+    box-shadow: inset;
+}

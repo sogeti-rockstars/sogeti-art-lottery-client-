@@ -11,11 +11,11 @@ export class ArtItemsListComponent implements OnInit, AfterContentChecked {
     public artItems: ArtItem[] = [];
     constructor(private app: AppComponent) {}
 
-    ngOnInit(): void {
-        this.artItems = this.app.paintings;
-    }
+  ngOnInit(): void {
+    this.artItems = this.app.paintings;
+  }
 
-    ngAfterContentChecked(): void {
-        this.artItems = this.app.paintings;
-    }
+  ngAfterContentChecked(): void {
+    this.artItems = this.app.paintings;
+  }
 }

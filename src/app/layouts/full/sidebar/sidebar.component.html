@@ -13,12 +13,8 @@
 >
   <mat-nav-list appAccordion>
     <mat-list-item>
-      <button
-        mat-raised-button
-        class="main-buttons"
-        (click)="toggleSideNav()"
-      >
- Close
+      <button mat-raised-button class="main-buttons" (click)="toggleSideNav()">
+        Close
       </button>
     </mat-list-item>
     <mat-list-item
@@ -27,14 +23,17 @@
       routerLinkActive="selected"
     >
       <!-- </mat-list-item>group="{{menuitem.state}}"> -->
-      <button (click)="toggleSideNav()">
+      <button
+        *ngIf="menuitem.isAdmin ? this.app.isAdmin : true"
+        (click)="toggleSideNav()"
+        class="menuitem-button"
+      >
         <a
           class=""
           appAccordionToggle
           [routerLink]="['.', menuitem.state]"
           *ngIf="menuitem.type === 'link'"
         >
-          <mat-icon>{{ menuitem.icon }}</mat-icon>
           <span>{{ menuitem.name }}</span>
           <span fxFlex></span>
 

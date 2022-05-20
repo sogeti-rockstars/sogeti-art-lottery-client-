@@ -1,2 +1,35 @@
 <app-search></app-search>
+<div class="admin-view-art-items-buttons">
+  <button
+    *ngIf="this.app.isAdmin == true"
+    mat-raised-button
+    class="main-buttons"
+    color="accent"
+  >
+    <a
+      class="main-buttons-a"
+      [routerLink]="['.', 'applottery']"
+      (click)="removeSelectedArtItems()"
+      >Ta bort valda</a
+    >
+  </button>
+  <button
+    *ngIf="this.app.isAdmin == true"
+    mat-raised-button
+    class="main-buttons"
+    color="accent"
+  >
+    <a class="main-buttons-a" (click)="selectAll()">Välj alla</a>
+  </button>
+  <button
+    *ngIf="this.app.isAdmin == true"
+    mat-raised-button
+    class="main-buttons-b"
+    color="accent"
+  >
+    <a class="main-buttons-a" [routerLink]="['.', 'applottery']"
+      >Lägg till ny</a
+    >
+  </button>
+</div>
 <art-items-list></art-items-list>

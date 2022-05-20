@@ -2,6 +2,7 @@ import { MediaMatcher } from '@angular/cdk/layout';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 import { MenuItems } from 'src/app/component/menu-items/menu-items';
 
+
 @Component({
     selector: 'app-full-layout',
     templateUrl: 'full.component.html',
