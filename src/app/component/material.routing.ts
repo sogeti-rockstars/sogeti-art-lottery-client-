@@ -35,23 +35,6 @@ export const MaterialRoutes: Routes = [
      component: WinnersComponent,
    },
     {
-        path: '',
-        redirectTo: 'artitems',
-        pathMatch: 'full',
-    },
-    {
-        path: 'artitems',
-        component: ArtItemsComponent,
-    },
-    {
-        path: 'association',
-        component: AssociationComponent,
-    },
-    {
-        path: 'winners',
-        component: WinnersComponent,
-    },
-    {
         path: 'contestants',
         component: ContestantsComponent,
     },
