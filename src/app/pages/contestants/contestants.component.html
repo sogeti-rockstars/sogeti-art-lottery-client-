@@ -1,72 +1,34 @@
 <span class="contentant-main">
     <app-filter-list
         class="search-bar"
-        [dataMap]="contComp"
-        [mapFunction]="filterMapFunction"
+        [dataList]="rowData"
+        [filterFunction]="filterFunction"
         (listChanged)="filteredItemsChangeListener($event)"
     ></app-filter-list>
     <app-contestant-sel-buttons
         [selectedItemsAmount]="selectedItemsAmount"
-        [selectAll]="modList.selectAll"
-        [selectNone]="modList.selectNone"
-        [deleteSelected]="modList.deleteSelected"
+        [selectAll]="listManipulation.selectAll"
+        [selectNone]="listManipulation.selectNone"
+        [deleteSelected]="listManipulation.deleteSelected"
     ></app-contestant-sel-buttons>
-
-    <mat-list *ngIf="contData.length>0">
-        <!-- <div class="fake-items" id="pre" *ngFor="let fakeItemPre of fakeItems.before"> -->
-        <!--     <div -->
-        <!--         class="fake-item-pre" -->
-        <!--         [ngStyle]="{ -->
-        <!--             'height':rowsLightHeight, -->
-        <!--             'margin':'0px !important', -->
-        <!--             'background-color': 'lime', -->
-        <!--             'box-shadow': '1px solid lime', -->
-        <!--             '-webkit-box-shadow': 'inset 0px 0px 0px 1px lime', -->
-        <!--             'padding':'opx !important' -->
-        <!--             }" -->
-        <!--     ></div> -->
-        <!-- </div> -->
-        <!-- <div class="cont-rows-table-rows" *ngFor="let contestant of contData | keyvalue; trackBy:trackByContestant; let idx=index; "> -->
-        <div class="cont-rows-table-rows" *ngFor="let contestant of contData; trackBy:trackByContestant; let idx=index; ">
-            <div #contRowCont class="cont-row-cont" [id]="contestant[2].id">
-                <app-contestant-row
-                    *ngIf="contestant[0]; else fakeRow"
-                    #contRow
-                    class="cont-row"
-                    (elementClicked)="contestantRowButtonClicked($event)"
-                    [data]="contestant[2]"
-                    (selectedChanged)="selChangeListener($event)"
-                ></app-contestant-row>
-                <!-- [light]="newRowsLight" -->
-                <!-- [lightElemHeight]="rowsLightHeight" -->
-                <!-- [afterViewInit]="onContestantRowAfterViewInit" -->
-                <!-- [onDestroy]="onContestantRowDestroy" -->
-                <!-- class="fake-items" id="post" *ngFor="let fakeItemPre of fakeItems.after"> -->
-                <ng-template #fakeRow>
-                    <div
-                        [ngStyle]="{
-                        'height':rowsLightHeight,
-                        'margin':'0px !important',
-                        'background-color': 'lime',
-                        'box-shadow': '1px solid lime',
-                        '-webkit-box-shadow': 'inset 0px 0px 0px 1px lime',
-                        'padding':'opx !important'
-                    }"
-                    >
-                        {{ contestant[2].id }}
-                    </div>
-                </ng-template>
-            </div>
+    <mat-list *ngIf="rowData.length>0">
+        <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
+            <app-contestant-row
+                #renderedRow
+                *ngIf="row.render && !row.filtered; else notRenderedRow"
+                class="row-item row-item-rendered"
+                id="rendered"
+                (interactionEvent)="interactionEventListener(idx, $event)"
+                [(rowData)]="rowData[idx]"
+                [index]="idx"
+            ></app-contestant-row>
+            <!-- (rowDataChange)="rowDataChange(idx, $event)" -->
+            <ng-template #notRenderedRow>
+                <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
+                <!-- [ngStyle]="{ -->
+                <!-- 'height':unrenderedRowsHeight, -->
+                <!-- 'display':row.filtered ? 'none' : 'block'}" -->
+            </ng-template>
         </div>
     </mat-list>
-
-    <!-- <mat-list *ngIf="contestants.size>0"> -->
-    <!-- <div class="virtual-scroll-container"> -->
-    <!-- <cdk-virtual-scroll-viewport [itemSize]="1"> -->
-    <!-- <div class="cont-rows-table-rows" *cdkVirtualFor="let contestant of contestants; let idx=index; "> -->
-    <!-- *ngIf="!contComp.get(contestant.value.id)?.viewState?.filtered" -->
-    <!-- [style.display]="!contComp.get(contestant.value.id)?.viewState?.filtered ? 'contents' : 'none'" -->
-    <!-- </div> -->
-    <!-- </cdk-virtual-scroll-viewport> -->
-    <!-- </div> -->
 </span>
