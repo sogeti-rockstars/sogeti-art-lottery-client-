@@ -54,6 +54,11 @@
     margin-bottom: auto;
 }
 
+.cont-row-table-col {
+    box-shadow: 1px solid #0000ff;
+    -webkit-box-shadow: inset 0px 0px 0px 1px #0000ff;
+}
+
 .collapsed-contestant-info-items {
     /* box-shadow: 1px solid #ff0000; */
     /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
@@ -66,7 +71,8 @@
     overflow: hidden;
     width: 100%;
 }
-.collapsed-contestant-info-item {
+
+.collapsed-item {
     /* box-shadow: 1px solid #ff0000; */
     /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     /* height: 30px; */
@@ -86,6 +92,22 @@
     bottom: 0;
 }
 
+#col-1 {
+    left: var(--item-col-1);
+}
+#col-2 {
+    left: var(--item-col-2);
+}
+#col-3 {
+    left: var(--item-col-3);
+}
+#col-4 {
+    left: var(--item-col-4);
+}
+#col-5 {
+    left: var(--item-col-5);
+}
+
 .collapsed-contestant-buttons-cont {
     /* box-shadow: 1px solid #ff0000; */
     /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
@@ -95,10 +117,6 @@
     /* box-shadow: 1px solid #ff0000; */
     /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     float: right;
-}
-
-.collapsing-items {
-    position: relative;
 }
 
 .collapsing-office {

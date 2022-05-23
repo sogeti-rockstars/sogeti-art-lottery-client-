@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { MaterialRoutes } from './material.routing';
 
 import { CommonModule } from '@angular/common';
-
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -14,7 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { ArtItemsListComponent } from './art-items-list/art-items-list.component';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { AssociationComponent } from '../pages/association/association.component';
@@ -28,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatCommonModule, MatLineModule, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
 import { ContestantsComponent } from '../pages/contestants/contestants.component';
@@ -41,6 +41,7 @@ import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
+import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contestant-sel-buttons.component';
 import { LotteryFormComponent } from './form/lottery-form/lottery-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -91,14 +92,11 @@ const modules: Array<any> = [
     MatDialogModule,
     MatCardModule,
     FormsModule,
-    MatCommonModule,
-    MatLineModule,
-    MatMenuModule,
     MatCheckboxModule,
     MatTableModule,
+    ScrollingModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule,
     FlexLayoutModule,
 ];
 
@@ -121,6 +119,7 @@ const components: Array<any> = [
     AutoCardComponent,
     FilterListComponent,
     ArtItemFormComponent,
+    ContestantSelButtonsComponent,
     LotteryFormComponent,
 ];
 

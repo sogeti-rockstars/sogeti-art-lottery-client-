@@ -1,0 +1,16 @@
+<div class="button-container">
+    <div id="left">
+        <div *ngIf="selectedItemsAmount == 0; then withoutSelection; else withSelection"></div>
+    </div>
+    <div id="right">
+        <button id="add-new" class="button" (click)="addNew()">Lägg till ny</button>
+    </div>
+</div>
+
+<ng-template #withoutSelection>
+    <button id="select-all" class="button" (click)="selectAll()">Välj alla</button>
+</ng-template>
+<ng-template #withSelection>
+    <button id="select-none" class="button" (click)="selectNone()">Välj ingen</button>
+    <button id="delete-selected" class="button" (click)="deleteSelected()">Ta bort valda</button>
+</ng-template>

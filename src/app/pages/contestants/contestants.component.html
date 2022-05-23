@@ -1,16 +1,30 @@
 <span class="contentant-main">
-    <app-filter-list [dataMap]="contData" [mapFunction]="filterDataFunction" (listChanged)="contData=$event"></app-filter-list>
-    <mat-list>
-        <div *ngIf="contData.size>0">
-            <div *ngFor="let cont of contData | keyvalue; let idx=index">
-                <app-contestant-row
-                    *ngIf="!cont.value[1] && !cont.value[2]"
-                    (elementClicked)="contRowElementClickedEvent($event)"
-                    (widthsDrawn)="readReportedWidths($event)"
-                    [data]="cont.value[0]"
-                    [columnPositions]="getColumnPositions()"
-                ></app-contestant-row>
-            </div>
+    <app-filter-list
+        class="search-bar"
+        [dataList]="rowData"
+        [filterFunction]="filterFunction"
+        (listChanged)="filteredItemsChangeListener($event)"
+    ></app-filter-list>
+    <app-contestant-sel-buttons
+        [selectedItemsAmount]="selectedItemsAmount"
+        [selectAll]="listManipulation.selectAll"
+        [selectNone]="listManipulation.selectNone"
+        [deleteSelected]="listManipulation.deleteSelected"
+    ></app-contestant-sel-buttons>
+    <mat-list *ngIf="rowData.length>0">
+        <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
+            <app-contestant-row
+                #renderedRow
+                *ngIf="row.render && !row.filtered; else notRenderedRow"
+                class="row-item row-item-rendered"
+                id="rendered"
+                (interactionEvent)="interactionEventListener(idx, $event)"
+                [(rowData)]="rowData[idx]"
+                [index]="idx"
+            ></app-contestant-row>
+            <ng-template #notRenderedRow>
+                <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
+            </ng-template>
         </div>
     </mat-list>
 </span>
