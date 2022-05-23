@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ArtItem } from 'src/app/model/art-item';
+import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
 import { Winner } from 'src/app/model/winner';
 import { environment } from 'src/environments/environment';
@@ -23,6 +25,24 @@ export class LotteryApiService {
 
     public getLottery(id: number): Observable<Lottery> {
         return this.http.get<Lottery>(`${this.apiServerUrl}/api/v1/lottery/${id}`, {
+            headers: this.auth.authHeaders,
+        });
+    }
+
+    getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/items`, {
+            headers: this.auth.authHeaders,
+        });
+    }
+
+    getWinnersByLotteryId(id: number): Observable<Winner[]> {
+        return this.http.get<Winner[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/winners`, {
+            headers: this.auth.authHeaders,
+        });
+    }
+
+    getContestantsByLotteryId(id: number): Observable<Contestant[]> {
+        return this.http.get<Contestant[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/contestants`, {
             headers: this.auth.authHeaders,
         });
     }
