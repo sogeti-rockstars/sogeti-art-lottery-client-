@@ -1,4 +1,4 @@
-<div #complElement [style.display]="!rowData.filtered ? 'contents' : 'none'">
+<div #complElement>
     <div *ngIf="rowData.inModal; then inModal; else notInModal"></div>
 </div>
 

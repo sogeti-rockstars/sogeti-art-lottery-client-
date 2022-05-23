@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, OnInit, ChangeDetectorRef, Component, ElementRef, EventEmitter } from '@angular/core';
-import { HostListener, Inject, Output, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef } from '@angular/core';
+import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
@@ -15,20 +15,19 @@ import { ContestantService } from 'src/app/service/contestant.service';
 export class ContestantsComponent implements OnInit, AfterViewChecked {
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
-
-    @ViewChildren('rowWrapper') private contRows!: QueryList<ElementRef<HTMLDivElement>>;
-    private rowRenderMargin = 0;
-    private firstRenderRowCount = 20;
-    private lastWinScrollY = 0;
-    private firstRenderFinished = false;
-    private unrenderedRowsHeight$ = '10px';
-    get unrenderedRowsHeight() {
+    public readonly filterFunction = (row: RowData, query: string) => (row.filtered = !row.data.name.toLowerCase().includes(query.toLowerCase()));
+    public get unrenderedRowsHeight() {
         return this.unrenderedRowsHeight$;
     }
 
+    @ViewChildren('rowWrapper')
+    private contRows!: QueryList<ElementRef<HTMLDivElement>>;
+    private unrenderedRowsHeight$ = '10px';
+    private rowRenderMargin = 500;
+    private firstRenderRowCount = 20;
+    private lastWinScrollY = 0;
+    private firstRenderFinished = false;
     private colGap = 20;
-
-    readonly filterFunction = (row: RowData, query: string) => (row.filtered = !row.data.name.toLowerCase().includes(query.toLowerCase()));
 
     constructor(
         private service: ContestantService,
@@ -51,15 +50,15 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         this.setColWidths([200, 150, 65, 150]);
     }
 
-    public async filteredItemsChangeListener(_newvals: RowData[]) {
+    public async filteredItemsChangeListener(_matches: number) {
+        // console.log(_matches);
         this.refreshList();
     }
 
+    /** Tracker for *ngFor in template. Increases performance.*/
     public trackByContestant(_idx: number, row: RowData) {
         return row.data.id;
     }
-
-    /* EVENT LISTENERS: */
 
     public openDefaultModal(idx: number): void {
         const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
@@ -77,6 +76,8 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         //     console.log(ref.componentInstance.rowData.data);
         // });
     }
+
+    /* EVENT LISTENERS: */
 
     public interactionEventListener(_idx: number, row: RowData) {
         switch (row.srcElement) {
@@ -127,6 +128,14 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         addNew: () => console.log('ho'),
     };
 
+    private async loadContestants() {
+        this.service.getContestants().subscribe({
+            next: (resp: Contestant[]) => resp.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount })),
+            error: (error: any) => console.log(error),
+            complete: () => console.log('Http got response.'),
+        });
+    }
+
     ////////////////////////////////
     // Just-in-time rendering stuff:
 
@@ -143,10 +152,10 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         this.markVisibleForRendering(true).finally(() => this.cdr.detectChanges());
     }
 
-    // Todo: cancel previous execution when called again?
     /**
-     * Called on scroll and window resize event. Looks at which rows are visible inside the window and
-     * marks them for rendering */
+     * Called on scroll, window resize, and list changed events.
+     * Looks at which rows are visible inside the window and marks them for rendering */
+    // Todo: cancel previous execution when called again? Maybe we can do this with CSS!!!
     @HostListener('window:resize', ['false', '$event']) // for window scroll events
     @HostListener('window:scroll', ['false', '$event']) // for window scroll events
     private async markVisibleForRendering(force: boolean = false, _event?: any) {
@@ -169,19 +178,12 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         this.contRows
             .map((e) => {
                 let rect = e.nativeElement.getBoundingClientRect();
-                return { id: +e.nativeElement.id, t: rect.top, b: rect.bottom };
+                return { idx: +e.nativeElement.id, t: rect.top, b: rect.bottom };
             })
-            .forEach(({ id: id, t: top, b: bottom }) => {
-                this.rowData[id].render = bottom > topLimit && top < bottomLimit;
+            .filter(({ idx: idx, t: _, b: __ }) => !this.rowData[idx].filtered) // Only check unfiltered
+            .forEach(({ idx: idx, t: top, b: bottom }) => {
+                this.rowData[idx].render = bottom > topLimit && top < bottomLimit;
             });
-    }
-
-    private async loadContestants() {
-        this.service.getContestants().subscribe({
-            next: (resp: Contestant[]) => resp.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount })),
-            error: (error: any) => console.log(error),
-            complete: () => console.log('Http got response.'),
-        });
     }
 
     // Variable width things

@@ -31,9 +31,10 @@ export enum ClickableElements {
 export class ContestantRowComponent {
     // implements  AfterViewChecked,OnInit, OnDestroy, AfterContentChecked, AfterViewInit {
     @Output() public interactionEvent = new EventEmitter<RowData>();
-    @Output() public rowDataChange = new EventEmitter<RowData>();
 
+    @Output() public rowDataChange = new EventEmitter<RowData>();
     @Input() public rowData!: RowData;
+
     @Input() set index(idx: number) {
         this.rowData.index = idx;
     }

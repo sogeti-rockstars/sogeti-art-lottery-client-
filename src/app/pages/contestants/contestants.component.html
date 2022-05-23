@@ -22,12 +22,8 @@
                 [(rowData)]="rowData[idx]"
                 [index]="idx"
             ></app-contestant-row>
-            <!-- (rowDataChange)="rowDataChange(idx, $event)" -->
             <ng-template #notRenderedRow>
                 <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
-                <!-- [ngStyle]="{ -->
-                <!-- 'height':unrenderedRowsHeight, -->
-                <!-- 'display':row.filtered ? 'none' : 'block'}" -->
             </ng-template>
         </div>
     </mat-list>
