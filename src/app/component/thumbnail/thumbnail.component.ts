@@ -1,9 +1,16 @@
-import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
-import { Contestant } from 'src/app/model/contestant';
-import { AutoCardComponent } from '../card/auto-card/auto-card.component';
-import { ContestantRowComponent } from '../contestant-row/contestant-row.component';
+import { AppComponent } from 'src/app/app.component';
 import { ArtItemFormComponent } from '../form/art-item-form/art-item-form.component';
+import { ModalComponent } from '../modal/modalComponents/modal.component';
+import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ModalService } from '../modal/modal.service';
 
 @Component({
@@ -11,26 +18,20 @@ import { ModalService } from '../modal/modal.service';
     styleUrls: ['./thumbnail.component.css'],
     templateUrl: './thumbnail.component.html',
 })
-export class ThumbnailComponent {
-    @Input() cssClass: string;
-    @Input() artItem!: ArtItem;
+export class ThumbnailComponent{
+  @Input() id!: number;
+  @Input() cssClass: string;
+  @Input() artItem!: ArtItem;
 
-    constructor(private modalService: ModalService, private viewContainerRef: ViewContainerRef) {
-        this.cssClass = 'thumbnailImg';
-    }
-    loadModal(artItem: ArtItem) {
-        console.log(artItem.itemName);
-        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
-        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
-    }
-
-    // Dessa (editModal och addModal) är tillfälliga, för test-syften
-    editModal(artItem: ArtItem) {
-        const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        component.instance.artItem = artItem;
-        this.modalService.loadModalWithPanelClass(component, 'modal-edit-image', this.viewContainerRef);
-    }
-
+  loadModal(artItem:ArtItem) {
+    console.log(artItem.itemName);
+    const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
+    this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
+  }
+  constructor(private modalService: ModalService, private viewContainerRef: ViewContainerRef, public app: AppComponent) {
+    this.cssClass = 'thumbnailImg';
+ 
+  }
     addModal() {
         const component = this.viewContainerRef.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
         this.modalService.loadModal(component, this.viewContainerRef);

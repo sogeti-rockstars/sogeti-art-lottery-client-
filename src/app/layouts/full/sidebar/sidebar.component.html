@@ -13,34 +13,33 @@
 >
   <mat-nav-list appAccordion>
     <mat-list-item>
-      <button
-        mat-raised-button
-        class="main-buttons"
-        (click)="toggleSideNav()"
-      >
- Close
+      <button mat-raised-button class="main-buttons" (click)="toggleSideNav()">
+        Close
       </button>
     </mat-list-item>
     <mat-list-item
       appAccordionLink
-      *ngFor="let menuitem of menuItems.getMenuitem()"
+      *ngFor="let menuitem of lotteries"
       routerLinkActive="selected"
     >
       <!-- </mat-list-item>group="{{menuitem.state}}"> -->
-      <button (click)="toggleSideNav()">
-        <a
+      <!-- <button
+        *ngIf="menuitem.isAdmin ? this.app.isAdmin : true"
+        (click)="toggleSideNav()"
+        class="menuitem-button"
+      > -->
+        <!-- <a
           class=""
           appAccordionToggle
           [routerLink]="['.', menuitem.state]"
           *ngIf="menuitem.type === 'link'"
-        >
-          <mat-icon>{{ menuitem.icon }}</mat-icon>
-          <span>{{ menuitem.name }}</span>
+        > -->
+          <span>{{ menuitem.title }}</span>
           <span fxFlex></span>
 
           <!-- <span class="label label-{{ badge.type }}" *ngFor="let badge of menuitem.badge">{{ badge.value }}</span>  -->
-        </a>
-      </button>
+        <!-- </a> -->
+      <!-- </button> -->
     </mat-list-item>
   </mat-nav-list>
 </mat-sidenav>

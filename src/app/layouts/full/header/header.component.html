@@ -1,5 +1,45 @@
+<mat-toolbar fxLayout="row" color="primary" class="header-container">
+  <span fxFlex></span>
+  <div *ngFor="let item of menuItems">
+    <button
+      class="{{ item.cls }}"
+      mat-raised-button
+      *ngIf="
+        item.limitedTo == '' ||
+        (item.limitedTo == 'user' && !this.app.isAdmin) ||
+        (item.limitedTo == 'admin' && this.app.isAdmin)
+      "
+      mat-button
+      fxHide.xs
+      (click)="this.doAction(item)"
+      value="sidebarclosed"
+    >
+      <mat-icon  *ngIf="item.icon != ''" class="mr">{{ item.icon }}</mat-icon>
+      {{ item.label }}
+    </button>
+  </div>
+  <button mat-icon-button [matMenuTriggerFor]="dropMenu" fxHide fxShow.xs>
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #dropMenu="matMenu">
+    <ng-container *ngFor="let item of menuItems">
+      <button mat-menu-item [routerLink]="['.', item.route]">
+        <!--<mat-icon class="mr">{{item.icon}}</mat-icon>-->
+        {{ item.label }}
+      </button>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-menu>
+  <div class="navbar-brand">
+    <a href="index.html">
+      <img class="logga" src="assets/images/sogeti.jpg" alt="logga" />
+    </a>
+  </div>
+</mat-toolbar>
+
+<!--
 <div class="navbar-header">
-  <mat-toolbar class="topbar telative">
+  <mat-toolbar fxLayout="row" class="topbar telative">
     <button
       mat-raised-button
       class="main-buttons"
@@ -7,25 +47,53 @@
       value="sidebarclosed"
       (click)="toggleSideNav.emit()"
     >
-      <!-- (click)="snav.toggle()" -->
       <mat-icon>menu</mat-icon><a class="main-buttons-a">Norrkonst</a>
     </button>
     <button mat-raised-button class="main-buttons">
       <a class="main-buttons-a" [routerLink]="['.', 'artitems']"> Konstverk</a>
     </button>
+    <button
+      *ngIf="this.app.isAdmin == true"
+      mat-raised-button
+      class="main-buttons"
+      color="accent"
+    >
+      <a class="main-buttons-a" [routerLink]="['.', 'appmembers']">
+        Medlemmar</a
+      >
+    </button>
     <button mat-raised-button class="main-buttons" color="accent">
       <a class="main-buttons-a" [routerLink]="['.', 'winners']"> Vinnare</a>
     </button>
-    <button mat-raised-button class="main-buttons" color="accent">
+    <button
+      *ngIf="this.app.isAdmin == false"
+      mat-raised-button
+      class="app-association"
+      color="accent"
+    >
       <a class="main-buttons-a" [routerLink]="['.', 'association']">
         Om föreningen</a
       >
     </button>
-  </mat-toolbar>
+    <button
+      *ngIf="this.app.isAdmin == true"
+      mat-raised-button
+      class="main-buttons"
+      color="accent"
+    >
+      <a class="main-buttons-a" [routerLink]="['.', 'applottery']"
+        >Starta lotteri</a
+      >
+    </button>
 
+    <button *ngIf="this.app.isAdmin == true" disabled class="logOut">
+      Logga ut
+    </button>
+  </mat-toolbar>
   <div class="navbar-brand">
     <a href="index.html">
       <img class="logga" src="assets/images/sogeti.jpg" alt="logga" />
     </a>
   </div>
 </div>
+-->

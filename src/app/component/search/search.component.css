@@ -1,9 +1,13 @@
-.searchfield {
-    width: 350px;
-    margin-left: 0px;
+.search-form {
+  width: 100%;
+  margin-left: 0px;
 }
 
 .search-div {
-    
-    margin-bottom: 20px;
+}
+.mat-form-field-flex {
+  border-color: black !important;
+}
+.mat-form-field-label {
+  color: black !important;
 }

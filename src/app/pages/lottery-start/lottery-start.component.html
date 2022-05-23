@@ -1,0 +1,15 @@
+<div class="lottery-start-container">
+    <div class="row">
+        <div class="header">
+            <h1 class="lottery-header">Starta lotteriet!!!</h1>
+        </div>
+        <div class="lottery-body">
+            <button class="lottery-button" (click)="spinTheWheel()">spin</button>
+            
+        </div>
+        <div class="winners" *ngFor="let winner of winners">
+            {{winner.id}}
+            {{winner.placement}}
+        </div>
+    </div>
+</div>;
