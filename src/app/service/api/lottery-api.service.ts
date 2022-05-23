@@ -20,6 +20,11 @@ export class LotteryApiService {
             headers: this.auth.authHeaders,
         });
     }
+    public getLotteriesSmall(): Observable<Lottery[]> {
+        return this.http.get<Lottery[]>(`${this.apiServerUrl}/api/v1/lottery/allSmall`, {
+            headers: this.auth.authHeaders,
+        });
+    }
 
     public getLottery(id: number): Observable<Lottery> {
         return this.http.get<Lottery>(`${this.apiServerUrl}/api/v1/lottery/${id}`, {

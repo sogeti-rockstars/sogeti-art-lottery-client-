@@ -1,28 +1,20 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { AppComponent } from 'src/app/app.component';
+import { Lottery } from 'src/app/model/lottery';
+import { LotteryApiService } from 'src/app/service/api/lottery-api.service';
 
-export interface Menu {
-  state: string;
-  name: string;
-  type: string;
-  icon: string;
-  isAdmin: boolean;
-}
-
-const MENUITEMS = [
-  { state: 'artitems', name: 'Norrkonst 2021', type: 'link', icon: '', isAdmin: false },
-  { state: 'association', name: 'Norrkonst 2020', type: 'link', icon: '', isAdmin: false},
-  { state: 'artitems', name: 'Norrkonst 2019', type: 'link', icon: '', isAdmin: false },
-  { state: 'artitems', name: 'Norrkonst 2018', type: 'link', icon: '', isAdmin: false },
-  { state: 'artitems', name: 'Sydkonst 2021', type: 'link', icon: '', isAdmin: false },
-  { state: 'artitems', name: 'Sydkonst 2020', type: 'link', icon: '', isAdmin: false },
-  { state: 'artitems', name: 'Nytt lotteri', type: 'link', icon: '', isAdmin: true },
-];
 
 @Injectable()
 export class MenuItems {
+  @Output() lotteries: EventEmitter<Lottery[]> = new EventEmitter();
 
-  getMenuitem(): Menu[] {
-      return MENUITEMS;
+  constructor(private lotteryService:LotteryApiService){
+
+  }
+  getMenuitem() {
+      this.lotteryService.getLotteries().subscribe(
+        (data:Lottery[]) => {this.lotteries.emit(data)
+        }      
+      );
   }
 }
