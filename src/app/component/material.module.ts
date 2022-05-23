@@ -28,23 +28,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatCommonModule, MatLineModule, MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 
-import { ContestantRowComponent } from './contestant-row/contestant-row.component';
+import { FilterListComponent } from './filter-list/filter-list.component';
 import { SpinnerComponent } from '../layouts/spinner/spinner.component';
-import { ContestantsComponent } from '../pages/contestants/contestants.component';
 import { DialogContentImageComponent } from './modal/modalComponents/dialog-content-image/dialog-content-image.component';
 import { DialogContentComponent } from './modal/modalComponents/dialog-content/dialog-content.component';
 import { ModalComponent } from './modal/modalComponents/modal.component';
 import { ModalService } from './modal/modal.service';
 import { AltModalService } from '../service/alt-modal.service';
 import { AutoCardComponent } from './card/auto-card/auto-card.component';
-import { FilterListComponent } from './filter-list/filter-list.component';
 import { ArtItemFormComponent } from './form/art-item-form/art-item-form.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
-import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contestant-sel-buttons.component';
 import { LotteryFormComponent } from './form/lottery-form/lottery-form.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contestant-sel-buttons.component';
+import { ContestantRowComponent } from './contestant-row/contestant-row.component';
+import { ContestantsComponent } from './contestants/contestants.component';
+import { MembersComponent } from '../pages/members/members.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -114,13 +115,14 @@ const components: Array<any> = [
     ModalComponent,
     DialogContentImageComponent,
     DialogContentComponent,
+    AutoCardComponent,
+    ArtItemFormComponent,
+    LotteryFormComponent,
+    MembersComponent,
+    FilterListComponent,
+    ContestantSelButtonsComponent,
     ContestantRowComponent,
     ContestantsComponent,
-    AutoCardComponent,
-    FilterListComponent,
-    ArtItemFormComponent,
-    ContestantSelButtonsComponent,
-    LotteryFormComponent,
 ];
 
 @NgModule({

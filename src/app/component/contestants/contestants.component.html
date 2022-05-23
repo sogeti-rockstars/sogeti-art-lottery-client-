@@ -6,6 +6,7 @@
         (listChanged)="filteredItemsChangeListener($event)"
     ></app-filter-list>
     <app-contestant-sel-buttons
+        *ngIf="editable"
         [selectedItemsAmount]="selectedItemsAmount"
         [selectAll]="listManipulation.selectAll"
         [selectNone]="listManipulation.selectNone"
@@ -21,6 +22,7 @@
                 (interactionEvent)="interactionEventListener(idx, $event)"
                 [(rowData)]="rowData[idx]"
                 [index]="idx"
+                [editable]="editable"
             ></app-contestant-row>
             <ng-template #notRenderedRow>
                 <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
