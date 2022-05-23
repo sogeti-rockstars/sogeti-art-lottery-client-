@@ -52,6 +52,11 @@ export class LotteryApiService {
         return this.http.post<Lottery>(`${this.apiServerUrl}/api/v1/lottery/`, lottery, { headers: this.auth.authHeaders });
     }
 
+    public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
+        // console.log(`Update: { id:${lottery.id}, title:${lottery.title} } `);
+        return this.http.put<Lottery>(`${this.apiServerUrl}/api/v1/lottery/addContestant/${lotteryId}`, contestant, { headers: this.auth.authHeaders });
+    }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         // console.log(`Update: { id:${lottery.id}, title:${lottery.title} } `);
         return this.http.put<Lottery>(`${this.apiServerUrl}/api/v1/lottery/${lottery.id}`, lottery, { headers: this.auth.authHeaders });
