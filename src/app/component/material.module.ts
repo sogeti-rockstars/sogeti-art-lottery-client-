@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialRoutes } from './material.routing';
 
+import { MatPseudoCheckboxModule } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -99,6 +100,7 @@ const modules: Array<any> = [
     MatDatepickerModule,
     MatNativeDateModule,
     FlexLayoutModule,
+    MatPseudoCheckboxModule,
 ];
 
 const components: Array<any> = [
