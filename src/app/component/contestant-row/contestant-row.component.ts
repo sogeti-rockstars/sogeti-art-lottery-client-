@@ -35,6 +35,7 @@ export class ContestantRowComponent {
     @Output() public rowDataChange = new EventEmitter<RowData>();
     @Input() public rowData!: RowData;
 
+    @Input() public editable = false;
     @Input() set index(idx: number) {
         this.rowData.index = idx;
     }

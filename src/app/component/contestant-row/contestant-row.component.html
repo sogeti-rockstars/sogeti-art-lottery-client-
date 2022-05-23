@@ -3,12 +3,14 @@
 </div>
 
 <ng-template #buttons>
-    <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
-        <mat-icon aria-label="Redigera">edit</mat-icon>
-    </button>
-    <button id="remove" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.remove, $event)">
-        <mat-icon aria-label="Ta bort">delete</mat-icon>
-    </button>
+    <span *ngIf="editable">
+        <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
+            <mat-icon aria-label="Redigera">edit</mat-icon>
+        </button>
+        <button id="remove" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.remove, $event)">
+            <mat-icon aria-label="Ta bort">delete</mat-icon>
+        </button>
+    </span>
     <button id="expand" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.expand, $event)">
         <mat-icon aria-label="Mer info">open_in_full</mat-icon>
     </button>
@@ -17,6 +19,7 @@
 <ng-template #notInModal>
     <mat-list-item matLine checkboxPosition="before" class="contestant-row">
         <mat-pseudo-checkbox
+            *ngIf="editable"
             [state]="rowData.selected ? 'checked' : 'unchecked'"
             (click)="clickEventHandler(ClickElems.checkbox, $event)"
         ></mat-pseudo-checkbox>

@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
 import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
@@ -13,6 +13,7 @@ import { ContestantService } from 'src/app/service/contestant.service';
     styleUrls: ['./contestants.component.css'],
 })
 export class ContestantsComponent implements OnInit, AfterViewChecked {
+    @Input() public editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
     public readonly filterFunction = (row: RowData, query: string) => (row.filtered = !row.data.name.toLowerCase().includes(query.toLowerCase()));
