@@ -40,7 +40,7 @@ export class AppSidebarComponent implements OnDestroy, OnInit {
   }
 
   getMenuitem() {
-    this.lotteryService.getLotteries().subscribe(
+    this.lotteryService.getLotteriesSmall().subscribe(
       (data:Lottery[]) => {this.lotteryEmit.emit(data);
         this.lotteries= data;
       }      
