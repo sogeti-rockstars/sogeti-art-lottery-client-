@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EventEmitter, Injectable, Output } from '@angular/core';
+import { firstValueFrom, Observable, retry, tap } from 'rxjs';
 import { ArtItem } from '../model/art-item';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
@@ -10,14 +10,34 @@ import { LotteryApiService } from './api/lottery-api.service';
     providedIn: 'root',
 })
 export class LotteryService {
-    constructor(private service: LotteryApiService) {}
+    private currLotteryId?: number;
+    private lotteries: Lottery[] = [];
+
+    @Output()
+    public lotteryChanged = new EventEmitter<number>();
+
+    constructor(private service: LotteryApiService) {
+        this.getLotteriesSummary().subscribe((_) => this.setCurrentLottery(0));
+    }
+
+    /**
+     * Set the current lottery.
+     * @param idx the INDEX of the lottery as given by the list returned by getLotteries() and getLotteriesSummary()
+     */
+    public setCurrentLottery(idx: number) {
+        let newCurrent = this.lotteries[idx].id;
+        if (newCurrent === undefined) return;
+
+        this.currLotteryId = newCurrent;
+        this.lotteryChanged.emit(this.currLotteryId);
+    }
 
     public getLotteries(): Observable<Lottery[]> {
-        return this.service.getLotteries();
+        return this.service.getLotteries().pipe(tap((response) => (this.lotteries = response)));
     }
 
     public getLotteriesSummary(): Observable<Lottery[]> {
-        return this.service.getLotteriesSummary();
+        return this.service.getLotteriesSummary().pipe(tap((response) => (this.lotteries = response)));
     }
 
     public getLottery(id: number): Observable<Lottery> {

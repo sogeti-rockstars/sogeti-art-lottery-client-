@@ -26,7 +26,7 @@ export class LotteryFormComponent implements OnInit {
     onSubmit(event: any) {
         this.lottery = new Lottery();
         if (event.addContestants == true) {
-            this.contestantService.getContestants().subscribe((data: Contestant[]) => (this.lottery.contestants = data));
+            this.contestantService.getContestants(-1).subscribe((data: Contestant[]) => (this.lottery.contestants = data));
         }
         this.lottery.title = event.title;
         this.lottery.date = event.date;

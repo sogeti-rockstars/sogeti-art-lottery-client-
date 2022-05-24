@@ -46,5 +46,6 @@ export class AppSidebarComponent implements OnDestroy, OnInit {
 
     public pickLottery(idx: any) {
         console.log(`${this.lotteries[idx].title} ${this.lotteries[idx].id} ${this.lotteries[idx].date.toString()}`);
+        this.lotteryService.setCurrentLottery(idx);
     }
 }

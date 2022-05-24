@@ -12,67 +12,72 @@ import { AuthService } from '../auth.service';
     providedIn: 'root',
 })
 export class LotteryApiService {
-    private apiBase: string = `${environment.apiBaseUrl}/api/v1`;
+    private apiBase: string = `${environment.apiBaseUrl}/api/v1/lottery/`;
+
     constructor(private http: HttpClient, private auth: AuthService) {}
 
     public getLotteries(): Observable<Lottery[]> {
-        return this.httpGet<Lottery[]>(`/lottery/`);
+        return this.httpGet<Lottery[]>();
     }
 
     public getLotteriesSummary(): Observable<Lottery[]> {
-        return this.httpGet<Lottery[]>(`/lottery/summary`);
+        return this.httpGet<Lottery[]>('summary');
     }
 
     public getLottery(id: number): Observable<Lottery> {
-        return this.httpGet<Lottery>(`/lottery/${id}`);
+        return this.httpGet<Lottery>(id);
     }
 
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
-        return this.httpGet<ArtItem[]>(`/lottery/${id}/items`);
+        return this.httpGet<ArtItem[]>(`${id}/items`);
     }
 
     public getWinnersByLotteryId(id: number): Observable<Winner[]> {
-        return this.httpGet<Winner[]>(`/lottery/${id}/winners`);
+        return this.httpGet<Winner[]>(`${id}/winners`);
     }
 
     public getContestantsByLotteryId(id: number): Observable<Contestant[]> {
-        return this.httpGet<Contestant[]>(`/lottery/${id}/contestants`);
+        return this.httpGet<Contestant[]>(`${id}/contestants`);
     }
 
     public addLottery(lottery: Lottery): Observable<Lottery> {
-        return this.httpPost<Lottery>('/lottery/', lottery);
+        return this.httpPost<Lottery>(lottery);
     }
 
     public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        return this.httpPut<Lottery>(`/lottery/addContestant/${lotteryId}`, contestant);
+        return this.httpPut<Lottery>(contestant, `addContestant/${lotteryId}`);
     }
 
     public updateLottery(lottery: Lottery): Observable<Lottery> {
-        return this.httpPut<Lottery>(`/lottery/${lottery.id}`, lottery);
+        return this.httpPut<Lottery>(lottery, lottery.id);
     }
 
     public deleteLottery(id: number): Observable<Object> {
-        return this.httpGet<Object>(`/lottery/${id}`);
+        return this.httpDel<Object>(id);
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        return this.httpGet<Winner>(`/lottery/spin/${id}`);
+        return this.httpGet<Winner>(`spin/${id}`);
     }
 
     public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.httpGet<Winner>(`/lottery/spin-with-item/${id}`);
+        return this.httpGet<Winner>(`spin-with-item/${id}`);
     }
 
-    private httpGet<T>(restPath: string): Observable<T> {
-        return this.http.get<T>(`${this.apiBase}${restPath}`, this.getHeaders());
+    private httpGet<T>(restPath?: string | number): Observable<T> {
+        return this.http.get<T>(`${this.apiBase}${restPath === undefined ? '' : restPath}`, this.getHeaders());
     }
 
-    private httpPut<T>(restPath: string, data: any): Observable<T> {
-        return this.http.put<T>(`${this.apiBase}${restPath}}`, data, this.getHeaders());
+    private httpPut<T>(data: any, restPath?: string | number): Observable<T> {
+        return this.http.put<T>(`${this.apiBase}${restPath === undefined ? '' : restPath}`, data, this.getHeaders());
     }
 
-    private httpPost<T>(restPath: string, data: T): Observable<T> {
-        return this.http.post<T>(`${this.apiBase}${restPath}`, data, this.getHeaders());
+    private httpPost<T>(data: T, restPath?: string | number): Observable<T> {
+        return this.http.post<T>(`${this.apiBase}${restPath === undefined ? '' : restPath}`, data, this.getHeaders());
+    }
+
+    private httpDel<T>(restPath?: string | number): Observable<T> {
+        return this.http.delete<T>(`${this.apiBase}${restPath === undefined ? '' : restPath}`, this.getHeaders());
     }
 
     private getHeaders() {
