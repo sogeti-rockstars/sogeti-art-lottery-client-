@@ -1,12 +1,12 @@
 .header-btn-logout {
-  background-color: rgb(176, 175, 175);
-  height: 20px;
-  font-size: 12px;
-  line-height: normal;
-  color: white !important;
+    background-color: rgb(176, 175, 175);
+    height: 20px;
+    font-size: 12px;
+    line-height: normal;
+    color: white !important;
 }
 .fxflex {
-  flex: 0 !important;
+    flex: 0 !important;
 }
 
 /*.navbar-header {
@@ -15,27 +15,28 @@
   justify-content: right;
 }*/
 .header-container {
-  background-color: white;
+    background-color: white;
 }
 .navbar-brand {
-  width: 100%;
+    width: 100%;
 }
 .navbar-brand a {
-  float: right;
+    float: right;
 }
 .logga {
-  width: 120px;
-  margin-top: 10px;
-  /* margin-right: 100px; */
+    width: 120px;
+    margin-top: 10px;
+    /* margin-right: 100px; */
 }
 
 .header-buttons {
-  color: rgb(5, 78, 143);
-  background-color: white;
-  margin: 1em;
-  box-shadow: inset;
-  font-size: 14px;
+    /* color: rgb(5, 78, 143); */
+    /* background-color: white; */
+    margin: 1em;
+    /* box-shadow: inset; */
+    font-size: 14px;
 }
+
 .mat-focus-indicator {
-  color: rgb(5, 78, 143);
+    color: rgb(5, 78, 143);
 }

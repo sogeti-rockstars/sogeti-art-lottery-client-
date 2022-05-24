@@ -1,18 +1,11 @@
-<app-header (toggleSideNav)="toggleSideNav()"></app-header>
-
-<app-sidebar
-  [visible]="sideNavVisible"
-  (visibility)="toggleSideNavValue($event)"
-></app-sidebar>
+<app-header [parent]="this"></app-header>
+<app-sidebar [(visible)]="sideNavVisible"></app-sidebar>
 <div class="main-container">
-  <mat-sidenav-container
-    class="example-sidenav-container"
-    [style.marginTop.px]="mobileQuery.matches ? 0 : 0"
-  >
-    <mat-sidenav-content class="page-wrapper">
-      <div class="page-content">
-        <app-spinner></app-spinner>
-      </div>
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+    <mat-sidenav-container class="example-sidenav-container">
+        <mat-sidenav-content class="page-wrapper">
+            <div class="page-content">
+                <app-spinner></app-spinner>
+            </div>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
 </div>

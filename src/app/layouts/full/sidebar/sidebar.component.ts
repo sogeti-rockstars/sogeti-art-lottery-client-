@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { AppComponent } from 'src/app/app.component';
+import { ApplicationRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
 import { Lottery } from 'src/app/model/lottery';
 import { LotteryService } from 'src/app/service/lottery.service';
 
@@ -9,43 +7,53 @@ import { LotteryService } from 'src/app/service/lottery.service';
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.css'],
 })
-export class AppSidebarComponent implements OnDestroy, OnInit {
-    mobileQuery: MediaQueryList;
-    private _mobileQueryListener: () => void;
-    @Output() lotteryEmit: EventEmitter<Lottery[]> = new EventEmitter();
-    lotteries: Lottery[] = [];
-
-    @Input() public visible = false;
-    @Output() public visibility = new EventEmitter<boolean>();
-
-    constructor(public app: AppComponent, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private lotteryService: LotteryService) {
-        this.mobileQuery = media.matchMedia('(min-width: 768px)');
-        this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-        this.mobileQuery.addListener(this._mobileQueryListener);
+export class AppSidebarComponent implements OnInit {
+    get visible() {
+        return this.visible$;
     }
+    @Input()
+    set visible(value: boolean) {
+        this.visible$ = value;
+        this.visibleChange.emit(this.visible$);
+        if (this.visible$) this.listenClicks();
+        else this.unListenClicks();
+    }
+
+    @Output()
+    public visibleChange = new EventEmitter<boolean>();
+    private visible$ = false;
+
+    private unListenClicksFunction?: () => void;
+
+    private lotteries$: Lottery[] = [];
+    get lotteries() {
+        return this.lotteries$;
+    }
+
+    constructor(private lotteryService: LotteryService, private elemRef: ElementRef, private renderer: Renderer2, private app: ApplicationRef) {}
+
     ngOnInit(): void {
-        this.getMenuitem();
-    }
-
-    ngOnDestroy(): void {
-        this.mobileQuery.removeListener(this._mobileQueryListener);
-    }
-
-    getMenuitem() {
-        this.lotteryService.getLotteriesSummary().subscribe((data: Lottery[]) => {
-            this.lotteryEmit.emit(data);
-            this.lotteries = data;
-        });
-        console.log('get menu item' + this.lotteries);
-    }
-
-    public toggleSideNav() {
-        this.visible = !this.visible;
-        this.visibility.emit(this.visible);
+        this.lotteryService.getLotteriesSummary().subscribe((data: Lottery[]) => (this.lotteries$ = data));
     }
 
     public pickLottery(idx: any) {
-        console.log(`${this.lotteries[idx].title} ${this.lotteries[idx].id} ${this.lotteries[idx].date.toString()}`);
         this.lotteryService.setCurrentLottery(idx);
+        this.visible = false;
+    }
+
+    private clickListen(event: any) {
+        if (!this.elemRef.nativeElement.contains(event.target)) {
+            console.log('clicked outside!');
+            this.visible = false;
+        }
+    }
+
+    private listenClicks() {
+        this.unListenClicks();
+        this.unListenClicks = this.renderer.listen(this.app.components[0].location.nativeElement, 'click', (event) => this.clickListen(event));
+    }
+
+    private unListenClicks() {
+        if (this.unListenClicksFunction) this.unListenClicksFunction.call(this);
     }
 }

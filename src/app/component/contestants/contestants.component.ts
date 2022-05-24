@@ -1,7 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
 import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { Contestant } from 'src/app/model/contestant';
@@ -35,7 +34,6 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         private service: ContestantService,
         public cdr: ChangeDetectorRef,
         @Inject(DOCUMENT) private document: Document,
-        private dialog: MatDialog,
         private modService: ModalService,
         private vcr: ViewContainerRef,
         private contestantsService: ContestantService,
