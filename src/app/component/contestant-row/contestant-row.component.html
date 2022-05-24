@@ -2,7 +2,7 @@
     <div *ngIf="rowData.inModal; then inModal; else notInModal"></div>
 </div>
 
-<ng-template #buttons>
+<ng-template #buttons class="buttons">
     <span *ngIf="editable">
         <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
             <mat-icon aria-label="Redigera">edit</mat-icon>
@@ -23,7 +23,8 @@
             [state]="rowData.selected ? 'checked' : 'unchecked'"
             (click)="clickEventHandler(ClickElems.checkbox, $event)"
         ></mat-pseudo-checkbox>
-        <mat-card class="list-card" (click)="clickEventHandler(ClickElems.body)">
+        <!-- <mat-card class="list-card" (click)="clickEventHandler(ClickElems.body)"> -->
+        <mat-card class="list-card">
             <div *ngIf="rowData.expanded; else colapsed">
                 <ng-template [ngTemplateOutlet]="contentsExpanded"></ng-template>
             </div>
@@ -69,16 +70,84 @@
 </ng-template>
 
 <ng-template #contentsExpanded>
-    <span class="name" matLine>
-        <button mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
-        <mat-label> {{ rowData.data.name }} </mat-label>
-        <p>dbId: {{ rowData.data.id }}</p>
-        <p>employeeId: {{ rowData.data.employeeId }}</p>
-        <p>teleNumber: {{ rowData.data.teleNumber }}</p>
-        <p>office: BACKEND WIP</p>
-    </span>
-
-    <span class="buttons">
-        <ng-template [ngTemplateOutlet]="buttons"></ng-template>
-    </span>
+    <div matLine id="expanded-topline">
+        <button id="account-icon" mat-icon-button aria-label="Mer info"><mat-icon>account_circle</mat-icon></button>
+        <div id="buttons-expanded">
+            <ng-template [ngTemplateOutlet]="buttons"></ng-template>
+        </div>
+    </div>
+    <ng-template [ngTemplateOutlet]="rowValueItemEdit"></ng-template>
+    <!-- <span *ngIf="rowData.inEditMode; then rowValueItemEdit else inViewMode"> </span> -->
 </ng-template>
+
+<ng-template #rowValueItemEdit>
+    <form [formGroup]="contestantForm" class="form-group" (ngSubmit)="onSubmit(contestantForm.value)">
+        <mat-form-field appearance="legacy">
+            <mat-label>namn</mat-label>
+            <input matInput class="form-control" formControlName="name" type="text" placeholder="" />
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+            <mat-label>dbId</mat-label>
+            <input matInput class="form-control" formControlName="id" type="number" placeholder="" />
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+            <mat-label>anställningsnummer</mat-label>
+            <input matInput class="form-control" formControlName="employeeId" type="text" placeholder="" />
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+            <mat-label>telefonnummer</mat-label>
+            <input matInput class="form-control" formControlName="teleNumber" type="number" placeholder="" />
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+            <mat-label>e-post</mat-label>
+            <input matInput class="form-control" formControlName="email" type="text" placeholder="" />
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+            <mat-label>kontor</mat-label>
+            <input matInput class="form-control" formControlName="office" type="text" placeholder="" />
+        </mat-form-field>
+
+        <button type="submit" style="display: none">hidden submit</button>
+    </form>
+</ng-template>
+
+<!-- <ng-template #inViewMode> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'namn', content:rowData.data.name}"></ng-template> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'dbId', content:rowData.data.id}"></ng-template> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'anställningsnummer', content:rowData.data.employeeId}"></ng-template> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'telefonnummer', content:rowData.data.teleNumber}"></ng-template> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'epost', content:rowData.data.email}"></ng-template> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'kontor', content:'BACKENDWIP'}"></ng-template> -->
+<!-- </ng-template> -->
+
+<!-- <ng-template #rowValueItemView let-header="header" let-content="content"> -->
+<!--     <div class="row-value-item" id="dbId" [ngStyle]="{'font-size':'12px'}">{{header}}:</div> -->
+<!--     <div>{{content}}</div> -->
+<!-- </ng-template> -->
+
+<!-- <ng-template #rowValueItemEdit let-header="header" let-formControl="formControl"> -->
+<!--     <mat-form-field appearance="legacy"> -->
+<!--         <mat-label>{{header}}</mat-label> -->
+<!--         <input matInput class="form-control" [formControlName]="formControl" type="text" placeholder=".." /> -->
+<!--     </mat-form-field> -->
+<!-- </ng-template> -->
+<!-- <span *ngFor="let line of getFormFieldsWithValues() "> -->
+<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:line[0], content:line[1]}"></ng-template> -->
+<!-- <div *ngFor="let line of getFormFields(); let i=index"> -->
+<!--     <mat-form-field appearance="legacy"> -->
+<!--         <mat-label [id]="line[0]">{{line[1]}}</mat-label> -->
+<!--         <input matInput [id]="line[0]" class="form-control" [formControlName]="line[0]" type="text" placeholder=".." /> -->
+<!--     </mat-form-field> -->
+<!-- </div> -->
+<!-- <form id="myForm" [formGroup]="thisIsMyForm"> -->
+<!--     <div [formArrayName]="'formArrayName'"> -->
+<!--         <mat-card *ngFor="let x of data; let i = index"> -->
+<!-- <div [formGroupName]="i"> -->
+<!-- <div [formArrayName]="'rowValuesForm'"> -->
+<!--     <mat-form-field appearance="legacy"> -->
+<!--         <mat-label [id]="'1'">namn</mat-label> -->
+<!--         <input matInput [id]="'1'" class="form-control" [formControlName]="'name'" type="text" placeholder=".." /> -->
+<!--     </mat-form-field> -->
+<!-- </div> -->
+<!-- <ng-template [ngTemplateOutlet]="rowValueItemEdit" [ngTemplateOutletContext]="{header:'namn', formControl:'name'}"></ng-template> -->
+<!-- </span> -->
