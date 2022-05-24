@@ -1,8 +1,7 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { FullComponent } from '../full.component';
 
 @Component({
     selector: 'app-header',
@@ -10,26 +9,34 @@ import { FullComponent } from '../full.component';
     styleUrls: ['./header.component.css'],
 })
 export class AppHeaderComponent implements AfterViewInit {
-    @Input() parent!: FullComponent;
+    private sidebarVisible$ = false;
+    public get sidebarVisible() {
+        return this.sidebarVisible$;
+    }
+    @Input()
+    public set sidebarVisible(val: boolean) {
+        this.sidebarVisible$ = val;
+        this.sidebarVisibleChange.emit(val);
+    }
+    @Output() sidebarVisibleChange = new EventEmitter<boolean>();
+
     public readonly menuItems = menuItems;
 
+    toggleSideButtonElem!: HTMLElement;
     constructor(public app: AppComponent, private router: Router, private _focusMonitor: FocusMonitor) {}
 
     ngAfterViewInit(): void {
+        // this.toggleSideButtonElem = document.getElementById('toggleSide')!;
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
     }
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
         if (menuitem.action === 'toggleSide') {
-            this.parent.toggleSideNav();
+            this.sidebarVisible = !this.sidebarVisible;
         } else {
-            this.showRoute(menuitem.route);
+            this.router.navigateByUrl(menuitem.route);
         }
-    }
-
-    public showRoute(route: string) {
-        this.router.navigateByUrl(route);
     }
 }
 
