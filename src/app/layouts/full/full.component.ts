@@ -1,7 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { MenuItems } from 'src/app/component/menu-items/menu-items';
-
+import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
 
 @Component({
     selector: 'app-full-layout',
@@ -13,7 +11,7 @@ export class FullComponent implements OnDestroy {
     private _mobileQueryListener: () => void;
     public sideNavVisible = false;
 
-    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public menuItems: MenuItems) {
+    constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
         this.mobileQuery = media.matchMedia('(min-width: 768px)');
         this._mobileQueryListener = () => changeDetectorRef.detectChanges();
         this.mobileQuery.addListener(this._mobileQueryListener);

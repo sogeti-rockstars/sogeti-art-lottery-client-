@@ -1,13 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { ArtItem } from 'src/app/model/art-item';
 import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
-import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
-import { LotteryApiService } from 'src/app/service/api/lottery-api.service';
-import { ArtItemService } from 'src/app/service/art-item.service';
 import { ContestantService } from 'src/app/service/contestant.service';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-lottery-form',
@@ -25,7 +21,7 @@ export class LotteryFormComponent implements OnInit {
         title: [''],
         addContestants: [''],
     });
-    constructor(private fb: FormBuilder, private contestantService: ContestantService, private lotteryApiService: LotteryApiService) {}
+    constructor(private fb: FormBuilder, private contestantService: ContestantService, private lotteryService: LotteryService) {}
 
     onSubmit(event: any) {
         this.lottery = new Lottery();
@@ -34,7 +30,7 @@ export class LotteryFormComponent implements OnInit {
         }
         this.lottery.title = event.title;
         this.lottery.date = event.date;
-        this.lotteryApiService.addLottery(this.lottery);
+        this.lotteryService.addLottery(this.lottery);
     }
 
     updateForm() {

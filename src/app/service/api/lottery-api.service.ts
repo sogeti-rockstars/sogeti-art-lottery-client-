@@ -12,76 +12,70 @@ import { AuthService } from '../auth.service';
     providedIn: 'root',
 })
 export class LotteryApiService {
-    private apiServerUrl = environment.apiBaseUrl;
-    postId!: number;
-    status!: string;
+    private apiBase: string = `${environment.apiBaseUrl}/api/v1`;
     constructor(private http: HttpClient, private auth: AuthService) {}
 
     public getLotteries(): Observable<Lottery[]> {
-        return this.http.get<Lottery[]>(`${this.apiServerUrl}/api/v1/lottery/`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.httpGet<Lottery[]>(`/lottery/`);
     }
-    public getLotteriesSmall(): Observable<Lottery[]> {
-        return this.http.get<Lottery[]>(`${this.apiServerUrl}/api/v1/lottery/allSmall`, {
-            headers: this.auth.authHeaders,
-        });
+
+    public getLotteriesSummary(): Observable<Lottery[]> {
+        return this.httpGet<Lottery[]>(`/lottery/summary`);
     }
 
     public getLottery(id: number): Observable<Lottery> {
-        return this.http.get<Lottery>(`${this.apiServerUrl}/api/v1/lottery/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.httpGet<Lottery>(`/lottery/${id}`);
     }
 
-    getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
-        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/items`, {
-            headers: this.auth.authHeaders,
-        });
+    public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.httpGet<ArtItem[]>(`/lottery/${id}/items`);
     }
 
-    getWinnersByLotteryId(id: number): Observable<Winner[]> {
-        return this.http.get<Winner[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/winners`, {
-            headers: this.auth.authHeaders,
-        });
+    public getWinnersByLotteryId(id: number): Observable<Winner[]> {
+        return this.httpGet<Winner[]>(`/lottery/${id}/winners`);
     }
 
-    getContestantsByLotteryId(id: number): Observable<Contestant[]> {
-        return this.http.get<Contestant[]>(`${this.apiServerUrl}/api/v1/lottery/${id}/contestants`, {
-            headers: this.auth.authHeaders,
-        });
+    public getContestantsByLotteryId(id: number): Observable<Contestant[]> {
+        return this.httpGet<Contestant[]>(`/lottery/${id}/contestants`);
     }
 
     public addLottery(lottery: Lottery): Observable<Lottery> {
-        console.log(lottery.title + 'addLotteryService');
-        return this.http.post<Lottery>(`${this.apiServerUrl}/api/v1/lottery/`, lottery, { headers: this.auth.authHeaders });
+        return this.httpPost<Lottery>('/lottery/', lottery);
     }
 
     public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        // console.log(`Update: { id:${lottery.id}, title:${lottery.title} } `);
-        return this.http.put<Lottery>(`${this.apiServerUrl}/api/v1/lottery/addContestant/${lotteryId}`, contestant, { headers: this.auth.authHeaders });
+        return this.httpPut<Lottery>(`/lottery/addContestant/${lotteryId}`, contestant);
     }
 
     public updateLottery(lottery: Lottery): Observable<Lottery> {
-        // console.log(`Update: { id:${lottery.id}, title:${lottery.title} } `);
-        return this.http.put<Lottery>(`${this.apiServerUrl}/api/v1/lottery/${lottery.id}`, lottery, { headers: this.auth.authHeaders });
+        return this.httpPut<Lottery>(`/lottery/${lottery.id}`, lottery);
     }
 
     public deleteLottery(id: number): Observable<Object> {
-        return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/lottery/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.httpGet<Object>(`/lottery/${id}`);
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        return this.http.get<Winner>(`${this.apiServerUrl}/api/v1/lottery/spin/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.httpGet<Winner>(`/lottery/spin/${id}`);
     }
 
     public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.http.get<Winner>(`${this.apiServerUrl}/api/v1/lottery/spin-with-item/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.httpGet<Winner>(`/lottery/spin-with-item/${id}`);
+    }
+
+    private httpGet<T>(restPath: string): Observable<T> {
+        return this.http.get<T>(`${this.apiBase}${restPath}`, this.getHeaders());
+    }
+
+    private httpPut<T>(restPath: string, data: any): Observable<T> {
+        return this.http.put<T>(`${this.apiBase}${restPath}}`, data, this.getHeaders());
+    }
+
+    private httpPost<T>(restPath: string, data: T): Observable<T> {
+        return this.http.post<T>(`${this.apiBase}${restPath}`, data, this.getHeaders());
+    }
+
+    private getHeaders() {
+        return { headers: this.auth.authHeaders };
     }
 }
