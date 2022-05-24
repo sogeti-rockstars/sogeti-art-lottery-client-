@@ -87,7 +87,8 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
                 this.rowData[_idx].expanded = !this.rowData[_idx].expanded;
                 break;
             case ClickableElements.edit:
-                this.openDefaultModal(_idx);
+                // this.openDefaultModal(_idx);
+                // this.rowData[_idx].inEditMode = !this.rowData[_idx].inEditMode;
                 break;
             case ClickableElements.checkbox:
                 this.rowData[_idx].selected = !row.selected;

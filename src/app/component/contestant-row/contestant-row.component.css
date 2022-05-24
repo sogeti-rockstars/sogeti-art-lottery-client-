@@ -135,3 +135,29 @@
         /* color: red; */
     }
 }
+
+.form-group {
+    display: block;
+    flex: 1 1 auto;
+}
+.mat-form-field {
+    color: black;
+    display: block;
+    width: 100%;
+}
+.form-control {
+    color: black;
+}
+
+#expanded-topline {
+    display: flex !important;
+    justify-content: space-between;
+}
+#buttons-expanded {
+    display: block;
+    float: right !important;
+}
+#account-icon {
+    display: block;
+    float: left !important;
+}
