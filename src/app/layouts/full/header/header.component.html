@@ -9,12 +9,8 @@
             (click)="sidebarVisibleClicked.emit()"
         >
             <mat-icon class="header-button-icon">notes</mat-icon>
-            {{ lotteryTitle }}
+            {{ currLotteryTitle }}
         </button>
-
-        <!-- <button mat-icon-button aria-label="Mer info" class="header-icon-buttons"><mat-icon>account_circle</mat-icon>hello world</button> -->
-        <!-- <button mat-icon-button aria-label="Mer info" class="header-icon-buttons"><mat-icon>account_circle</mat-icon>foo bar</button> -->
-        <!-- <button mat-icon-button aria-label="Mer info" class="header-icon-buttons"><mat-icon>account_circle</mat-icon>wtf mate??</button> -->
 
         <span *ngFor="let item of menuItems">
             <button

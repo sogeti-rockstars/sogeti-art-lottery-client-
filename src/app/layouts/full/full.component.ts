@@ -7,6 +7,7 @@ import { Component, EventEmitter } from '@angular/core';
 })
 export class FullComponent {
     public sideNavVisible!: boolean;
+    public currLotteryTitle = '';
 
     public sidebarVisibleClicked = new EventEmitter<boolean>();
 

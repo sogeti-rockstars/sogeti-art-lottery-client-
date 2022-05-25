@@ -10,7 +10,7 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class AppHeaderComponent implements AfterViewInit {
     @Output() sidebarVisibleClicked = new EventEmitter<void>();
-    @Input() lotteryTitle = 'aaa';
+    @Input() currLotteryTitle!: string;
 
     public readonly menuItems = menuItems;
 

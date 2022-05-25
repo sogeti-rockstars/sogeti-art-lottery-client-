@@ -1,4 +1,4 @@
-<app-header (sidebarVisibleClicked)="toggleSideNav()"></app-header>
+<app-header (sidebarVisibleClicked)="toggleSideNav()" [currLotteryTitle]="currLotteryTitle"></app-header>
 <app-sidebar [visible]="sideNavVisible" (sidebarVisibleClicked)="toggleSideNav()"></app-sidebar>
 <div class="main-container">
     <mat-sidenav-container class="example-sidenav-container">
