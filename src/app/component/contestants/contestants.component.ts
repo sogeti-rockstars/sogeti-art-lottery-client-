@@ -1,18 +1,19 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { Contestant } from 'src/app/model/contestant';
 import { ContestantService } from 'src/app/service/contestant.service';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-contestants',
     templateUrl: './contestants.component.html',
     styleUrls: ['./contestants.component.css'],
 })
-export class ContestantsComponent implements OnInit, AfterViewChecked {
+export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() public editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
@@ -30,14 +31,27 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
     private firstRenderFinished = false;
     private colGap = 20;
 
+    private loadContestantsSubscription!: Subscription;
+
     constructor(
         private service: ContestantService,
         public cdr: ChangeDetectorRef,
         @Inject(DOCUMENT) private document: Document,
-        private dialog: MatDialog,
         private modService: ModalService,
-        private vcr: ViewContainerRef
+        private vcr: ViewContainerRef,
+        private contestantsService: ContestantService,
+        private lotteryService: LotteryService
     ) {}
+
+    ngOnInit(): void {
+        if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
+        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((newId) => this.loadContestants(newId));
+        this.setColWidths([200, 150, 65, 150]);
+    }
+
+    ngOnDestroy(): void {
+        this.loadContestantsSubscription.unsubscribe();
+    }
 
     ngAfterViewChecked(): void {
         if (!this.firstRenderFinished && this.contRows.length > 0) {
@@ -46,13 +60,7 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    ngOnInit(): void {
-        this.loadContestants();
-        this.setColWidths([200, 150, 65, 150]);
-    }
-
     public async filteredItemsChangeListener(_matches: number) {
-        // console.log(_matches);
         this.refreshList();
     }
 
@@ -95,7 +103,9 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
                 this.selectedItemsAmount += !row.selected ? 1 : -1;
                 break;
             case ClickableElements.remove:
-                this.listManipulation.deleteByIdx(_idx);
+                let removedId = this.listManipulation.deleteByIdx(_idx);
+                console.log(removedId);
+                if (removedId !== undefined) this.contestantsService.deleteContestant(removedId.data.id).subscribe((resp) => console.log(resp));
                 break;
             default:
                 throw new Error('Unknown enum ' + row.srcElement + ' was sent to clickEventHandler!!! ');
@@ -106,10 +116,10 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
     // Todo: maybe do the selection amount tracking through some listener... Couldn't figure it out in a pretty way.
     // The problem is that it needs to be reduced/increased also when adding and removing items!
     public listManipulation = {
-        deleteByIdx: (idx: number) => this.rowData.splice(idx, 1),
+        deleteByIdx: (idx: number) => this.rowData.splice(idx, 1)[0],
         deleteById: (id: number) => {
             let idx = this.rowData.find((c) => c.data.id == id)?.index;
-            if (idx !== undefined) this.listManipulation.deleteByIdx(idx);
+            return idx !== undefined ? this.listManipulation.deleteByIdx(idx) : undefined;
         },
         getSelected: (): RowData[] => {
             return this.rowData.filter((r) => r.selected);
@@ -130,9 +140,12 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         addNew: () => console.log('ho'),
     };
 
-    private async loadContestants() {
-        this.service.getContestants().subscribe({
-            next: (resp: Contestant[]) => resp.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount })),
+    private async loadContestants(lotteryId: number) {
+        this.service.getContestants(lotteryId).subscribe({
+            next: (resp: Contestant[]) => {
+                this.rowData = [];
+                resp.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
+            },
             error: (error: any) => console.log(error),
             complete: () => console.log('Http got response.'),
         });
