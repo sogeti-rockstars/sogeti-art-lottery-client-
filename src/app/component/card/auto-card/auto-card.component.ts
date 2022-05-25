@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { AppComponent } from 'src/app/app.component';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
@@ -21,7 +22,13 @@ export class AutoCardComponent implements OnInit {
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
     profileForm = this.fb.group(this.fb.control('wtf'));
 
-    constructor(private fb: FormBuilder, private itemApiService: ArtItemApiService, private artItemService: ArtItemService, private matDialog: MatDialog) {
+    constructor(
+        private fb: FormBuilder,
+        public app: AppComponent,
+        private itemApiService: ArtItemApiService,
+        private artItemService: ArtItemService,
+        private matDialog: MatDialog
+    ) {
         this.panelClass = 'custom-dialog-container';
     }
 
