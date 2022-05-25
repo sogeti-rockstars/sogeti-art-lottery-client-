@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { Contestant } from 'src/app/model/contestant';
@@ -12,7 +13,7 @@ import { LotteryService } from 'src/app/service/lottery.service';
     templateUrl: './contestants.component.html',
     styleUrls: ['./contestants.component.css'],
 })
-export class ContestantsComponent implements OnInit, AfterViewChecked {
+export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() public editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
@@ -30,6 +31,8 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
     private firstRenderFinished = false;
     private colGap = 20;
 
+    private loadContestantsSubscription!: Subscription;
+
     constructor(
         private service: ContestantService,
         public cdr: ChangeDetectorRef,
@@ -38,8 +41,16 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         private vcr: ViewContainerRef,
         private contestantsService: ContestantService,
         private lotteryService: LotteryService
-    ) {
-        this.lotteryService.lotteryChanged.subscribe((newId) => this.loadContestants(newId));
+    ) {}
+
+    ngOnInit(): void {
+        if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
+        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((newId) => this.loadContestants(newId));
+        this.setColWidths([200, 150, 65, 150]);
+    }
+
+    ngOnDestroy(): void {
+        this.loadContestantsSubscription.unsubscribe();
     }
 
     ngAfterViewChecked(): void {
@@ -49,13 +60,7 @@ export class ContestantsComponent implements OnInit, AfterViewChecked {
         }
     }
 
-    ngOnInit(): void {
-        // this.loadContestants(this.lotteryService.);
-        this.setColWidths([200, 150, 65, 150]);
-    }
-
     public async filteredItemsChangeListener(_matches: number) {
-        // console.log(_matches);
         this.refreshList();
     }
 

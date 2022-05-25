@@ -10,11 +10,10 @@ import { LotteryApiService } from './api/lottery-api.service';
     providedIn: 'root',
 })
 export class LotteryService {
-    private currLotteryId?: number;
-    private lotteries: Lottery[] = [];
+    @Output() lotteryChanged = new EventEmitter<number>();
 
-    @Output()
-    public lotteryChanged = new EventEmitter<number>();
+    private currLotteryId$?: number;
+    private lotteries: Lottery[] = [];
 
     constructor(private service: LotteryApiService) {
         this.getLotteriesSummary().subscribe((_) => this.setCurrentLottery(0));
@@ -28,8 +27,12 @@ export class LotteryService {
         let newCurrent = this.lotteries[idx].id;
         if (newCurrent === undefined) return;
 
-        this.currLotteryId = newCurrent;
-        this.lotteryChanged.emit(this.currLotteryId);
+        this.currLotteryId$ = newCurrent;
+        this.lotteryChanged.emit(this.currLotteryId$);
+    }
+
+    public get currLotteryId(): number | undefined {
+        return this.currLotteryId$;
     }
 
     public getLotteries(): Observable<Lottery[]> {
