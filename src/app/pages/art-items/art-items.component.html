@@ -1,15 +1,15 @@
 <app-search></app-search>
 <div class="admin-view-art-items-buttons">
-    <button *ngIf="authService.isAdmin == true" mat-raised-button class="main-buttons" color="accent">
-        <a class="main-buttons-a" (click)="removeSelectedArtItems()">Ta bort valda</a>
+    <button *ngIf="authService.isAdmin == true" (click)="removeSelectedArtItems()" mat-raised-button class="main-buttons" color="accent">
+        <a class="main-buttons-a">Ta bort valda</a>
     </button>
-    <button *ngIf="authService.isAdmin == true" mat-raised-button class="main-buttons" color="accent">
-        <a class="main-buttons-a" (click)="selectAll()">Välj alla</a>
+    <button *ngIf="authService.isAdmin == true" (click)="selectAll()" mat-raised-button class="main-buttons" color="accent">
+        <a class="main-buttons-a">Välj alla</a>
     </button>
-    <button *ngIf="authService.isAdmin == true" mat-raised-button class="main-buttons" color="accent">
-        <a class="main-buttons-a" (click)="newItem()">Lägg till ny</a>
+    <button *ngIf="authService.isAdmin == true" (click)="newItem()" mat-raised-button class="main-buttons" color="accent">
+        <a class="main-buttons-a">Lägg till ny</a>
     </button>
-    <button *ngIf="authService.isAdmin == true" mat-raised-button class="main-buttons-b" color="accent">
-        <a class="main-buttons-a" (click)="loadAllItems()">Visa alla artitems i databasen</a></button>
+    <button *ngIf="authService.isAdmin == true" (click)="loadAllItems()" mat-raised-button class="main-buttons-b" color="accent">
+        <a class="main-buttons-a">Visa alla artitems i databasen</a></button>
 </div>
 <art-items-list [artItems]="this.artItems"></art-items-list>
