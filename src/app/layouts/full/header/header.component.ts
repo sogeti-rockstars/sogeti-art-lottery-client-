@@ -2,6 +2,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-header',
@@ -14,7 +15,9 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public readonly menuItems = menuItems;
 
-    constructor(public app: AppComponent, private router: Router, private _focusMonitor: FocusMonitor) {}
+    constructor(public app: AppComponent, private router: Router, private _focusMonitor: FocusMonitor, lotteryService: LotteryService) {
+        lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
+    }
 
     ngAfterViewInit(): void {
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
@@ -24,6 +27,12 @@ export class AppHeaderComponent implements AfterViewInit {
         event.stopImmediatePropagation();
         this.router.navigateByUrl(menuitem.route);
     }
+
+    public getMenuItems() {
+        return menuItems.filter(
+            (item) => item.limitedTo == '' || (item.limitedTo == 'user' && !this.app.isAdmin) || (item.limitedTo == 'admin' && this.app.isAdmin)
+        );
+    }
 }
 
 const menuItems: MenuItem[] = [
@@ -31,7 +40,7 @@ const menuItems: MenuItem[] = [
         route: 'artitems',
         label: 'Konstverk',
         icon: '',
-        cls: 'header-buttons',
+        cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
     },
@@ -39,7 +48,7 @@ const menuItems: MenuItem[] = [
         route: 'winners',
         label: 'Vinnare',
         icon: '',
-        cls: 'header-buttons',
+        cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
     },
@@ -47,7 +56,7 @@ const menuItems: MenuItem[] = [
         route: 'association',
         label: 'Om föreningen',
         icon: '',
-        cls: 'header-buttons',
+        cls: 'header-buttons route-button',
         limitedTo: 'user',
         action: 'showRoute',
     },
@@ -55,7 +64,7 @@ const menuItems: MenuItem[] = [
         route: 'appmembers',
         label: 'Medlemmar',
         icon: '',
-        cls: 'header-buttons',
+        cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
     },
@@ -63,7 +72,7 @@ const menuItems: MenuItem[] = [
         route: 'lottery-start',
         label: 'Starta lotteri',
         icon: '',
-        cls: 'header-buttons',
+        cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
     },
@@ -71,7 +80,7 @@ const menuItems: MenuItem[] = [
         route: '',
         label: 'Logga ut',
         icon: '',
-        cls: 'header-btn-logout',
+        cls: 'header-buttons header-btn-logout',
         limitedTo: 'admin',
         action: '',
     },
