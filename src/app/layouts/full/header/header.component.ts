@@ -2,9 +2,8 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
-import { LotteryService } from 'src/app/service/lottery.service';
-import { Location } from '@angular/common';
 import { AuthService } from 'src/app/service/auth.service';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-header',
