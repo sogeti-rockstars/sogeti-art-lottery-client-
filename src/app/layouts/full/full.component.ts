@@ -6,15 +6,9 @@ import { Component, EventEmitter } from '@angular/core';
     styleUrls: ['full.component.css'],
 })
 export class FullComponent {
-    private sideNavVisible$!: boolean;
-    public get sideNavVisible() {
-        return this.sideNavVisible$;
-    }
-    public set sideNavVisible(val: boolean) {
-        this.sideNavVisible$ = val;
-        this.sideNavVisibleChange.emit(val);
-    }
-    public sideNavVisibleChange = new EventEmitter<boolean>();
+    public sideNavVisible!: boolean;
+
+    public sidebarVisibleClicked = new EventEmitter<boolean>();
 
     constructor() {}
 

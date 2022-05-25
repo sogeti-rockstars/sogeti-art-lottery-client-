@@ -8,52 +8,46 @@ import { LotteryService } from 'src/app/service/lottery.service';
     styleUrls: ['./sidebar.component.css'],
 })
 export class AppSidebarComponent implements OnInit {
-    get visible() {
-        return this.visible$;
-    }
-    @Input()
-    set visible(value: boolean) {
-        this.visible$ = value;
-        this.visibleChange.emit(this.visible$);
-        if (this.visible$) this.listenClicks();
-        else this.unListenClicks();
-    }
+    @Output() sidebarVisibleClicked = new EventEmitter<void>();
+    @Input() visible = false;
 
-    @Output()
-    public visibleChange = new EventEmitter<boolean>();
-    private visible$ = false;
-
-    private unListenClicksFunction?: () => void;
-
-    private lotteries$: Lottery[] = [];
     get lotteries() {
         return this.lotteries$;
     }
 
-    constructor(private lotteryService: LotteryService, private elemRef: ElementRef, private renderer: Renderer2, private app: ApplicationRef) {}
+    private lotteries$: Lottery[] = [];
+
+    // constructor(private lotteryService: LotteryService, private elemRef: ElementRef, private renderer: Renderer2, private app: ApplicationRef) {}
+    constructor(private lotteryService: LotteryService) {}
 
     ngOnInit(): void {
+        console.log('init');
         this.lotteryService.getLotteriesSummary().subscribe((data: Lottery[]) => (this.lotteries$ = data));
     }
 
     public pickLottery(idx: any) {
         this.lotteryService.setCurrentLottery(idx);
-        this.visible = false;
+        this.sidebarVisibleClicked.emit();
     }
 
-    private clickListen(event: any) {
-        if (!this.elemRef.nativeElement.contains(event.target)) {
-            console.log('clicked outside!');
-            this.visible = false;
-        }
-    }
+    // this.sidebarVisibleClicked.subscribe(() => this.listenClicks());
+    // private unListenClicksFunction?: () => void;
+    // private listenClicks() {
+    //     this.unListenClicks();
+    //     if (this.visible == true)
+    //         this.unListenClicks = this.renderer.listen(this.app.components[0].location.nativeElement, 'click', (event) => this.clickListen(event));
+    //     else console.log('not subscribing');
+    // }
 
-    private listenClicks() {
-        this.unListenClicks();
-        this.unListenClicks = this.renderer.listen(this.app.components[0].location.nativeElement, 'click', (event) => this.clickListen(event));
-    }
+    // private unListenClicks() {
+    //     if (this.unListenClicksFunction) this.unListenClicksFunction.call(this);
+    // }
 
-    private unListenClicks() {
-        if (this.unListenClicksFunction) this.unListenClicksFunction.call(this);
-    }
+    // private clickListen(event: any) {
+    //     if (!this.elemRef.nativeElement.contains(event.target)) {
+    //         console.log('clicked outside!');
+    //         this.visible = false;
+    //         this.sidebarVisibleClicked.emit();
+    //     } else console.log('clicked inside!');
+    // }
 }

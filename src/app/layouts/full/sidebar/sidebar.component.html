@@ -1,7 +1,7 @@
-<mat-sidenav [(opened)]="visible" [autoFocus]="false">
+<mat-sidenav [opened]="visible" [autoFocus]="false">
     <mat-nav-list appAccordion>
         <mat-list-item>
-            <button mat-raised-button class="main-buttons" (click)="visible=false">Close</button>
+            <button mat-raised-button class="main-buttons" (click)="sidebarVisibleClicked.emit()">Close</button>
         </mat-list-item>
         <span *ngIf="lotteries.length>0">
             <mat-list-item appAccordionLink *ngFor="let menuitem of lotteries; let i=index" routerLinkActive="selected" [id]="i" (click)="pickLottery(i)">

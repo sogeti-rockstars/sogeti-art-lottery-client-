@@ -9,31 +9,20 @@ import { AppComponent } from 'src/app/app.component';
     styleUrls: ['./header.component.css'],
 })
 export class AppHeaderComponent implements AfterViewInit {
-    private sidebarVisible$ = false;
-    public get sidebarVisible() {
-        return this.sidebarVisible$;
-    }
-    @Input()
-    public set sidebarVisible(val: boolean) {
-        this.sidebarVisible$ = val;
-        this.sidebarVisibleChange.emit(val);
-    }
-    @Output() sidebarVisibleChange = new EventEmitter<boolean>();
+    @Output() sidebarVisibleClicked = new EventEmitter<void>();
 
     public readonly menuItems = menuItems;
 
-    toggleSideButtonElem!: HTMLElement;
     constructor(public app: AppComponent, private router: Router, private _focusMonitor: FocusMonitor) {}
 
     ngAfterViewInit(): void {
-        // this.toggleSideButtonElem = document.getElementById('toggleSide')!;
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
     }
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
         if (menuitem.action === 'toggleSide') {
-            this.sidebarVisible = !this.sidebarVisible;
+            this.sidebarVisibleClicked.emit();
         } else {
             this.router.navigateByUrl(menuitem.route);
         }
