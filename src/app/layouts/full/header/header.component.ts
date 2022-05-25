@@ -10,6 +10,7 @@ import { AppComponent } from 'src/app/app.component';
 })
 export class AppHeaderComponent implements AfterViewInit {
     @Output() sidebarVisibleClicked = new EventEmitter<void>();
+    @Input() lotteryTitle = 'aaa';
 
     public readonly menuItems = menuItems;
 
@@ -21,23 +22,11 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        if (menuitem.action === 'toggleSide') {
-            this.sidebarVisibleClicked.emit();
-        } else {
-            this.router.navigateByUrl(menuitem.route);
-        }
+        this.router.navigateByUrl(menuitem.route);
     }
 }
 
 const menuItems: MenuItem[] = [
-    {
-        route: 'artitems',
-        label: 'Norrkonst',
-        icon: 'notes',
-        cls: 'header-buttons',
-        limitedTo: '',
-        action: 'toggleSide',
-    },
     {
         route: 'artitems',
         label: 'Konstverk',

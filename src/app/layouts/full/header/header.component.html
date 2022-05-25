@@ -1,5 +1,10 @@
 <mat-toolbar fxLayout="row" color="primary" class="header-container">
     <span fxFlex></span>
+    <button class="header-buttons" value="sidebarclosed" id="toggleSide" mat-raised-button mat-button fxHide.xs (click)="sidebarVisibleClicked.emit()">
+        {{lotteryTitle }}
+        <mat-icon class="header-button-icon">notes</mat-icon>
+    </button>
+
     <div *ngFor="let item of menuItems">
         <button
             class="{{ item.cls }}"
