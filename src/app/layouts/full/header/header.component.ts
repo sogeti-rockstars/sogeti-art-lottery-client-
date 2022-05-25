@@ -52,7 +52,7 @@ const menuItems: MenuItem[] = [
         action: 'showRoute',
     },
     {
-        route: 'members',
+        route: 'appmembers',
         label: 'Medlemmar',
         icon: '',
         cls: 'header-buttons',
@@ -60,7 +60,7 @@ const menuItems: MenuItem[] = [
         action: 'showRoute',
     },
     {
-        route: 'applottery',
+        route: 'lottery-start',
         label: 'Starta lotteri',
         icon: '',
         cls: 'header-buttons',
