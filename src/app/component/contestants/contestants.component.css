@@ -1,7 +1,7 @@
 .row-item-not-rendered {
     margin: 0px !important;
-    background-color: lime;
-    box-shadow: 1px solid lime;
-    -webkit-box-shadow: inset 0px 0px 0px 1px lime;
+    /* background-color: lime; */
+    /* box-shadow: 1px solid lime; */
+    /* -webkit-box-shadow: inset 0px 0px 0px 1px lime; */
     padding: opx !important;
 }
