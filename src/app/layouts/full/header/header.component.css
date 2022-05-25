@@ -1,42 +1,58 @@
-.header-btn-logout {
-    background-color: rgb(176, 175, 175);
-    height: 20px;
-    font-size: 12px;
-    line-height: normal;
-    color: white !important;
-}
-.fxflex {
-    flex: 0 !important;
-}
-
-/*.navbar-header {
-  margin: auto;
-  display: flex;
-  justify-content: right;
-}*/
 .header-container {
     background-color: #2485c1;
+    height: 4rem;
 }
-.navbar-brand {
+
+.header-items-wrap {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-.navbar-brand a {
-    float: right;
-}
-.logga {
-    width: 120px;
-    margin-top: 10px;
-    /* margin-right: 100px; */
+
+.header-buttons-wrap {
+    float: left;
+    display: flex-start;
+    margin-right: auto;
+    top: 0px;
+    bottom: 0px;
 }
 
 .header-buttons {
-    /* color: rgb(5, 78, 143); */
-    /* background-color: white; */
-    margin: 1em;
-    padding-right: 20px;
-    padding-left: 20px;
-    /* box-shadow: inset; */
+    margin-right: 1rem;
+    box-shadow: inset;
+}
+
+.sidebar-button {
+    height: 2rem;
     font-size: 14px;
+    line-height: normal;
+}
+.route-button {
+    height: 2rem;
+    font-size: 14px;
+    line-height: normal;
+}
+
+.header-btn-logout {
+    background-color: rgb(176, 175, 175);
+    color: white !important;
+    height: 20px;
+    font-size: 12px;
+    line-height: normal;
+}
+
+.navbar-brand {
+    float: right;
+    top: 0px;
+    bottom: 0px;
+    display: flex;
+    align-content: center;
+}
+
+.logga {
+    height: 3rem;
+    align-self: center;
 }
 
 .mat-focus-indicator {

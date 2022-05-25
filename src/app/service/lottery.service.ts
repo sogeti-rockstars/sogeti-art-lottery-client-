@@ -10,10 +10,11 @@ import { LotteryApiService } from './api/lottery-api.service';
     providedIn: 'root',
 })
 export class LotteryService {
-    @Output() lotteryChanged = new EventEmitter<number>();
+    @Output() lotteryChanged = new EventEmitter<Lottery>();
+    // @Output() lotteryChanged = new EventEmitter<number>();
 
-    private currLotteryId$?: number;
-    private lotteries: Lottery[] = [];
+    private currLottery?: Lottery;
+    private lotteries?: Lottery[];
 
     constructor(private apiService: LotteryApiService) {
         this.getLotteriesSummary().subscribe((_) => this.setCurrentLottery(0));
@@ -23,16 +24,17 @@ export class LotteryService {
      * Set the current lottery.
      * @param idx the INDEX of the lottery as given by the list returned by getLotteries() and getLotteriesSummary()
      */
-    public setCurrentLottery(idx: number) {
-        let newCurrent = this.lotteries[idx].id;
-        if (newCurrent === undefined) return;
+    public async setCurrentLottery(idx: number) {
+        if (this.lotteries === undefined) await firstValueFrom(this.getLotteriesSummary());
+        this.currLottery = this.lotteries![idx];
+        this.lotteryChanged.emit(this.currLottery);
 
-        this.currLotteryId$ = newCurrent;
-        this.lotteryChanged.emit(this.currLotteryId$);
+        // let newCurrent = this.lotteries![idx];
+        // if (newCurrent === undefined) return;
     }
 
     public get currLotteryId(): number | undefined {
-        return this.currLotteryId$;
+        return this.currLottery?.id;
     }
 
     public getLotteries(): Observable<Lottery[]> {
