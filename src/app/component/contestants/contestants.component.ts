@@ -45,7 +45,7 @@ export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked
 
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
-        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((newId) => this.loadContestants(newId));
+        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadContestants(lottery.id));
         this.setColWidths([200, 150, 65, 150]);
     }
 
