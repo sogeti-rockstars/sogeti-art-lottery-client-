@@ -15,7 +15,7 @@ export class LotteryService {
     private currLotteryId$?: number;
     private lotteries: Lottery[] = [];
 
-    constructor(private service: LotteryApiService) {
+    constructor(private apiService: LotteryApiService) {
         this.getLotteriesSummary().subscribe((_) => this.setCurrentLottery(0));
     }
 
@@ -36,50 +36,50 @@ export class LotteryService {
     }
 
     public getLotteries(): Observable<Lottery[]> {
-        return this.service.getLotteries().pipe(tap((response) => (this.lotteries = response)));
+        return this.apiService.getLotteries().pipe(tap((response) => (this.lotteries = response)));
     }
 
     public getLotteriesSummary(): Observable<Lottery[]> {
-        return this.service.getLotteriesSummary().pipe(tap((response) => (this.lotteries = response)));
+        return this.apiService.getLotteriesSummary().pipe(tap((response) => (this.lotteries = response)));
     }
 
     public getLottery(id: number): Observable<Lottery> {
-        return this.service.getLottery(id);
+        return this.apiService.getLottery(id);
     }
 
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
-        return this.service.getArtItemsByLotteryId(id);
+        return this.apiService.getArtItemsByLotteryId(id);
     }
 
     public getWinnersByLotteryId(id: number): Observable<Winner[]> {
-        return this.getWinnersByLotteryId(id);
+        return this.apiService.getWinnersByLotteryId(id);
     }
 
     public getContestantsByLotteryId(id: number): Observable<Contestant[]> {
-        return this.service.getContestantsByLotteryId(id);
+        return this.apiService.getContestantsByLotteryId(id);
     }
 
     public addLottery(lottery: Lottery): Observable<Lottery> {
-        return this.addLottery(lottery);
+        return this.apiService.addLottery(lottery);
     }
 
     public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        return this.addContestantToLottery(lotteryId, contestant);
+        return this.apiService.addContestantToLottery(lotteryId, contestant);
     }
 
     public updateLottery(lottery: Lottery): Observable<Lottery> {
-        return this.updateLottery(lottery);
+        return this.apiService.updateLottery(lottery);
     }
 
     public deleteLottery(id: number): Observable<Object> {
-        return this.deleteLottery(id);
+        return this.apiService.deleteLottery(id);
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        return this.spinTheWheel(id);
+        return this.apiService.spinTheWheel(id);
     }
 
     public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.spinTheWheelWithItem(id);
+        return this.apiService.spinTheWheelWithItem(id);
     }
 }

@@ -74,7 +74,7 @@ const menuItems: MenuItem[] = [
         action: 'showRoute',
     },
     {
-        route: 'appmembers',
+        route: 'members',
         label: 'Medlemmar',
         icon: '',
         cls: 'header-buttons',
