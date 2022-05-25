@@ -47,6 +47,8 @@ import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contesta
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
 import { ContestantsComponent } from './contestants/contestants.component';
 import { MembersComponent } from '../pages/members/members.component';
+import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
+import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -125,6 +127,8 @@ const components: Array<any> = [
     ContestantSelButtonsComponent,
     ContestantRowComponent,
     ContestantsComponent,
+    LotteryStartComponent,
+    CreateLotteryComponent,
 ];
 
 @NgModule({
