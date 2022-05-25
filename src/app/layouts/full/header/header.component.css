@@ -18,6 +18,10 @@
     bottom: 0px;
 }
 
+.drop-menu-button {
+    float: left;
+}
+
 .header-buttons {
     margin-right: 1rem;
     box-shadow: inset;
@@ -34,7 +38,7 @@
     line-height: normal;
 }
 
-.header-btn-logout {
+.login-out-button {
     background-color: rgb(176, 175, 175);
     color: white !important;
     height: 20px;

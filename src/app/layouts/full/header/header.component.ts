@@ -2,6 +2,7 @@ import { FocusMonitor } from '@angular/cdk/a11y';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
+import { Lottery } from 'src/app/model/lottery';
 import { AuthService } from 'src/app/service/auth.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 
@@ -12,7 +13,9 @@ import { LotteryService } from 'src/app/service/lottery.service';
 })
 export class AppHeaderComponent implements AfterViewInit {
     @Output() sidebarVisibleClicked = new EventEmitter<void>();
-    @Input() currLotteryTitle!: string;
+
+    currLotteryTitle!: string;
+    lotteries!: Lottery[];
 
     public readonly menuItems = menuItems;
 
@@ -21,9 +24,10 @@ export class AppHeaderComponent implements AfterViewInit {
         private router: Router,
         private authService: AuthService,
         private _focusMonitor: FocusMonitor,
-        lotteryService: LotteryService
+        public lotteryService: LotteryService
     ) {
         lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
+        lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
     }
 
     ngAfterViewInit(): void {
@@ -95,7 +99,7 @@ const menuItems: MenuItem[] = [
         route: 'user',
         label: 'Logga ut',
         icon: '',
-        cls: 'header-buttons header-btn-logout',
+        cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
         action: 'loginOrLogout',
     },
@@ -103,7 +107,7 @@ const menuItems: MenuItem[] = [
         route: 'admin',
         label: 'Logga in',
         icon: '',
-        cls: 'header-buttons header-btn-logout',
+        cls: 'header-buttons login-out-button',
         limitedTo: 'user',
         action: 'loginOrLogout',
     },

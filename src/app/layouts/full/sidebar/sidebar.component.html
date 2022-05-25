@@ -1,4 +1,4 @@
-<mat-sidenav [opened]="visible" [autoFocus]="false">
+<mat-sidenav [opened]="visible" [autoFocus]="false" fxHide.xs fxShow>
     <mat-nav-list appAccordion>
         <mat-list-item>
             <button mat-raised-button class="main-buttons" (click)="sidebarVisibleClicked.emit()">Close</button>
