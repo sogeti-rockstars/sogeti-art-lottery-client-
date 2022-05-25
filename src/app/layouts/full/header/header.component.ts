@@ -50,7 +50,7 @@ export class AppHeaderComponent {
       action: 'showRoute',
     },
     {
-      route: 'applottery',
+      route: 'lottery-start',
       label: 'Starta lotteri',
       icon: '',
       cls: 'header-buttons',
