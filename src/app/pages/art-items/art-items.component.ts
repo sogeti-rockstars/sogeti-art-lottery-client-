@@ -23,6 +23,7 @@ export class ArtItemsComponent implements OnInit {
     constructor(
         public authService: AuthService,
         private artItemApiService: ArtItemApiService,
+        private artItemService: ArtItemService,
         private lotteryService: LotteryService,
         private modalService: ModalService,
         private vcr: ViewContainerRef
@@ -30,6 +31,10 @@ export class ArtItemsComponent implements OnInit {
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
         this.loadPaintingSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
+        this.artItemService.artItemSubject$.subscribe(() => {
+            if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
+            else this.loadAllItems;
+        });
     }
 
     public loadAllItems() {
@@ -86,7 +91,7 @@ export class ArtItemsComponent implements OnInit {
             for (var i = 0; i < allCheckboxes.length; i++) {
                 cbox = <any>allCheckboxes[i];
                 cbox.checked
-                    ? this.artItemApiService.deleteArtItem(cbox.value).subscribe({
+                    ? this.artItemService.deleteArtItem(cbox.value).subscribe({
                           complete: () => {
                               this.artItemApiService.getArtItems();
                           },
