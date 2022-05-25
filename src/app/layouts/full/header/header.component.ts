@@ -3,6 +3,8 @@ import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { LotteryService } from 'src/app/service/lottery.service';
+import { Location } from '@angular/common';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -15,7 +17,13 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public readonly menuItems = menuItems;
 
-    constructor(public app: AppComponent, private router: Router, private _focusMonitor: FocusMonitor, lotteryService: LotteryService) {
+    constructor(
+        public app: AppComponent,
+        private router: Router,
+        private authService: AuthService,
+        private _focusMonitor: FocusMonitor,
+        lotteryService: LotteryService
+    ) {
         lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
     }
 
@@ -25,12 +33,20 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        this.router.navigateByUrl(menuitem.route);
+        console.log(this.authService.isAdmin);
+        if (menuitem.action === 'showRoute') {
+            let url = this.authService.isAdmin ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
+            this.router.navigateByUrl(url);
+        } else if (menuitem.action == 'loginOrLogout') {
+            let url = this.router.url.replace(/(admin|user)/, menuitem.route);
+            console.log(url);
+            this.router.navigateByUrl(url);
+        } else throw new Error('Unknown action was given!');
     }
 
     public getMenuItems() {
         return menuItems.filter(
-            (item) => item.limitedTo == '' || (item.limitedTo == 'user' && !this.app.isAdmin) || (item.limitedTo == 'admin' && this.app.isAdmin)
+            (item) => item.limitedTo == '' || (item.limitedTo == 'user' && !this.authService.isAdmin) || (item.limitedTo == 'admin' && this.authService.isAdmin)
         );
     }
 }
@@ -61,7 +77,7 @@ const menuItems: MenuItem[] = [
         action: 'showRoute',
     },
     {
-        route: 'appmembers',
+        route: 'members',
         label: 'Medlemmar',
         icon: '',
         cls: 'header-buttons route-button',
@@ -77,12 +93,20 @@ const menuItems: MenuItem[] = [
         action: 'showRoute',
     },
     {
-        route: '',
+        route: 'user',
         label: 'Logga ut',
         icon: '',
         cls: 'header-buttons header-btn-logout',
         limitedTo: 'admin',
-        action: '',
+        action: 'loginOrLogout',
+    },
+    {
+        route: 'admin',
+        label: 'Logga in',
+        icon: '',
+        cls: 'header-buttons header-btn-logout',
+        limitedTo: 'user',
+        action: 'loginOrLogout',
     },
 ];
 

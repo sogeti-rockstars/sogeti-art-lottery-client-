@@ -1,12 +1,26 @@
 import { HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AuthService {
-  authenticated = true;
-  authHeaders: HttpHeaders | undefined;
+    authenticated = true;
+    authHeaders: HttpHeaders | undefined;
 
-  constructor() {}
+    public loginLogoutChanged = new EventEmitter<boolean>();
+
+    constructor(private router: Router) {}
+
+    get isAdmin() {
+        return this.router.url.search(/admin/) > 0;
+    }
+
+    login() {
+        this.authenticated = true;
+    }
+    logout() {
+        this.authenticated = false;
+    }
 }

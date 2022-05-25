@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title = 'sogeti-art-lottery-client';
   paintings: ArtItem[] = [];
   isImageLoading: boolean = false;
-  isAdmin: boolean = location.search.indexOf('adminview') != -1;
+  // isAdmin: boolean = location.search.indexOf('adminview') != -1;
 
   constructor(
     private artItemApiService: ArtItemApiService,

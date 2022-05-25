@@ -7,33 +7,57 @@ import { MembersComponent } from '../pages/members/members.component';
 import { WinnersComponent } from '../pages/winners/winners.component';
 
 export const MaterialRoutes: Routes = [
-  {
-    path: '',
-    redirectTo: 'artitems',
-    pathMatch: 'full',
-  },
-  {
-    path: 'artitems',
-    component: ArtItemsComponent,
-  },
-  {
-    path: 'association',
-    component: AssociationComponent,
-  },
-  {
-    path: 'lottery-start',
-    component: LotteryStartComponent,
-  },
-  {
-    path: 'winners',
-    component: WinnersComponent,
-  },
-  {
-    path: 'members',
-    component: MembersComponent,
-  },
-  {
-    path: 'create-lottery',
-    component: CreateLotteryComponent,
-  },
+    {
+        path: '',
+        redirectTo: 'user/artitems',
+        pathMatch: 'full',
+    },
+    {
+        path: 'user/artitems',
+        component: ArtItemsComponent,
+    },
+    {
+        path: 'user/association',
+        component: AssociationComponent,
+    },
+    {
+        path: 'user/lottery-start',
+        component: LotteryStartComponent,
+    },
+    {
+        path: 'user/winners',
+        component: WinnersComponent,
+    },
+    {
+        path: 'user/members',
+        component: MembersComponent,
+    },
+    {
+        path: 'user/create-lottery',
+        component: CreateLotteryComponent,
+    },
+    {
+        path: 'admin/artitems',
+        component: ArtItemsComponent,
+    },
+    {
+        path: 'admin/association',
+        component: AssociationComponent,
+    },
+    {
+        path: 'admin/lottery-start',
+        component: LotteryStartComponent,
+    },
+    {
+        path: 'admin/winners',
+        component: WinnersComponent,
+    },
+    {
+        path: 'admin/members',
+        component: MembersComponent,
+    },
+    {
+        path: 'admin/create-lottery',
+        component: CreateLotteryComponent,
+    },
 ];
