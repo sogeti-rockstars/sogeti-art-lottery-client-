@@ -33,6 +33,9 @@ export class ArtItemService {
     }
 
     public deleteArtItem(id: number): Observable<Object> {
-        return this.artItemApiService.deleteArtItem(id);
+        return this.artItemApiService.deleteArtItem(id).pipe(
+            retry(1),
+            tap((response) => this.artItemSubject.next(new ArtItem()))
+        );
     }
 }
