@@ -5,6 +5,7 @@ import { AppComponent } from 'src/app/app.component';
 import { ArtItem } from 'src/app/model/art-item';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
     selector: 'app-auto-card',
@@ -24,7 +25,7 @@ export class AutoCardComponent implements OnInit {
 
     constructor(
         private fb: FormBuilder,
-        public app: AppComponent,
+        public authService: AuthService,
         private itemApiService: ArtItemApiService,
         private artItemService: ArtItemService,
         private matDialog: MatDialog
