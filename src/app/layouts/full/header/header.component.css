@@ -29,12 +29,12 @@
 
 .sidebar-button {
     height: 2rem;
-    font-size: 14px;
+    font-size: 16px;
     line-height: normal;
 }
 .route-button {
-    height: 2rem;
-    font-size: 14px;
+    height: 1.5rem;
+    font-size: 12px;
     line-height: normal;
 }
 
