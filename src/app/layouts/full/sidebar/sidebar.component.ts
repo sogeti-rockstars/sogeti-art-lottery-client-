@@ -1,38 +1,55 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
-import { MenuItems } from 'src/app/component/menu-items/menu-items';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Lottery } from 'src/app/model/lottery';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
-  selector: 'app-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: [],
+    selector: 'app-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.css'],
 })
-export class AppSidebarComponent implements OnDestroy {
-  mobileQuery: MediaQueryList;
-  private _mobileQueryListener: () => void;
+export class AppSidebarComponent implements OnInit {
+    @Output() sidebarVisibleClicked = new EventEmitter<void>();
+    @Input() visible = false;
 
-  @Input() public visible = false;
-  @Output() public visibility = new EventEmitter<boolean>();
+    get lotteries() {
+        return this.lotteries$;
+    }
 
-  constructor(
-    changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher,
-    public menuItems: MenuItems
-  ) {
-    this.mobileQuery = media.matchMedia('(min-width: 768px)');
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
-  }
+    private lotteries$: Lottery[] = [];
 
-  ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
-    // this.menuItems.getMenuitem()[0].state;
-    // this.menuItems.getMenuite
-  }
+    constructor(private lotteryService: LotteryService) {}
 
-  public toggleSideNav() {
-    this.visible = !this.visible;
-    this.visibility.emit(this.visible);
+    ngOnInit(): void {
+        console.log('init');
+        this.lotteryService.getLotteriesSummary().subscribe((data: Lottery[]) => (this.lotteries$ = data));
+    }
 
-  }
+    public pickLottery(idx: any) {
+        this.lotteryService.setCurrentLottery(idx);
+        this.sidebarVisibleClicked.emit();
+    }
 }
+
+// Todo: autoclose sidebar when clicking on side.
+// the code below works only when viewing the contestant component for some reason...
+//
+// import { ApplicationRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
+// constructor(private lotteryService: LotteryService, private elemRef: ElementRef, private renderer: Renderer2, private app: ApplicationRef) {}
+// this.sidebarVisibleClicked.subscribe(() => this.listenClicks());
+// private unListenClicksFunction?: () => void;
+// private listenClicks() {
+//     this.unListenClicks();
+//     if (this.visible == true)
+//         this.unListenClicks = this.renderer.listen(this.app.components[0].location.nativeElement, 'click', (event) => this.clickListen(event));
+//     else console.log('not subscribing');
+// }
+// private unListenClicks() {
+//     if (this.unListenClicksFunction) this.unListenClicksFunction.call(this);
+// }
+// private clickListen(event: any) {
+//     if (!this.elemRef.nativeElement.contains(event.target)) {
+//         console.log('clicked outside!');
+//         this.visible = false;
+//         this.sidebarVisibleClicked.emit();
+//     } else console.log('clicked inside!');
+// }

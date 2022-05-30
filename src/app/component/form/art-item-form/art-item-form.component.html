@@ -1,0 +1,52 @@
+<div id="flex-form-container">
+  <div class="flex-form-image">
+<img *ngIf="update==true" mat-dialog-title class="img-display" [src]="loadImageUrl()">
+</div>
+<div class="flex-form-content">
+<p *ngIf="update===true">ID = {{ artItem.id }}</p>
+<form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
+<div class="form-div">
+    <mat-form-field appearance="outline" width="inherit">
+      <mat-label>Item Name</mat-label>
+     <input matInput id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Name of the item" required>
+    </mat-form-field>
+</div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Artist Name</mat-label>
+     <input matInput type="artistName" type="text" formControlName="artistName" class="form-control" id="artistName" placeholder="Artist who made the item">
+    </mat-form-field>
+  </div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Value</mat-label>
+     <input matInput type="value" type="text" formControlName="value" class="form-control" id="value" placeholder="e.g. '500kr'">
+    </mat-form-field>
+  </div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Size</mat-label>
+     <input matInput type="size" type="text" formControlName="size" class="form-control" id="size" placeholder="e.g. '25x35cm'">
+    </mat-form-field>
+  </div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Frame Description</mat-label>
+    <input matInput type="frameDescription" type="text" formControlName="frameDescription" class="form-control" id="frameDescription" placeholder="e.g. 'Wooden frame'">
+    </mat-form-field>
+  </div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Technique</mat-label>
+    <input matInput type="technique" type="text" formControlName="technique" class="form-control" id="technique" placeholder="e.g. 'Oil painting', 'carved in wood'">
+    </mat-form-field>
+  </div><div>
+    <mat-form-field appearance="outline">
+      <mat-label>Lottery ID</mat-label>
+    <input matInput type="technique" type="text" formControlName="lottery_id" class="form-control" id="technique" placeholder="e.g. '45'">
+    </mat-form-field>
+  </div>  
+  <div class="modal-footer">
+<div class="form-value">
+     <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Update</button></div>
+     <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" type="submit">Add</button></div>
+  </div>
+</div>
+</form>
+</div>
+</div>

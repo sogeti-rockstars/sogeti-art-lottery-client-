@@ -1,0 +1,32 @@
+<span class="contentant-main">
+    <app-filter-list
+        class="search-bar"
+        [dataList]="rowData"
+        [filterFunction]="filterFunction"
+        (listChanged)="filteredItemsChangeListener($event)"
+    ></app-filter-list>
+    <app-contestant-sel-buttons
+        *ngIf="editable"
+        [selectedItemsAmount]="selectedItemsAmount"
+        [selectAll]="listManipulation.selectAll"
+        [selectNone]="listManipulation.selectNone"
+        [deleteSelected]="listManipulation.deleteSelected"
+    ></app-contestant-sel-buttons>
+    <mat-list *ngIf="rowData.length>0">
+        <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
+            <app-contestant-row
+                #renderedRow
+                *ngIf="row.render && !row.filtered; else notRenderedRow"
+                class="row-item row-item-rendered"
+                id="rendered"
+                (interactionEvent)="interactionEventListener(idx, $event)"
+                [(rowData)]="rowData[idx]"
+                [index]="idx"
+                [editable]="editable"
+            ></app-contestant-row>
+            <ng-template #notRenderedRow>
+                <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
+            </ng-template>
+        </div>
+    </mat-list>
+</span>

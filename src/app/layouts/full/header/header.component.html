@@ -1,31 +1,58 @@
-<div class="navbar-header">
-  <mat-toolbar class="topbar telative">
-    <button
-      mat-raised-button
-      class="main-buttons"
-      color="accent"
-      value="sidebarclosed"
-      (click)="toggleSideNav.emit()"
-    >
-      <!-- (click)="snav.toggle()" -->
-      <mat-icon>menu</mat-icon><a class="main-buttons-a">Norrkonst</a>
-    </button>
-    <button mat-raised-button class="main-buttons">
-      <a class="main-buttons-a" [routerLink]="['.', 'artitems']"> Konstverk</a>
-    </button>
-    <button mat-raised-button class="main-buttons" color="accent">
-      <a class="main-buttons-a" [routerLink]="['.', 'winners']"> Vinnare</a>
-    </button>
-    <button mat-raised-button class="main-buttons" color="accent">
-      <a class="main-buttons-a" [routerLink]="['.', 'association']">
-        Om föreningen</a
-      >
-    </button>
-  </mat-toolbar>
+<mat-toolbar fxLayout="row" color="primary" class="header-container">
+    <div class="header-items-wrap">
+        <div class="header-buttons-wrap" fxHide.xs fxShow>
+            <button
+                mat-raised-button
+                aria-label="sidebar-icon"
+                class="header-buttons sidebar-button"
+                value="sidebarclosed"
+                id="toggleSide"
+                (click)="sidebarVisibleClicked.emit()"
+            >
+                <mat-icon class="header-button-icon">notes</mat-icon>
+                {{ currLotteryTitle }}
+            </button>
 
-  <div class="navbar-brand">
-    <a href="index.html">
-      <img class="logga" src="assets/images/sogeti.jpg" alt="logga" />
-    </a>
-  </div>
-</div>
+            <button
+                *ngFor="let item of getMenuItems()"
+                class="{{ item.cls }}"
+                value="sidebarclosed"
+                [id]="item.action"
+                mat-raised-button
+                mat-button
+                fxHide.xs
+                (click)="this.doAction(item, $event)"
+            >
+                <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon>
+                {{ item.label }}
+            </button>
+        </div>
+
+        <button mat-raised-button class="drop-menu-button" [matMenuTriggerFor]="dropMenu" fxHide fxShow.xs>
+            <!-- <mat-icon>more_vert</mat-icon> -->
+            <mat-icon class="header-button-icon">notes</mat-icon>
+            {{ currLotteryTitle }}
+        </button>
+
+        <a class="navbar-brand" href="index.html">
+            <img class="logga" src="assets/images/sogeti.svg" alt="logga" />
+        </a>
+    </div>
+
+    <mat-menu #dropMenu="matMenu">
+        <button mat-menu-item [matMenuTriggerFor]="subMenu">Andra årtal</button>
+        <ng-container *ngFor="let item of getMenuItems()">
+            <button mat-menu-item (click)="this.doAction(item, $event)">{{ item.label }}</button>
+            <mat-divider></mat-divider>
+        </ng-container>
+    </mat-menu>
+
+    <mat-menu #subMenu>
+        <div class="submenu-container">
+            <span *ngFor="let lott of lotteries; let i=index">
+                <button mat-menu-item (click)="lotteryService.setCurrentLottery(i)">{{ lott.title }}</button>
+                <mat-divider></mat-divider>
+            </span>
+        </div>
+    </mat-menu>
+</mat-toolbar>
