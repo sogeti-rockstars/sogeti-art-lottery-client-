@@ -1,29 +1,53 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Contestant } from 'src/app/model/contestant';
-import { Lottery } from 'src/app/model/lottery';
-import { Winner } from 'src/app/model/winner';
 import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
+import { ContestantListPage } from '../contestant-list-page';
 
 @Component({
     selector: 'app-lottery-start',
     templateUrl: './lottery-start.component.html',
     styleUrls: ['./lottery-start.component.css'],
 })
-export class LotteryStartComponent implements OnInit {
-    winners: Contestant[] = [];
+export class LotteryStartComponent extends ContestantListPage implements OnInit {
+    show = true; // Used to restart the animation by hiding it very temporarily.
+
     contestants: Contestant[] = [];
+    winners: Contestant[] = [];
 
-    constructor(private lotteryService: LotteryService, private contestantService: ContestantService) {}
+    constructor(private contService: ContestantService, lotteryService: LotteryService, private cdr: ChangeDetectorRef) {
+        super(lotteryService);
+    }
 
-    ngOnInit(): void {
-        this.lotteryService.lotteryChanged.subscribe((lott) => {
-            this.contestantService.getContestants(lott.id).subscribe((conts) => (this.contestants = conts));
-        });
+    override ngOnInit(): void {
+        super.ngOnInit();
+    }
+
+    spinningAnimationEndHandler() {
+        while (this.winners.length * 0.25 <= this.contestants.length) {
+            this.winners.push(this.getRandomContestant());
+            this.contestantsChange.emit(this.winners);
+        }
     }
 
     spinTheWheel() {
-        this.winners.push(this.getRandomContestant());
+        this.animationRestart();
+    }
+
+    /**
+     * Restart the animation
+     */
+    private animationRestart() {
+        this.show = false;
+        this.cdr.detectChanges();
+        this.show = true;
+    }
+
+    protected loadContestants(lotteryId: number): void {
+        this.contService.getContestants(lotteryId).subscribe((resp) => {
+            this.contestants = resp;
+            this.winners = [];
+        });
     }
 
     private getRandomContestant() {

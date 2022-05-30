@@ -1,0 +1,3 @@
+<div *ngIf="show" #circleContainer id="container" (animationend)="animationEndHandler($event)">
+    <div #circle *ngFor="let in of [].constructor(circleSections); let i=index" [id]="'circle'+(i+1)" class="circle"></div>
+</div>

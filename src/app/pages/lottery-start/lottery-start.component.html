@@ -1,9 +1,15 @@
 <h1>Starta lotteri</h1>
-<button class="lottery-button" (click)="spinTheWheel()">spin</button>
-<div id="lottery-main-content">
-    <div *ngFor="let winner of winners; let i=index">{{i}} cont. Id: {{winner.id}}</div>
-</div>
+<button class="lottery-button" (click)="spinTheWheel()">Lotta ut</button>
 
+<p> </p>
+<app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [show]="show"></app-spinning-wheel>
+
+<h1>Vinnare</h1>
+<contestant-list-component [parent]="this"></contestant-list-component>
+
+<!-- <div id="lottery-main-content"> -->
+<!--     <div *ngFor="let winner of winners; let i=index">{{i}} cont. Id: {{winner.id}}</div> -->
+<!-- </div> -->
 <!-- <div class="lottery-start-container"> -->
 <!--     <div class="row"> -->
 <!--         <div class="header"> -->
