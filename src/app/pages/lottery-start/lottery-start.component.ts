@@ -24,14 +24,17 @@ export class LotteryStartComponent extends ContestantListPage implements OnInit 
     }
 
     spinningAnimationEndHandler() {
-        while (this.winners.length * 0.25 <= this.contestants.length) {
+        while (this.winners.length <= this.contestants.length * 0.25) {
             this.winners.push(this.getRandomContestant());
             this.contestantsChange.emit(this.winners);
         }
     }
 
     spinTheWheel() {
+        this.contestants.concat(this.winners);
+        this.winners = [];
         this.animationRestart();
+        this.contestantsChange.emit(this.winners);
     }
 
     /**
@@ -47,6 +50,7 @@ export class LotteryStartComponent extends ContestantListPage implements OnInit 
         this.contService.getContestants(lotteryId).subscribe((resp) => {
             this.contestants = resp;
             this.winners = [];
+            this.contestantsChange.emit(this.winners);
         });
     }
 
