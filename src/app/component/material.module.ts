@@ -45,7 +45,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ContestantSelButtonsComponent } from './contestant-sel-buttons/contestant-sel-buttons.component';
 import { ContestantRowComponent } from './contestant-row/contestant-row.component';
-import { ContestantsComponent } from './contestants/contestants.component';
+import { ContestantListComponent } from './contestant-list/contestant-list.component';
 import { MembersComponent } from '../pages/members/members.component';
 import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
 import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
@@ -126,7 +126,7 @@ const components: Array<any> = [
     FilterListComponent,
     ContestantSelButtonsComponent,
     ContestantRowComponent,
-    ContestantsComponent,
+    ContestantListComponent,
     LotteryStartComponent,
     CreateLotteryComponent,
 ];

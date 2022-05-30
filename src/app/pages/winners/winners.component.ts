@@ -1,14 +1,19 @@
 import { Component } from '@angular/core';
-import { ContestantsComponent } from 'src/app/component/contestants/contestants.component';
+import { ContestantService } from 'src/app/service/contestant.service';
+import { LotteryService } from 'src/app/service/lottery.service';
+import { ContestantListPage } from '../contestant-list-page';
 
 @Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
     selector: 'winners',
     templateUrl: './winners.component.html',
     styleUrls: ['./winners.component.css'],
 })
-export class WinnersComponent {
-    // test: ContestantsComponent;
+export class WinnersComponent extends ContestantListPage {
+    constructor(private contService: ContestantService, lotteryService: LotteryService) {
+        super(lotteryService);
+    }
 
-    constructor() {}
+    protected loadContestants(lotteryId: number): void {
+        this.contService.getContestants(lotteryId).subscribe((resp) => this.contestantsChange.emit(resp));
+    }
 }

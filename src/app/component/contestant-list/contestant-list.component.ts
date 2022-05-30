@@ -4,17 +4,17 @@ import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef
 import { Subscription } from 'rxjs';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
-import { Contestant } from 'src/app/model/contestant';
+import { ContestantListPage } from 'src/app/pages/contestant-list-page';
 import { ContestantService } from 'src/app/service/contestant.service';
-import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
-    selector: 'app-contestants',
-    templateUrl: './contestants.component.html',
-    styleUrls: ['./contestants.component.css'],
+    selector: 'contestant-list-component',
+    templateUrl: './contestant-list.component.html',
+    styleUrls: ['./contestant-list.component.css'],
 })
-export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked {
-    @Input() public editable = false;
+export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChecked {
+    @Input() parent!: ContestantListPage;
+    @Input() editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
     public readonly filterFunction = (row: RowData, query: string) => (row.filtered = !row.data.name.toLowerCase().includes(query.toLowerCase()));
@@ -34,18 +34,18 @@ export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked
     private loadContestantsSubscription!: Subscription;
 
     constructor(
-        private service: ContestantService,
         public cdr: ChangeDetectorRef,
-        @Inject(DOCUMENT) private document: Document,
         private modService: ModalService,
         private vcr: ViewContainerRef,
         private contestantsService: ContestantService,
-        private lotteryService: LotteryService
+        @Inject(DOCUMENT) private document: Document
     ) {}
 
     ngOnInit(): void {
-        if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
-        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadContestants(lottery.id));
+        this.loadContestantsSubscription = this.parent.contestantsChange.subscribe((contestants) => {
+            this.rowData = [];
+            contestants.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
+        });
         this.setColWidths([200, 150, 65, 150]);
     }
 
@@ -140,19 +140,10 @@ export class ContestantsComponent implements OnInit, OnDestroy, AfterViewChecked
         addNew: () => console.log('ho'),
     };
 
-    private async loadContestants(lotteryId: number) {
-        this.service.getContestants(lotteryId).subscribe({
-            next: (resp: Contestant[]) => {
-                this.rowData = [];
-                resp.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
-            },
-            error: (error: any) => console.log(error),
-            complete: () => console.log('Http got response.'),
-        });
-    }
-
     ////////////////////////////////
     // Just-in-time rendering stuff:
+
+    // (Todo: Ottos idea, we might be able to do this using pure CSS! Investigate!)
 
     /**
      * Called by ngAfterViewChecked after rowWrapper ElementRefs are found for the first time.

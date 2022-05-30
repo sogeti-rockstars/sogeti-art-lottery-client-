@@ -1,18 +1,31 @@
-.lottery-start-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 100px;
+h1 {
+    text-shadow: 1px 1px white;
+    padding: 1em;
+    color: black;
+    text-align: center;
 }
-.header {
-    font-size: 50px;
+
+#lottery-main-content {
+    max-width: 70rem;
+    margin-left: auto;
+    margin-right: auto;
 }
-.lottery-header {
-    font-size: 50px;
-}
-.lottery-body {
-    display: flex;
-    justify-content: center;
-}
+
+/* .lottery-start-container { */
+/*     display: flex; */
+/*     justify-content: center; */
+/*     margin-top: 100px; */
+/* } */
+/* .header { */
+/*     font-size: 50px; */
+/* } */
+/* .lottery-header { */
+/*     font-size: 50px; */
+/* } */
+/* .lottery-body { */
+/*     display: flex; */
+/*     justify-content: center; */
+/* } */
 .lottery-button {
     font-size: 24px;
     width: 100px;
@@ -33,7 +46,7 @@
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
-.winners {
-    display: flex;
-    justify-content: center;
-}
+/* .winners { */
+/*     display: flex; */
+/*     justify-content: center; */
+/* } */
