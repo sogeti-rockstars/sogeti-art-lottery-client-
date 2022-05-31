@@ -63,7 +63,7 @@ export class AutoCardComponent implements OnInit {
         this.values = this.objectContent.map(function (value, index) {
             if (value[0].toLowerCase().indexOf('lottery') != -1) {
                 if (typeof value[1] === 'object' && value[1] != null) {
-                    return value[1].title + ' (' + value[1].id + ')';
+                    return value[1].title;
                 }
             }
             return value[1];
