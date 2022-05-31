@@ -15,8 +15,8 @@ import { LotteryService } from '../service/lottery.service';
 export abstract class ContestantListPage implements OnInit, OnDestroy {
     @Output() contestantsChange = new EventEmitter<Contestant[]>();
 
-    private loadContestantsSubscription!: Subscription;
-    constructor(private lotteryService: LotteryService) {}
+    public loadContestantsSubscription!: Subscription;
+    constructor(public lotteryService: LotteryService) {}
 
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
