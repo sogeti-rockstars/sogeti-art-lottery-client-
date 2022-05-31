@@ -5,23 +5,4 @@
 <app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [show]="show"></app-spinning-wheel>
 
 <h1>Vinnare</h1>
-<contestant-list-component [parent]="this"></contestant-list-component>
-
-<!-- <div id="lottery-main-content"> -->
-<!--     <div *ngFor="let winner of winners; let i=index">{{i}} cont. Id: {{winner.id}}</div> -->
-<!-- </div> -->
-<!-- <div class="lottery-start-container"> -->
-<!--     <div class="row"> -->
-<!--         <div class="header"> -->
-<!--             <h1 class="lottery-header">Starta lotteriet!!!</h1> -->
-<!--         </div> -->
-<!--         <div class="lottery-body"> -->
-<!--             <button class="lottery-button" (click)="spinTheWheel()">spin</button> -->
-<!--              -->
-<!--         </div> -->
-<!--         <div class="winners" *ngFor="let winner of winners"> -->
-<!--             {{winner.id}} -->
-<!--             {{winner.placement}} -->
-<!--         </div> -->
-<!--     </div> -->
-<!-- </div>; -->
+<contestant-list-component [contestantListParent]="this"></contestant-list-component>

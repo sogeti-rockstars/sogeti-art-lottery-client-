@@ -1,6 +1,8 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
 import { Contestant } from 'src/app/model/contestant';
-import { ContestantService } from 'src/app/service/contestant.service';
+import { Lottery } from 'src/app/model/lottery';
+import { Winner } from 'src/app/model/winner';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { ContestantListPage } from '../contestant-list-page';
 
@@ -9,55 +11,45 @@ import { ContestantListPage } from '../contestant-list-page';
     templateUrl: './lottery-start.component.html',
     styleUrls: ['./lottery-start.component.css'],
 })
-export class LotteryStartComponent extends ContestantListPage implements OnInit {
+export class LotteryStartComponent extends ContestantListPage {
     show = true; // Used to restart the animation by hiding it very temporarily.
 
-    contestants: Contestant[] = [];
-    winners: Contestant[] = [];
+    private currLottery!: Lottery;
 
-    constructor(private contService: ContestantService, lotteryService: LotteryService, private cdr: ChangeDetectorRef) {
+    constructor(lotteryService: LotteryService, private cdr: ChangeDetectorRef) {
         super(lotteryService);
     }
 
-    override ngOnInit(): void {
-        super.ngOnInit();
-    }
-
-    spinningAnimationEndHandler() {
-        while (this.winners.length <= this.contestants.length * 0.25) {
-            this.winners.push(this.getRandomContestant());
-            this.contestantsChange.emit(this.winners);
+    async spinningAnimationEndHandler() {
+        let currLotteryId = this.lotteryService.currLotteryId!;
+        let repetitions = Math.floor(this.currLottery.contestants.length * 0.25 - this.currLottery.winners.length);
+        let observables: Observable<Winner>[] = [];
+        if (repetitions > 0) {
+            [...Array(repetitions)].forEach((_) => {
+                observables.push(this.lotteryService.spinTheWheel(currLotteryId));
+            });
         }
+
+        combineLatest(observables).subscribe((_) => {
+            this.lotteryService.getLottery(currLotteryId).subscribe((lottery) => {
+                this.currLottery = lottery;
+                this.contestantsChange.emit([this.currLottery.winners, this.currLottery.contestants]);
+            });
+        });
     }
 
     spinTheWheel() {
-        this.contestants.concat(this.winners);
-        this.winners = [];
         this.animationRestart();
-        this.contestantsChange.emit(this.winners);
     }
 
-    /**
-     * Restart the animation
-     */
     private animationRestart() {
         this.show = false;
         this.cdr.detectChanges();
         this.show = true;
     }
 
-    protected loadContestants(lotteryId: number): void {
-        this.contService.getContestants(lotteryId).subscribe((resp) => {
-            this.contestants = resp;
-            this.winners = [];
-            this.contestantsChange.emit(this.winners);
-        });
-    }
-
-    private getRandomContestant() {
-        let max = this.contestants.length - 1;
-        let randomId = Math.floor(Math.random() * max);
-        let randomCont = this.contestants.splice(randomId, 1);
-        return randomCont[0];
+    protected loadContestants(lottery: Lottery): void {
+        this.currLottery = lottery;
+        this.contestantsChange.emit([this.currLottery.winners, this.currLottery.contestants]);
     }
 }

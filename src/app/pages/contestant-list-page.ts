@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Contestant } from '../model/contestant';
+import { Lottery } from '../model/lottery';
+import { Winner } from '../model/winner';
 import { LotteryService } from '../service/lottery.service';
 
 /**
@@ -13,21 +15,25 @@ import { LotteryService } from '../service/lottery.service';
  */
 @Component({ template: '' })
 export abstract class ContestantListPage implements OnInit, OnDestroy {
-    @Output() contestantsChange = new EventEmitter<Contestant[]>();
+    @Output() contestantsChange = new EventEmitter<Contestant[] | [Winner[], Contestant[]]>();
 
-    public loadContestantsSubscription!: Subscription;
+    private loadContestantsSubscription?: Subscription;
+
     constructor(public lotteryService: LotteryService) {}
 
     ngOnInit(): void {
-        if (this.lotteryService.currLotteryId !== undefined) this.loadContestants(this.lotteryService.currLotteryId);
-        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
-            this.loadContestants(lottery.id);
-        });
+        if (this.lotteryService.currLotteryId !== undefined)
+            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => this.loadContestants(lottery));
+
+        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadContestants(lottery));
     }
 
     ngOnDestroy(): void {
-        this.loadContestantsSubscription.unsubscribe();
+        if (this.loadContestantsSubscription !== undefined) {
+            this.loadContestantsSubscription.unsubscribe();
+            this.loadContestantsSubscription = undefined;
+        }
     }
 
-    protected abstract loadContestants(lotteryId: number): void;
+    protected abstract loadContestants(lottery: Lottery): void;
 }
