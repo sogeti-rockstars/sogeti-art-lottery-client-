@@ -4,6 +4,8 @@ import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef
 import { Subscription } from 'rxjs';
 import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
+import { Contestant } from 'src/app/model/contestant';
+import { Winner } from 'src/app/model/winner';
 import { ContestantListPage } from 'src/app/pages/contestant-list-page';
 import { ContestantService } from 'src/app/service/contestant.service';
 
@@ -13,7 +15,7 @@ import { ContestantService } from 'src/app/service/contestant.service';
     styleUrls: ['./contestant-list.component.css'],
 })
 export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChecked {
-    @Input() parent!: ContestantListPage;
+    @Input() contestantListParent!: ContestantListPage;
     @Input() editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
@@ -30,7 +32,6 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private lastWinScrollY = 0;
     private firstRenderFinished = false;
     private colGap = 20;
-
     private loadContestantsSubscription!: Subscription;
 
     constructor(
@@ -42,9 +43,20 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     ) {}
 
     ngOnInit(): void {
-        this.loadContestantsSubscription = this.parent.contestantsChange.subscribe((contestants) => {
+        this.loadContestantsSubscription = this.contestantListParent.contestantsChange.subscribe((data) => {
             this.rowData = [];
-            contestants.forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
+
+            if (data.length < 1) return;
+            // Check if type is Contestant or [Winner[]|Contestant[]]
+            else if ((data[0] as any).employeeId !== undefined)
+                (data as Contestant[]).forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
+            else {
+                let [winners, conts] = data as [Winner[], Contestant[]];
+                winners.forEach((w, i) => {
+                    let cont = conts.find((c) => c.id == w.contestantId);
+                    if (cont !== undefined) this.rowData.push({ data: cont, render: i < this.firstRenderRowCount });
+                });
+            }
         });
         this.setColWidths([200, 150, 65, 150]);
     }

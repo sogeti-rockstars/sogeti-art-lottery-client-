@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { firstValueFrom, Observable, retry, tap } from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 import { ArtItem } from '../model/art-item';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
@@ -26,11 +26,10 @@ export class LotteryService {
      */
     public async setCurrentLottery(idx: number) {
         if (this.lotteries === undefined) await firstValueFrom(this.getLotteriesSummary());
-        this.currLottery = this.lotteries![idx];
-        this.lotteryChanged.emit(this.currLottery);
-
-        // let newCurrent = this.lotteries![idx];
-        // if (newCurrent === undefined) return;
+        this.getLottery(this.lotteries![idx].id).subscribe((lottery) => {
+            this.currLottery = lottery;
+            this.lotteryChanged.emit(this.currLottery);
+        });
     }
 
     public get currLotteryId(): number | undefined {

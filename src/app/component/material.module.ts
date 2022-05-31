@@ -49,6 +49,7 @@ import { ContestantListComponent } from './contestant-list/contestant-list.compo
 import { MembersComponent } from '../pages/members/members.component';
 import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
 import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
+import { SpinningWheelComponent } from './spinning-wheel/spinning-wheel.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -129,6 +130,7 @@ const components: Array<any> = [
     ContestantListComponent,
     LotteryStartComponent,
     CreateLotteryComponent,
+    SpinningWheelComponent,
 ];
 
 @NgModule({
