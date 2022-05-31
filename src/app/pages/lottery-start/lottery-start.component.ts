@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
-import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
 import { Winner } from 'src/app/model/winner';
 import { LotteryService } from 'src/app/service/lottery.service';

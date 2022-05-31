@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { ContestantListPage } from '../contestant-list-page';
