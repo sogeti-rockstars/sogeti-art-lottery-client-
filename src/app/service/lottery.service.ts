@@ -68,6 +68,15 @@ export class LotteryService {
         return this.apiService.addContestantToLottery(lotteryId, contestant);
     }
 
+    public addItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
+        return this.apiService.addItemToLottery(lotteryId, artItem).pipe(
+            tap((response) => {
+                this.currLottery = response;
+                this.lotteryChanged.emit(this.currLottery);
+            })
+        );
+    }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.updateLottery(lottery);
     }

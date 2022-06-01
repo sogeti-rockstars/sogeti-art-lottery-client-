@@ -14,8 +14,18 @@
                             <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
                                 <li class="list-group-item">
                                     <div *ngIf="editMode == true">
+                                        <div *ngIf="variableNames[i]!= 'lottery'">
                                         {{prettyVarNames[i]}}:
                                         <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
+                                    </div>
+                                    <div *ngIf="variableNames[i]== 'lottery'">
+                                        {{prettyVarNames[i]}}:
+                                        <select class="custom-select" formControlName="cityName">
+                                            
+                                            <option value="">Choose lottery</option>
+                                            <option *ngFor="let lottery of lotteries" [ngValue]="lottery">{{lottery.title}}</option>
+                                          </select>
+                                    </div>
                                     </div>
                                 </li>
                             </form>

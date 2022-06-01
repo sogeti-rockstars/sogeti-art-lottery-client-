@@ -2,10 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
-import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
-import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-art-item-form',
@@ -18,11 +16,8 @@ export class ArtItemFormComponent implements OnInit {
     @Input() artItem!: ArtItem;
     @Output() artItemOutput = new EventEmitter<ArtItem>();
     update: boolean = false;
-    selected!: number;
-    lotteries: Lottery[] = [];
     profileForm = this.fb.group({
         id: [''],
-        lottery_id: [''],
         itemName: ['', Validators.required],
         pictureUrl: [''],
         artistName: [''],
@@ -31,42 +26,27 @@ export class ArtItemFormComponent implements OnInit {
         value: [''],
         technique: [''],
     });
-
-    constructor(
-        private fb: FormBuilder,
-        private artItemService: ArtItemService,
-        private itemApiService: ArtItemApiService,
-        private matDialog: MatDialog,
-        private lotteryService: LotteryService
-    ) {}
+    constructor(private fb: FormBuilder, private artItemService: ArtItemService, private itemApiService: ArtItemApiService, private matDialog: MatDialog) {}
 
     loadImageUrl() {
         return this.itemApiService.getArtItemImageUrl(this.artItem.id);
     }
 
     onSubmit(artItem: ArtItem) {
-        // if (this.update == true) {
-        //     console.log('update is true');
-        //     this.artItemService.observeUpdateArtItem(artItem).subscribe((data) => {
-        //         console.log(data.id);
-        //         this.matDialog.closeAll();
-        //     });
-        // }
-        // if (this.update == false) {
-        // this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
-        //     console.log(data.id);
-        //     this.matDialog.closeAll();
-        //     if (this.lotteryService.currLotteryId !== undefined) {
-        //         this.lotteryService.addItemToLottery(this.lotteryService.currLotteryId, data);
-        //         console.log(data);
-        //     }
-        // });
-        console.log(this.selected);
-        this.lotteryService.addItemToLottery(this.selected, artItem).subscribe((data) => {
-            console.log(data.title);
-            this.matDialog.closeAll();
-        });
-        // }
+        if (this.update == true) {
+            console.log('update is' + this.update);
+            this.artItemService.observeUpdateArtItem(artItem).subscribe((data) => {
+                console.log(data.id);
+                this.matDialog.closeAll();
+            });
+        }
+        if (this.update == false) {
+            console.log('update is' + this.update);
+            this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
+                console.log(data.id);
+                this.matDialog.closeAll();
+            });
+        }
     }
 
     updateForm() {
@@ -89,8 +69,5 @@ export class ArtItemFormComponent implements OnInit {
             this.update = true;
             console.log('artitem is not null');
         }
-        this.lotteryService.getLotteriesSummary().subscribe((resp) => (this.lotteries = resp));
-        if (this.lotteryService.currLotteryId !== undefined)
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id));
     }
 }
