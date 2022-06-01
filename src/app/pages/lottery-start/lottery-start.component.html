@@ -2,7 +2,7 @@
 <button class="lottery-button" (click)="spinTheWheel()">Lotta ut</button>
 
 <p> </p>
-<app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [show]="show"></app-spinning-wheel>
+<app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [animationControlEvent]="animationControlEvent"></app-spinning-wheel>
 
 <h1>Vinnare</h1>
 <contestant-list-component [contestantListParent]="this"></contestant-list-component>

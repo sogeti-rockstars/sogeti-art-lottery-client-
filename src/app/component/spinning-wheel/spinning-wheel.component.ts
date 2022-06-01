@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
 
 @Component({
     selector: 'app-spinning-wheel',
@@ -11,12 +11,18 @@ export class SpinningWheelComponent implements AfterContentChecked {
 
     @Input() show = true; // Used to restart the animation by hiding it very temporarily.
     @Input() animationsPlayState = false;
+    @Input() animationControlEvent!: EventEmitter<number>;
 
     @ViewChildren('circle') private circles!: QueryList<ElementRef<HTMLDivElement>>;
 
     private stoppedAnimationOnInit = false;
 
+    constructor(private cdr: ChangeDetectorRef) {}
+
     ngAfterContentChecked(): void {
+        this.animationControlEvent.subscribe((ev) => {
+            if (ev == -1) this.animationRestart();
+        });
         if (!this.stoppedAnimationOnInit && this.circles !== undefined) {
             this.animationControl(this.animationsPlayState);
             this.stoppedAnimationOnInit = true;
@@ -34,5 +40,11 @@ export class SpinningWheelComponent implements AfterContentChecked {
         this.animationsPlayState = play !== undefined ? play : !this.animationsPlayState;
         let newState = this.animationsPlayState ? 'running' : 'paused';
         Array.from(this.circles).forEach((c) => (c.nativeElement.style.animationPlayState = newState));
+    }
+
+    private animationRestart() {
+        this.show = false;
+        this.cdr.detectChanges();
+        this.show = true;
     }
 }
