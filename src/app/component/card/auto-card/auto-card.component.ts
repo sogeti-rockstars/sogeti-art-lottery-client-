@@ -3,9 +3,11 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AppComponent } from 'src/app/app.component';
 import { ArtItem } from 'src/app/model/art-item';
+import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 import { AuthService } from 'src/app/service/auth.service';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
     selector: 'app-auto-card',
@@ -20,6 +22,7 @@ export class AutoCardComponent implements OnInit {
     prettyVarNames: string[] = [];
     panelClass: string;
     editMode!: boolean;
+    lotteries: Lottery[] = [];
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
     profileForm = this.fb.group(this.fb.control('wtf'));
 
@@ -28,7 +31,8 @@ export class AutoCardComponent implements OnInit {
         public authService: AuthService,
         private itemApiService: ArtItemApiService,
         private artItemService: ArtItemService,
-        private matDialog: MatDialog
+        private matDialog: MatDialog,
+        private lotteryService: LotteryService
     ) {
         this.panelClass = 'custom-dialog-container';
     }
@@ -36,6 +40,8 @@ export class AutoCardComponent implements OnInit {
     enableEdit() {
         this.editMode = true;
         console.log(this.profileForm);
+
+        this.lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
     }
 
     onSubmit(object: ArtItem) {
