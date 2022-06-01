@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Lottery } from 'src/app/model/lottery';
 import { LotteryService } from 'src/app/service/lottery.service';
+import { CreateLotteryComponent } from 'src/app/pages/create-lottery/create-lottery.component';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -17,7 +19,7 @@ export class AppSidebarComponent implements OnInit {
 
     private lotteries$: Lottery[] = [];
 
-    constructor(private lotteryService: LotteryService) {}
+    constructor(private lotteryService: LotteryService, public authService: AuthService) {}
 
     ngOnInit(): void {
         console.log('init');

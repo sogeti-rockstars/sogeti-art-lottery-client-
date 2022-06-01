@@ -21,4 +21,9 @@
 .mat-button-focus-overlay {
     color: red;
 }
-
+.create-lottery-button {
+    color: rgb(5, 78, 143);
+    font-size: 13px;
+    background-color: white;
+    box-shadow: inset;
+}
