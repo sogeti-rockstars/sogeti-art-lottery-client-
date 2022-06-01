@@ -37,7 +37,8 @@ export class LotteryStartComponent extends ContestantListPage {
         });
     }
 
-    spinTheWheel() {
+    spinTheWheel(ev: MouseEvent) {
+        ev.stopImmediatePropagation();
         this.animationControlEvent.emit(-1);
     }
 

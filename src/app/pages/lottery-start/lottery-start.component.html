@@ -1,5 +1,5 @@
 <h1>Starta lotteri</h1>
-<button class="lottery-button" (click)="spinTheWheel()">Lotta ut</button>
+<button class="lottery-button" (click)="spinTheWheel($event)">Lotta ut</button>
 
 <p> </p>
 <app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [animationControlEvent]="animationControlEvent"></app-spinning-wheel>
