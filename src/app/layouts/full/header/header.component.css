@@ -16,6 +16,7 @@
     margin-right: auto;
     top: 0px;
     bottom: 0px;
+    width: 170px;
 }
 
 .drop-menu-button {
@@ -23,7 +24,7 @@
 }
 
 .header-buttons {
-    margin-right: 1rem;
+    margin-left: 1rem;
     box-shadow: inset;
 }
 
@@ -41,9 +42,10 @@
 .login-out-button {
     background-color: rgb(176, 175, 175);
     color: white !important;
-    height: 20px;
+    height: 1.5rem;
     font-size: 12px;
     line-height: normal;
+    margin-left: 1rem;
 }
 
 .navbar-brand {
@@ -61,4 +63,16 @@
 
 .mat-focus-indicator {
     color: rgb(5, 78, 143);
+}
+
+.mat-menu-autosize {
+    width: 170px !important;
+}
+
+.create-lottery-button {
+    color: rgb(5, 78, 143);
+    font-size: 13px;
+    background-color: #e0e0e0;
+    box-shadow: inset;
+    margin: 6px;
 }

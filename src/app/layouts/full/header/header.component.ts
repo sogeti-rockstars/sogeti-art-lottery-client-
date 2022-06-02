@@ -22,7 +22,7 @@ export class AppHeaderComponent implements AfterViewInit {
     constructor(
         public app: AppComponent,
         private router: Router,
-        private authService: AuthService,
+        public authService: AuthService,
         private _focusMonitor: FocusMonitor,
         public lotteryService: LotteryService
     ) {
@@ -98,7 +98,7 @@ const menuItems: MenuItem[] = [
     {
         route: 'user',
         label: 'Logga ut',
-        icon: '',
+        icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
         action: 'loginOrLogout',
@@ -106,7 +106,7 @@ const menuItems: MenuItem[] = [
     {
         route: 'admin',
         label: 'Logga in',
-        icon: '',
+        icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'user',
         action: 'loginOrLogout',
