@@ -22,7 +22,7 @@ export class AppHeaderComponent implements AfterViewInit {
     constructor(
         public app: AppComponent,
         private router: Router,
-        private authService: AuthService,
+        public authService: AuthService,
         private _focusMonitor: FocusMonitor,
         public lotteryService: LotteryService
     ) {
