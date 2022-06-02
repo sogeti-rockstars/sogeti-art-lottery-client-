@@ -1,38 +1,70 @@
-import { AfterContentChecked, Component, ElementRef, EventEmitter, Input, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectionStrategy,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    ViewChild,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-spinning-wheel',
     templateUrl: './spinning-wheel.component.html',
     styleUrls: ['./spinning-wheel.component.scss'],
 })
-export class SpinningWheelComponent implements AfterContentChecked {
+export class SpinningWheelComponent implements OnInit, OnDestroy, AfterViewInit {
     @Output() onAnimationEnd = new EventEmitter<void>();
     readonly circleSections = 8;
 
-    @Input() show = true; // Used to restart the animation by hiding it very temporarily.
-    @Input() animationsPlayState = false;
+    @Input() animationControlEvent!: EventEmitter<number>;
 
-    @ViewChildren('circle') private circles!: QueryList<ElementRef<HTMLDivElement>>;
+    @ViewChild('circleContainer') private circleContainer!: ElementRef<HTMLDivElement>;
 
-    private stoppedAnimationOnInit = false;
-
-    ngAfterContentChecked(): void {
-        if (!this.stoppedAnimationOnInit && this.circles !== undefined) {
-            this.animationControl(this.animationsPlayState);
-            this.stoppedAnimationOnInit = true;
-        }
+    ngAfterViewInit(): void {
+        this.circleContainer.nativeElement.style.opacity = '0';
+        this.circleContainer.nativeElement.addEventListener('animationstart', (ev) => {
+            if (this.animate || ev.animationName != 'spin1') return;
+            this.circleContainer.nativeElement.classList.add('circle-paused');
+            this.circleContainer.nativeElement.style.opacity = '1';
+        });
     }
 
-    public animationEndHandler(event: any) {
-        if (event.target.getAnimations().length == 0 && event.target.id === 'circle1') this.onAnimationEnd.emit();
+    private animationControlEventSubscription?: Subscription;
+    private animate = false;
+
+    constructor() {}
+
+    ngOnDestroy(): void {
+        if (this.animationControlEventSubscription?.closed) this.animationControlEventSubscription.unsubscribe();
     }
 
-    /**
-     * @param play Optional: play/pause animation, skip to toggle.
-     */
-    public animationControl(play?: boolean) {
-        this.animationsPlayState = play !== undefined ? play : !this.animationsPlayState;
-        let newState = this.animationsPlayState ? 'running' : 'paused';
-        Array.from(this.circles).forEach((c) => (c.nativeElement.style.animationPlayState = newState));
+    ngOnInit(): void {
+        this.animationControlEventSubscription = this.animationControlEvent.subscribe((ev) => {
+            if (ev == -1) this.animationRestart();
+        });
+    }
+
+    public animationEndHandler() {
+        Array.from(this.circleContainer.nativeElement.children)
+            .map((c) => c as HTMLDivElement)
+            .forEach((c) => {
+                c.style.animation = 'none';
+                c.offsetHeight;
+                c.style.animation = '';
+            });
+        this.animate = false;
+        this.onAnimationEnd.emit();
+    }
+
+    private animationRestart() {
+        this.circleContainer.nativeElement.classList.remove('circle-paused');
+        setTimeout(() => this.animationEndHandler(), 6700);
+        this.animate = true;
     }
 }

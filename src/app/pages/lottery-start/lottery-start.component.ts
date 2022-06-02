@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { Lottery } from 'src/app/model/lottery';
 import { Winner } from 'src/app/model/winner';
@@ -11,7 +11,7 @@ import { ContestantListPage } from '../contestant-list-page';
     styleUrls: ['./lottery-start.component.css'],
 })
 export class LotteryStartComponent extends ContestantListPage {
-    show = true; // Used to restart the animation by hiding it very temporarily.
+    public readonly animationControlEvent = new EventEmitter<number>();
 
     private currLottery!: Lottery;
 
@@ -37,14 +37,9 @@ export class LotteryStartComponent extends ContestantListPage {
         });
     }
 
-    spinTheWheel() {
-        this.animationRestart();
-    }
-
-    private animationRestart() {
-        this.show = false;
-        this.cdr.detectChanges();
-        this.show = true;
+    spinTheWheel(ev: MouseEvent) {
+        ev.stopImmediatePropagation();
+        this.animationControlEvent.emit(-1);
     }
 
     protected loadContestants(lottery: Lottery): void {
