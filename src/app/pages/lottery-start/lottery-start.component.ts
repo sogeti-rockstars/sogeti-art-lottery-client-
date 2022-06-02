@@ -25,7 +25,7 @@ export class LotteryStartComponent extends ContestantListPage {
         combineLatest(observables).subscribe((_) => {
             this.lotteryService.getLottery(currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
-                // this.contestantsChange.emit([this.currLottery.winners, this.currLottery.contestants]);
+                this.loadContestants(lottery);
             });
         });
     }

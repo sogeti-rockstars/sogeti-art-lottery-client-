@@ -9,6 +9,6 @@ import { ContestantListPage } from '../contestant-list-page';
 })
 export class WinnersComponent extends ContestantListPage {
     protected loadContestants(lottery: Lottery): void {
-        super.populateRowData(lottery.contestants);
+        super.populateRowData([lottery.winners, lottery.contestants]);
     }
 }
