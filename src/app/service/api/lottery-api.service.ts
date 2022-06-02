@@ -48,6 +48,10 @@ export class LotteryApiService {
         return this.httpPut<Lottery>(contestant, `addContestant/${lotteryId}`);
     }
 
+    public addItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
+        return this.httpPut<Lottery>(artItem, `addItem/${lotteryId}`);
+    }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.httpPut<Lottery>(lottery, lottery.id);
     }
