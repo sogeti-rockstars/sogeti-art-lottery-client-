@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ClickableElements } from 'src/app/pages/contestant-list-page';
 
 @Component({
     selector: 'app-contestant-sel-buttons',
@@ -8,11 +9,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ContestantSelButtonsComponent implements OnInit {
     @Input() selectedItemsAmount: number = 0;
 
-    @Input() selectAll = (): void => {};
-    @Input() selectNone = (): void => {};
-    @Input() deleteSelected = (): void => {};
+    @Input() interactionEventListener!: (_: any, __: any, el: ClickableElements) => void;
 
-    @Input() addNew = (): void => {};
+    ClickableElements = ClickableElements;
 
     constructor() {}
 

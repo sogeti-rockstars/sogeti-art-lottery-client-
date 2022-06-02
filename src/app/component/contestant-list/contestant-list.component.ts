@@ -2,11 +2,9 @@ import { DOCUMENT } from '@angular/common';
 import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
 import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ClickableElements, ContestantRowComponent, RowData } from 'src/app/component/contestant-row/contestant-row.component';
+import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
-import { Contestant } from 'src/app/model/contestant';
-import { Winner } from 'src/app/model/winner';
-import { ContestantListPage } from 'src/app/pages/contestant-list-page';
+import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
 import { ContestantService } from 'src/app/service/contestant.service';
 
 @Component({
@@ -19,10 +17,16 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     @Input() editable = false;
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
-    public readonly filterFunction = (row: RowData, query: string) => (row.filtered = !row.data.name.toLowerCase().includes(query.toLowerCase()));
+    public readonly filterFunction = (row: RowData, query: string) => {
+        row.filtered = row.data === undefined || !row.data!.name.toLowerCase().includes(query.toLowerCase());
+        return row.filtered;
+    };
     public get unrenderedRowsHeight() {
         return this.unrenderedRowsHeight$;
     }
+
+    public ClickableElements = ClickableElements;
+    public addNewRowData?: RowData;
 
     @ViewChildren('rowWrapper')
     private contRows!: QueryList<ElementRef<HTMLDivElement>>;
@@ -34,29 +38,12 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private colGap = 20;
     private loadContestantsSubscription!: Subscription;
 
-    constructor(
-        public cdr: ChangeDetectorRef,
-        private modService: ModalService,
-        private vcr: ViewContainerRef,
-        private contestantsService: ContestantService,
-        @Inject(DOCUMENT) private document: Document
-    ) {}
+    constructor(public cdr: ChangeDetectorRef, private modService: ModalService, private vcr: ViewContainerRef, @Inject(DOCUMENT) private document: Document) {}
 
     ngOnInit(): void {
         this.loadContestantsSubscription = this.contestantListParent.contestantsChange.subscribe((data) => {
-            this.rowData = [];
-
-            if (data.length < 1) return;
-            // Check if type is Contestant or [Winner[]|Contestant[]]
-            else if ((data[0] as any).employeeId !== undefined)
-                (data as Contestant[]).forEach((c, i) => this.rowData.push({ data: c, render: i < this.firstRenderRowCount }));
-            else {
-                let [winners, conts] = data as [Winner[], Contestant[]];
-                winners.forEach((w, i) => {
-                    let cont = conts.find((c) => c.id == w.contestantId);
-                    if (cont !== undefined) this.rowData.push({ data: cont, render: i < this.firstRenderRowCount });
-                });
-            }
+            data.slice(0, this.firstRenderRowCount).forEach((rd) => (rd.render = true));
+            this.rowData = data;
         });
         this.setColWidths([200, 150, 65, 150]);
     }
@@ -78,7 +65,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
 
     /** Tracker for *ngFor in template. Increases performance.*/
     public trackByContestant(_idx: number, row: RowData) {
-        return row.data.id;
+        return row.data?.id;
     }
 
     public openDefaultModal(idx: number): void {
@@ -89,72 +76,54 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
             .loadModal(component, this.vcr)
             .afterClosed()
             .subscribe(() => (this.rowData[idx].data = component.instance.rowData.data));
-
-        // Alternative of how to use without service:
-        // let ref = this.dialog!.open(ContestantRowComponent, { data: this.rowData.data });
-        // ref.afterClosed().subscribe(() => {
-        //     this.rowData.data = ref.componentInstance.rowData.data;
-        //     console.log(ref.componentInstance.rowData.data);
-        // });
     }
 
     /* EVENT LISTENERS: */
-
-    public interactionEventListener(_idx: number, row: RowData) {
-        switch (row.srcElement) {
+    public interactionEventListener = (_idx: number, row?: RowData, srcElement?: ClickableElements) => {
+        let element = srcElement === undefined ? row!.srcElement : srcElement;
+        switch (element) {
             case ClickableElements.body:
             case ClickableElements.expand:
                 this.rowData[_idx].expanded = !this.rowData[_idx].expanded;
                 break;
-            case ClickableElements.edit:
-                // this.openDefaultModal(_idx);
-                // this.rowData[_idx].inEditMode = !this.rowData[_idx].inEditMode;
-                break;
+            // case ClickableElements.edit: // handled by cont-row.
             case ClickableElements.checkbox:
-                this.rowData[_idx].selected = !row.selected;
-                this.selectedItemsAmount += !row.selected ? 1 : -1;
+                this.rowData[_idx].selected = !row!.selected;
+                this.selectedItemsAmount += !row!.selected ? 1 : -1;
                 break;
             case ClickableElements.remove:
-                let removedId = this.listManipulation.deleteByIdx(_idx);
-                console.log(removedId);
-                if (removedId !== undefined) this.contestantsService.deleteContestant(removedId.data.id).subscribe((resp) => console.log(resp));
+                this.contestantListParent.listManipulation.deleteByIdx(_idx);
+                break;
+            case ClickableElements.selectAll:
+                this.rowData.forEach((c) => (c.selected = true));
+                this.selectedItemsAmount = this.rowData.length;
+                break;
+            case ClickableElements.selectNone:
+                this.rowData.forEach((c) => (c.selected = false));
+                this.selectedItemsAmount = 0;
+                break;
+            case ClickableElements.removeSelected:
+                this.contestantListParent.listManipulation.deleteSelected();
+                this.selectedItemsAmount = 0;
+                break;
+            case ClickableElements.addNew:
+                this.addNewRowData = { inAddNewMode: true };
+                break;
+            case ClickableElements.accept:
+                this.contestantListParent.listManipulation.addNew(this.addNewRowData!.data!);
+                this.addNewRowData = undefined;
+                break;
+            case ClickableElements.abort:
+                this.addNewRowData = undefined;
                 break;
             default:
-                throw new Error('Unknown enum ' + row.srcElement + ' was sent to clickEventHandler!!! ');
+                throw new Error('Unknown enum ' + row?.srcElement + ' was sent to clickEventHandler!!! ');
         }
         this.refreshList();
-    }
-
-    // Todo: maybe do the selection amount tracking through some listener... Couldn't figure it out in a pretty way.
-    // The problem is that it needs to be reduced/increased also when adding and removing items!
-    public listManipulation = {
-        deleteByIdx: (idx: number) => this.rowData.splice(idx, 1)[0],
-        deleteById: (id: number) => {
-            let idx = this.rowData.find((c) => c.data.id == id)?.index;
-            return idx !== undefined ? this.listManipulation.deleteByIdx(idx) : undefined;
-        },
-        getSelected: (): RowData[] => {
-            return this.rowData.filter((r) => r.selected);
-        },
-        deleteSelected: () => {
-            this.rowData = this.rowData.filter((c) => !c.selected);
-            this.selectedItemsAmount = 0;
-            this.refreshList();
-        },
-        selectAll: () => {
-            this.rowData.forEach((c) => (c.selected = true));
-            this.selectedItemsAmount = this.rowData.length;
-        },
-        selectNone: () => {
-            this.rowData.forEach((c) => (c.selected = false));
-            this.selectedItemsAmount = 0;
-        },
-        addNew: () => console.log('ho'),
     };
 
     ////////////////////////////////
     // Just-in-time rendering stuff:
-
     // (Todo: Ottos idea, we might be able to do this using pure CSS! Investigate!)
 
     /**
@@ -212,27 +181,4 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         this.document.documentElement.style.setProperty(`--item-col-4`, this.colGap * 3 + widths.slice(0, 3).reduce((s, t) => s + t) + 'px');
         this.document.documentElement.style.setProperty(`--item-col-5`, this.colGap * 4 + widths.slice(0, 4).reduce((s, t) => s + t) + 'px');
     }
-
-    // @Output() public recalculateWidthsEvent = new EventEmitter<void>();
-    // private colWidths = [0, 0, 0, 0, 0];
-    // private reportWidths(widths: number[]) {
-    //     widths.forEach((e, i) => {
-    //         if (e > this.colWidths[i]) this.colWidths[i] = e;
-    //     });
-    // }
-    // public onContestantRowAfterViewInit = (contRow: ContestantRowComponent) => {
-    //     contRow.reportWidthsSubscription = this.recalculateWidthsEvent.subscribe(() => {
-    //         if (contRow.rowData.filtered) return;
-    //         this.reportWidths(contRow.getAllColumnWidths(contRow.collapsedItem));
-    //     });
-    // };
-
-    // public onContestantRowDestroy = (contRow: ContestantRowComponent) => {
-    // contRow.reportWidthsSubscription!.unsubscribe();
-    // };
-    // type contViewData = { data: Contestant; filtered: Boolean; component?: ContestantRowComponent };
-    // this.contComponents = new Set();
-    // public filterSetFunction = (val: ContestantRowComponent, query: string): void => {
-    //     val.rowData.filtered = !val.data.name.toLowerCase().includes(query.toLowerCase());
-    // };
 }

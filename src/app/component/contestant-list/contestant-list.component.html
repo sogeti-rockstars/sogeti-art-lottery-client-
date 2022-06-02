@@ -5,13 +5,24 @@
         [filterFunction]="filterFunction"
         (listChanged)="filteredItemsChangeListener($event)"
     ></app-filter-list>
-    <app-contestant-sel-buttons
-        *ngIf="editable"
-        [selectedItemsAmount]="selectedItemsAmount"
-        [selectAll]="listManipulation.selectAll"
-        [selectNone]="listManipulation.selectNone"
-        [deleteSelected]="listManipulation.deleteSelected"
-    ></app-contestant-sel-buttons>
+    <div *ngIf="addNewRowData; else selectionButtons" id="add-new-cont-wrap">
+        <app-contestant-row
+            #renderedRow
+            class="row-item row-add-new row-item-rendered"
+            id="rendered"
+            (interactionEvent)="interactionEventListener(-1, $event)"
+            [(rowData)]="addNewRowData"
+            [index]="-1"
+            [editable]="true"
+        ></app-contestant-row>
+    </div>
+    <ng-template #selectionButtons>
+        <app-contestant-sel-buttons
+            *ngIf="editable"
+            [selectedItemsAmount]="selectedItemsAmount"
+            [interactionEventListener]="interactionEventListener"
+        ></app-contestant-sel-buttons>
+    </ng-template>
     <mat-list *ngIf="rowData.length>0">
         <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
             <app-contestant-row
