@@ -1,7 +1,7 @@
 
 <div class="admin-view-art-items-buttons">
     <button *ngIf="authService.isAdmin == true" (click)="removeSelectedArtItems()" mat-raised-button class="main-buttons" color="accent">
-        <a class="main-buttons-a">Ta bort valda</a>
+        <mat-icon>delete</mat-icon> <a class="main-buttons-a">Ta bort valda</a>
     </button>
     <button *ngIf="authService.isAdmin == true" (click)="selectAll()" mat-raised-button class="main-buttons" color="accent">
         <a class="main-buttons-a">Välj alla</a>
