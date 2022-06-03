@@ -1,29 +1,8 @@
 import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
-
-export interface RowData {
-    data: Contestant;
-    index?: number;
-    srcElement?: ClickableElements;
-    selected?: boolean;
-    expanded?: boolean;
-    inEditMode?: boolean;
-    inModal?: boolean;
-    filtered?: boolean;
-    render?: boolean;
-    colWidths?: number[];
-    height?: number;
-}
-
-export enum ClickableElements {
-    remove,
-    edit,
-    expand,
-    checkbox,
-    body,
-}
+import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
 
 @Component({
     selector: 'app-contestant-row',
@@ -56,6 +35,9 @@ export class ContestantRowComponent implements OnInit {
         //     if (this.rowData.index! == 0) this.rowData.inEditMode = true;
         // }
 
+        if (this.rowData === undefined) this.rowData = {};
+        if (this.rowData.data === undefined) this.rowData.data = new Contestant();
+
         this.contestantForm = this.fb.group({
             name: new FormControl({ value: this.rowData.data.name, disabled: true }),
             id: new FormControl({ value: this.rowData.data.id, disabled: true }),
@@ -64,6 +46,13 @@ export class ContestantRowComponent implements OnInit {
             teleNumber: new FormControl({ value: this.rowData.data.teleNumber, disabled: true }),
             office: new FormControl({ value: 'BACKENDWIP', disabled: true }),
         });
+
+        if (this.rowData.inAddNewMode) {
+            this.rowData.expanded = true;
+            this.rowData.inEditMode = true;
+            this.rowData.expanded = true;
+            this.setEditMode(true);
+        }
     }
 
     onSubmit(contestant: Contestant) {
@@ -81,10 +70,16 @@ export class ContestantRowComponent implements OnInit {
      * @param element enum value of element clicked.
      * @param event When we want to stop the propagation (because more elements use the same event) */
     public clickEventHandler(element: ClickableElements, event?: MouseEvent) {
-        if (element == ClickableElements.edit) {
-            this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
-            this.setEditMode(this.rowData.inEditMode!);
+        switch (element) {
+            case ClickableElements.edit:
+                this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
+                this.setEditMode(this.rowData.inEditMode!);
+                break;
+            case ClickableElements.accept:
+                this.rowData.data = this.contestantForm.value as Contestant;
+                break;
         }
+
         event?.stopPropagation();
         let iEvent = Object.assign({ srcElement: element }, this.rowData);
         this.interactionEvent.emit(iEvent);

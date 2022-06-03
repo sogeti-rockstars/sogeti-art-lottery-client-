@@ -1,8 +1,7 @@
-import { ChangeDetectorRef, Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
 import { Lottery } from 'src/app/model/lottery';
 import { Winner } from 'src/app/model/winner';
-import { LotteryService } from 'src/app/service/lottery.service';
 import { ContestantListPage } from '../contestant-list-page';
 
 @Component({
@@ -12,12 +11,6 @@ import { ContestantListPage } from '../contestant-list-page';
 })
 export class LotteryStartComponent extends ContestantListPage {
     public readonly animationControlEvent = new EventEmitter<number>();
-
-    private currLottery!: Lottery;
-
-    constructor(lotteryService: LotteryService, private cdr: ChangeDetectorRef) {
-        super(lotteryService);
-    }
 
     async spinningAnimationEndHandler() {
         let currLotteryId = this.lotteryService.currLotteryId!;
@@ -32,7 +25,7 @@ export class LotteryStartComponent extends ContestantListPage {
         combineLatest(observables).subscribe((_) => {
             this.lotteryService.getLottery(currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
-                this.contestantsChange.emit([this.currLottery.winners, this.currLottery.contestants]);
+                this.loadContestants(lottery);
             });
         });
     }
@@ -44,6 +37,6 @@ export class LotteryStartComponent extends ContestantListPage {
 
     protected loadContestants(lottery: Lottery): void {
         this.currLottery = lottery;
-        this.contestantsChange.emit([this.currLottery.winners, this.currLottery.contestants]);
+        super.populateRowData([this.currLottery.winners, this.currLottery.contestants]);
     }
 }

@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RowData } from '../contestant-row/contestant-row.component';
+import { RowData } from 'src/app/pages/contestant-list-page';
 
 @Component({
     selector: 'app-filter-list',
