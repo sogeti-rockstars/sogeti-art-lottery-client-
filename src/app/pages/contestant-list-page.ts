@@ -62,7 +62,14 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             return this.rowData.filter((r) => r.selected);
         },
         deleteSelected: () => {
-            this.rowData = this.rowData.filter((c) => !c.selected);
+            this.rowData = this.rowData
+                .map((c) => {
+                    if (c.selected) {
+                        this.contestantsService.deleteContestant(c.data!.id).subscribe((resp) => console.log(resp));
+                        return undefined;
+                    } else return c;
+                })
+                .filter((c) => c !== undefined) as RowData[];
             this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
