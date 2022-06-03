@@ -66,20 +66,11 @@ export class LotteryService {
     }
 
     public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        return this.apiService.addContestantToLottery(lotteryId, contestant);
+        return this.apiService.addNewContestantToLottery(lotteryId, contestant);
     }
 
     public addItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
         return this.apiService.addItemToLottery(lotteryId, artItem).pipe(
-            tap((response) => {
-                this.currLottery = response;
-                this.lotteryChanged.emit(this.currLottery);
-            })
-        );
-    }
-
-    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.apiService.editItemToLottery(lotteryId, artItem).pipe(
             tap((response) => {
                 this.currLottery = response;
                 this.lotteryChanged.emit(this.currLottery);
@@ -97,9 +88,5 @@ export class LotteryService {
 
     public spinTheWheel(id: number): Observable<Winner> {
         return this.apiService.spinTheWheel(id);
-    }
-
-    public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.apiService.spinTheWheelWithItem(id);
     }
 }

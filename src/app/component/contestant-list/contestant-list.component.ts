@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
-import { ContestantService } from 'src/app/service/contestant.service';
 
 @Component({
     selector: 'contestant-list-component',
@@ -86,7 +85,9 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
             case ClickableElements.expand:
                 this.rowData[_idx].expanded = !this.rowData[_idx].expanded;
                 break;
-            // case ClickableElements.edit: // handled by cont-row.
+            case ClickableElements.edit:
+                // handled by cont-row.
+                break;
             case ClickableElements.checkbox:
                 this.rowData[_idx].selected = !row!.selected;
                 this.selectedItemsAmount += !row!.selected ? 1 : -1;

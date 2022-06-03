@@ -74,6 +74,7 @@ export class ContestantRowComponent implements OnInit {
             case ClickableElements.edit:
                 this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
                 this.setEditMode(this.rowData.inEditMode!);
+                if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
                 break;
             case ClickableElements.accept:
                 this.rowData.data = this.contestantForm.value as Contestant;

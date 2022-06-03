@@ -44,16 +44,12 @@ export class LotteryApiService {
         return this.httpPost<Lottery>(lottery);
     }
 
-    public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        return this.httpPut<Lottery>(contestant, `addContestant/${lotteryId}`);
+    public addNewContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
+        return this.httpPut<Lottery>(contestant, `${lotteryId}/addNewContestant`);
     }
 
     public addItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.httpPut<Lottery>(artItem, `addItem/${lotteryId}`);
-    }
-
-    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.httpPut<Lottery>(artItem, `editItem/${lotteryId}`);
+        return this.httpPut<Lottery>(artItem, `${lotteryId}/addItem`);
     }
 
     public updateLottery(lottery: Lottery): Observable<Lottery> {
@@ -65,11 +61,8 @@ export class LotteryApiService {
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        return this.httpGet<Winner>(`spin/${id}`);
-    }
-
-    public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.httpGet<Winner>(`spin-with-item/${id}`);
+        console.log(`${id}/spin`);
+        return this.httpPut<Winner>(null, `${id}/spin`);
     }
 
     private httpGet<T>(restPath?: string | number): Observable<T> {

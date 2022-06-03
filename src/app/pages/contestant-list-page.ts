@@ -66,17 +66,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
-            console.log('HERE');
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId!).subscribe((lottery) => {
-                lottery.contestants.push(cont);
-                this.currLottery = lottery;
-                this.loadContestants(lottery);
+            this.lotteryService.addContestantToLottery(this.currLottery.id, cont).subscribe((resp) => {
+                this.loadContestants(resp);
+                console.log(resp);
             });
-            // TODO: fix backend
-            // this.lotteryService.addContestantToLottery(this.currLottery.id, cont).subscribe((resp) => {
-            //     this.populateRowData([resp.contestants, resp.winners]);
-            //     console.log(resp);
-            // });
         },
     };
 
@@ -85,10 +78,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
         if (data.length < 1) return;
         // Check if type is Contestant or [Winner[]|Contestant[]]
-        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, i) => this.rowData.push({ data: c, render: false }));
+        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, _) => this.rowData.push({ data: c, render: false }));
         else {
             let [winners, conts] = data as [Winner[], Contestant[]];
-            winners.forEach((w, i) => {
+            winners.forEach((w, _) => {
                 let cont = conts.find((c) => c.id == w.contestantId);
                 if (cont !== undefined) this.rowData.push({ data: cont, render: false });
             });

@@ -52,10 +52,7 @@ export class AutoCardComponent implements OnInit {
         this.artItemService.observeUpdateArtItem(object).subscribe((data: ArtItem) => {
             console.log(data);
             // this.matDialog.closeAll();
-            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
-                console.log(resp);
-                this.matDialog.closeAll();
-            });
+            this.matDialog.closeAll();
         });
     }
     ngOnInit(): void {

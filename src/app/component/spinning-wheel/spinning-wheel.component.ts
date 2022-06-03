@@ -26,8 +26,6 @@ export class SpinningWheelComponent implements OnInit, OnDestroy, AfterViewInit 
     private animationControlEventSubscription?: Subscription;
     private animate = false;
 
-    constructor() {}
-
     ngOnDestroy(): void {
         if (this.animationControlEventSubscription?.closed) this.animationControlEventSubscription.unsubscribe();
     }
