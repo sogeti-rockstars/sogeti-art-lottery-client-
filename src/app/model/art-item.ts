@@ -1,3 +1,5 @@
+import { Lottery } from './lottery';
+
 export class ArtItem {
     id!: number;
     lottery_id!: number;

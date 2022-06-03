@@ -30,7 +30,7 @@
     <input matInput type="technique" type="text" formControlName="technique" class="form-control" id="technique" placeholder="e.g. 'Oil painting', 'carved in wood'">
     </mat-form-field>
   </div>
-  
+
   <mat-form-field appearance="fill">
     <mat-label>Lottery</mat-label>
     <mat-select [(value)]="selected"> 
@@ -39,8 +39,12 @@
         </mat-option>
     </mat-select>
 </mat-form-field>
-<div class="form-value">
-     <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Update</button></div>
-     <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" type="submit">Add</button></div>
-  </div>
+
 </form>
+<div>
+  <input type="file" (change)="onFileChanged($event)">
+  </div>
+  <div class="form-value">
+    <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Update</button></div>
+    <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" (click)="onSubmit(profileForm.value)" type="submit">Add</button></div>
+ </div>

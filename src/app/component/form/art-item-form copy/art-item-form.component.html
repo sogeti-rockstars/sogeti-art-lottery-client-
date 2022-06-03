@@ -4,7 +4,7 @@
 </div>
 <div class="flex-form-content">
 <p *ngIf="update===true">ID = {{ artItem.id }}</p>
-<form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
+<!-- <form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)"> -->
 <div class="form-div">
 
       <label>Item Name</label>
@@ -42,6 +42,6 @@
      <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" type="submit">Add</button></div>
   </div>
 </div>
-</form>
+<!-- </form> -->
 </div>
 </div>

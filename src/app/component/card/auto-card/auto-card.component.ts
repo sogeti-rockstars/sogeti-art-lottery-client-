@@ -23,6 +23,8 @@ export class AutoCardComponent implements OnInit {
     panelClass: string;
     editMode!: boolean;
     lotteries: Lottery[] = [];
+    lottery!: Lottery;
+    selected!: number;
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
     profileForm = this.fb.group(this.fb.control('wtf'));
 
@@ -46,9 +48,14 @@ export class AutoCardComponent implements OnInit {
 
     onSubmit(object: ArtItem) {
         console.log(object);
-        this.artItemService.observeUpdateArtItem(object).subscribe((data) => {
-            console.log(data.id);
-            this.matDialog.closeAll();
+        console.log(this.selected);
+        this.artItemService.observeUpdateArtItem(object).subscribe((data: ArtItem) => {
+            console.log(data);
+            // this.matDialog.closeAll();
+            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
+                console.log(resp);
+                this.matDialog.closeAll();
+            });
         });
     }
     ngOnInit(): void {
@@ -67,7 +74,7 @@ export class AutoCardComponent implements OnInit {
     private objectValueExtraction() {
         this.objectContent = Object.entries(this.object);
         this.values = this.objectContent.map(function (value, index) {
-            if (value[0].toLowerCase().indexOf('lottery') != -1) {
+            if (value[0].toLowerCase().indexOf('lotteryId') != -1) {
                 if (typeof value[1] === 'object' && value[1] != null) {
                     return value[1].title;
                 }

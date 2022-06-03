@@ -14,18 +14,30 @@
                             <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
                                 <li class="list-group-item">
                                     <div *ngIf="editMode == true">
-                                        <div *ngIf="variableNames[i]!= 'lottery'">
+                                        <div *ngIf="variableNames[i]!= 'lottery_id'">
                                         {{prettyVarNames[i]}}:
                                         <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
                                     </div>
-                                    <div *ngIf="variableNames[i]== 'lottery'">
+                                    <!--  -->
+                                    <div *ngIf="variableNames[i]== 'lottery_id'">
+                                    <mat-form-field appearance="fill">
+                                        <mat-label>Lottery</mat-label>
+                                        <mat-select [(value)]="selected"> 
+                                            <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id">
+                                                {{lottery.title}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field></div>
+                                    <!--  -->
+                                    <!-- <div *ngIf="variableNames[i]== 'lottery_id'">
                                         {{prettyVarNames[i]}}:
-                                        <select class="custom-select" formControlName="cityName">
+                                        <select class="custom-select" formControlName="{{variableNames[i]}}" >
                                             
                                             <option value="">Choose lottery</option>
-                                            <option *ngFor="let lottery of lotteries" [ngValue]="lottery">{{lottery.title}}</option>
+                                            <option *ngFor="let lottery of lotteries" [value]="selected">{{lottery.title}}</option>
                                           </select>
-                                    </div>
+                                    </div> -->
+                                    <!--  -->
                                     </div>
                                 </li>
                             </form>
