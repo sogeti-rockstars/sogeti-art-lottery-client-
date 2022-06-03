@@ -77,6 +77,15 @@ export class LotteryService {
         );
     }
 
+    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
+        return this.apiService.editItemToLottery(lotteryId, artItem).pipe(
+            tap((response) => {
+                this.currLottery = response;
+                this.lotteryChanged.emit(this.currLottery);
+            })
+        );
+    }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.updateLottery(lottery);
     }

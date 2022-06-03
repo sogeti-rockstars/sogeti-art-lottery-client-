@@ -44,6 +44,11 @@ export class ArtItemFormComponent implements OnInit {
         return this.itemApiService.getArtItemImageUrl(this.artItem.id);
     }
 
+    onFileChanged(event: any) {
+        console.log(event);
+        const file = event.target.files[0];
+    }
+
     onSubmit(artItem: ArtItem) {
         // if (this.update == true) {
         //     console.log('update is true');
@@ -55,13 +60,12 @@ export class ArtItemFormComponent implements OnInit {
         // if (this.update == false) {
         // this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
         //     console.log(data.id);
-        //     this.matDialog.closeAll();
         //     if (this.lotteryService.currLotteryId !== undefined) {
-        //         this.lotteryService.addItemToLottery(this.lotteryService.currLotteryId, data);
-        //         console.log(data);
+        //         this.lotteryService.addItemToLottery(this.lotteryService.currLotteryId, data).subscribe((resp) => console.log(resp));
         //     }
         // });
-        console.log(this.selected);
+        console.log(artItem);
+        artItem.lottery_id = this.selected;
         this.lotteryService.addItemToLottery(this.selected, artItem).subscribe((data) => {
             console.log(data.title);
             this.matDialog.closeAll();

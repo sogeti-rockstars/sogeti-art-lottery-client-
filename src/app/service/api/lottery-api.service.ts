@@ -52,6 +52,10 @@ export class LotteryApiService {
         return this.httpPut<Lottery>(artItem, `addItem/${lotteryId}`);
     }
 
+    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
+        return this.httpPut<Lottery>(artItem, `editItem/${lotteryId}`);
+    }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.httpPut<Lottery>(lottery, lottery.id);
     }

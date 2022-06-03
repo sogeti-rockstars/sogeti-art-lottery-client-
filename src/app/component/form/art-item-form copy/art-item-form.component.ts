@@ -52,7 +52,7 @@ export class ArtItemFormComponent implements OnInit {
     updateForm() {
         this.profileForm.patchValue({
             id: this.artItem.id,
-            lottery_id: this.artItem.lottery_id,
+            lotteryId: this.artItem.lottery_id,
             itemName: this.artItem.itemName,
             artistName: this.artItem.artistName,
             size: this.artItem.size,
