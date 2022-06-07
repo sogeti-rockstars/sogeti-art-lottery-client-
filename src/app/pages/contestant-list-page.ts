@@ -21,6 +21,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public rowData: RowData[] = [];
 
     protected currLottery!: Lottery;
+    protected contestants: Contestant[] = [];
 
     private loadContestantsSubscription?: Subscription;
 
@@ -39,8 +40,14 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.currLottery = lottery;
             // this.loadContestants(lottery);
         });
-        this.contestantsService.getContestants().subscribe((contestants) => this.loadContestants(contestants));
-        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestant) => this.loadContestants(contestant));
+        this.contestantsService.getContestants().subscribe((contestants) => {
+            this.loadContestants(contestants);
+            this.contestants = contestants;
+        });
+        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestants) => {
+            this.loadContestants(contestants);
+            this.contestants = contestants;
+        });
     }
 
     ngOnDestroy(): void {
@@ -65,15 +72,15 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             return this.rowData.filter((r) => r.selected);
         },
         deleteSelected: () => {
-            this.rowData.forEach((element) => {
-                if (element.selected) {
-                    if (element.data?.id != undefined)
-                        this.contestantsService.deleteContestant(element.data?.id).subscribe((resp) => {
-                            this.rowData = this.rowData.filter((c) => !c.selected);
-                            this.contestantsChange.emit(this.rowData);
-                        });
-                }
-            });
+            this.rowData = this.rowData
+                .map((c) => {
+                    if (c.selected) {
+                        this.contestantsService.deleteContestant(c.data!.id).subscribe((resp) => console.log(resp));
+                        return undefined;
+                    } else return c;
+                })
+                .filter((c) => c !== undefined) as RowData[];
+            this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
             console.log('HERE');
@@ -93,10 +100,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
         if (data.length < 1) return;
         // Check if type is Contestant or [Winner[]|Contestant[]]
-        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, i) => this.rowData.push({ data: c, render: false }));
+        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, _) => this.rowData.push({ data: c, render: false }));
         else {
             let [winners, conts] = data as [Winner[], Contestant[]];
-            winners.forEach((w, i) => {
+            winners.forEach((w, _) => {
                 let cont = conts.find((c) => c.id == w.contestantId);
                 if (cont !== undefined) this.rowData.push({ data: cont, render: false });
             });

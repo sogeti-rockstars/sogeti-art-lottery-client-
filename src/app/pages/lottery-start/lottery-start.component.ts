@@ -11,11 +11,12 @@ import { ContestantListPage } from '../contestant-list-page';
     styleUrls: ['./lottery-start.component.css'],
 })
 export class LotteryStartComponent extends ContestantListPage {
+    winners: Winner[] = [];
     public readonly animationControlEvent = new EventEmitter<number>();
 
     async spinningAnimationEndHandler() {
         let currLotteryId = this.lotteryService.currLotteryId!;
-        let repetitions = Math.floor(this.currLottery.contestants.length * 0.25 - this.currLottery.winners.length);
+        let repetitions = Math.floor(this.contestants.length * 0.25 - this.winners.length);
         let observables: Observable<Winner>[] = [];
         if (repetitions > 0) {
             [...Array(repetitions)].forEach((_) => {
@@ -34,6 +35,10 @@ export class LotteryStartComponent extends ContestantListPage {
     }
 
     protected loadContestants(contestants: Contestant[]): void {
-        super.populateRowData([this.currLottery.winners, this.currLottery.contestants]);
+        if (this.currLottery != undefined)
+            this.lotteryService.getWinnersByLotteryId(this.currLottery.id).subscribe((resp) => {
+                this.winners = resp;
+                super.populateRowData([this.winners, contestants]);
+            });
     }
 }
