@@ -86,7 +86,6 @@ export class LotteryService {
             })
         );
     }
-
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.updateLottery(lottery);
     }
@@ -97,9 +96,5 @@ export class LotteryService {
 
     public spinTheWheel(id: number): Observable<Winner> {
         return this.apiService.spinTheWheel(id);
-    }
-
-    public spinTheWheelWithItem(id: number): Observable<Winner> {
-        return this.apiService.spinTheWheelWithItem(id);
     }
 }

@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
+import { WinnerApiService } from '../service/api/winner-api.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
 
@@ -20,23 +21,32 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public rowData: RowData[] = [];
 
     protected currLottery!: Lottery;
+    protected contestants: Contestant[] = [];
 
     private loadContestantsSubscription?: Subscription;
 
-    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService) {}
+    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService, public winnerService: WinnerApiService) {}
 
-    protected abstract loadContestants(lottery: Lottery): void;
+    protected abstract loadContestants(contestants: Contestant[]): void;
 
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined)
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
-                this.loadContestants(lottery);
+                // this.loadContestants(lottery);
             });
 
         this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
             this.currLottery = lottery;
-            this.loadContestants(lottery);
+            // this.loadContestants(lottery);
+        });
+        this.contestantsService.getContestants().subscribe((contestants) => {
+            this.loadContestants(contestants);
+            this.contestants = contestants;
+        });
+        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestants) => {
+            this.loadContestants(contestants);
+            this.contestants = contestants;
         });
     }
 
@@ -62,16 +72,21 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             return this.rowData.filter((r) => r.selected);
         },
         deleteSelected: () => {
-            this.rowData = this.rowData.filter((c) => !c.selected);
+            this.rowData = this.rowData
+                .map((c) => {
+                    if (c.selected) {
+                        this.contestantsService.deleteContestant(c.data!.id).subscribe((resp) => console.log(resp));
+                        return undefined;
+                    } else return c;
+                })
+                .filter((c) => c !== undefined) as RowData[];
             this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
             console.log('HERE');
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId!).subscribe((lottery) => {
-                lottery.contestants.push(cont);
-                this.currLottery = lottery;
-                this.loadContestants(lottery);
-            });
+            this.contestantsService
+                .addContestant(cont)
+                .subscribe((resp) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
             // TODO: fix backend
             // this.lotteryService.addContestantToLottery(this.currLottery.id, cont).subscribe((resp) => {
             //     this.populateRowData([resp.contestants, resp.winners]);
@@ -85,10 +100,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
         if (data.length < 1) return;
         // Check if type is Contestant or [Winner[]|Contestant[]]
-        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, i) => this.rowData.push({ data: c, render: false }));
+        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, _) => this.rowData.push({ data: c, render: false }));
         else {
             let [winners, conts] = data as [Winner[], Contestant[]];
-            winners.forEach((w, i) => {
+            winners.forEach((w, _) => {
                 let cont = conts.find((c) => c.id == w.contestantId);
                 if (cont !== undefined) this.rowData.push({ data: cont, render: false });
             });
