@@ -1,5 +1,6 @@
 import { Component, EventEmitter } from '@angular/core';
 import { combineLatest, Observable } from 'rxjs';
+import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
 import { Winner } from 'src/app/model/winner';
 import { ContestantListPage } from '../contestant-list-page';
@@ -23,10 +24,7 @@ export class LotteryStartComponent extends ContestantListPage {
         }
 
         combineLatest(observables).subscribe((_) => {
-            this.lotteryService.getLottery(currLotteryId).subscribe((lottery) => {
-                this.currLottery = lottery;
-                this.loadContestants(lottery);
-            });
+            this.contestantsService.getContestants().subscribe((contestants) => this.loadContestants(contestants));
         });
     }
 
@@ -35,8 +33,7 @@ export class LotteryStartComponent extends ContestantListPage {
         this.animationControlEvent.emit(-1);
     }
 
-    protected loadContestants(lottery: Lottery): void {
-        this.currLottery = lottery;
+    protected loadContestants(contestants: Contestant[]): void {
         super.populateRowData([this.currLottery.winners, this.currLottery.contestants]);
     }
 }

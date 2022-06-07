@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
+import { WinnerApiService } from '../service/api/winner-api.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
 
@@ -23,21 +24,23 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
     private loadContestantsSubscription?: Subscription;
 
-    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService) {}
+    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService, public winnerService: WinnerApiService) {}
 
-    protected abstract loadContestants(lottery: Lottery): void;
+    protected abstract loadContestants(contestants: Contestant[]): void;
 
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined)
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
-                this.loadContestants(lottery);
+                // this.loadContestants(lottery);
             });
 
         this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
             this.currLottery = lottery;
-            this.loadContestants(lottery);
+            // this.loadContestants(lottery);
         });
+        this.contestantsService.getContestants().subscribe((contestants) => this.loadContestants(contestants));
+        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestant) => this.loadContestants(contestant));
     }
 
     ngOnDestroy(): void {
@@ -62,16 +65,21 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             return this.rowData.filter((r) => r.selected);
         },
         deleteSelected: () => {
-            this.rowData = this.rowData.filter((c) => !c.selected);
-            this.contestantsChange.emit(this.rowData);
+            this.rowData.forEach((element) => {
+                if (element.selected) {
+                    if (element.data?.id != undefined)
+                        this.contestantsService.deleteContestant(element.data?.id).subscribe((resp) => {
+                            this.rowData = this.rowData.filter((c) => !c.selected);
+                            this.contestantsChange.emit(this.rowData);
+                        });
+                }
+            });
         },
         addNew: (cont: Contestant) => {
             console.log('HERE');
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId!).subscribe((lottery) => {
-                lottery.contestants.push(cont);
-                this.currLottery = lottery;
-                this.loadContestants(lottery);
-            });
+            this.contestantsService
+                .addContestant(cont)
+                .subscribe((resp) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
             // TODO: fix backend
             // this.lotteryService.addContestantToLottery(this.currLottery.id, cont).subscribe((resp) => {
             //     this.populateRowData([resp.contestants, resp.winners]);
