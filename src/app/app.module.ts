@@ -10,9 +10,10 @@ import { MaterialComponentsModule } from './component/material.module';
 
 import { appRoutes } from './app.routing';
 import { LotteryService } from './service/lottery.service';
+import { LoginComponent } from './pages/login/login.component';
 
 @NgModule({
-    declarations: [AppComponent],
+    declarations: [AppComponent, LoginComponent],
     imports: [RouterModule.forRoot(appRoutes), CommonModule, BrowserModule, BrowserAnimationsModule, HttpClientModule, MaterialComponentsModule],
     providers: [
         {
