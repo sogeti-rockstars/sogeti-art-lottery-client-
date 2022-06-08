@@ -1,0 +1,12 @@
+h1 {
+    font-size: 40px;
+    padding: 10px;
+    color: blue;
+    text-align: center;
+}
+.text1 {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+}
