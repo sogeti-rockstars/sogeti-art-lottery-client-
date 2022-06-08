@@ -16,6 +16,7 @@ export const MaterialRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent,
+        pathMatch: 'full',
     },
     {
         path: 'user/artitems',

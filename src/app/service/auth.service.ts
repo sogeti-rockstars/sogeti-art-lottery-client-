@@ -11,7 +11,6 @@ export class AuthService {
     authenticated = false;
     private authHeaders$!: HttpHeaders | undefined;
     get authHeaders() {
-        console.log(this.authHeaders$);
         return this.authHeaders$;
     }
 
@@ -35,10 +34,10 @@ export class AuthService {
     }
 
     logout() {
-        this.http.get(`${this.apiServerUrl}/logout`, { headers: this.authHeaders }).subscribe(() => {
+        this.router.navigateByUrl('/');
+        this.http.put(`${this.apiServerUrl}/user/logout`, '', { headers: this.authHeaders }).subscribe((r) => {
             this.authenticated = false;
             this.authHeaders$ = undefined;
-            this.router.navigateByUrl('/');
             this.loginLogoutChanged.emit(false);
         });
     }

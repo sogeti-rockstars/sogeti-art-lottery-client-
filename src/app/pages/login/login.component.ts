@@ -15,13 +15,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     constructor(public authService: AuthService, private router: Router) {}
 
     ngOnDestroy(): void {
-        console.log('unsub');
         this.loginStateChangedSubs.unsubscribe();
     }
 
     ngOnInit(): void {
         this.loginStateChangedSubs = this.authService.loginLogoutChanged.subscribe((state) => {
-            if (state == true) this.router.navigateByUrl('/admin/' + this.router.url.split('?from=').slice(-1));
+            if (!state) return;
+            let nUrl = '/admin/' + this.router.url.split('?from=').slice(-1);
+            this.router.navigate([nUrl], { queryParams: {} });
         });
     }
 
