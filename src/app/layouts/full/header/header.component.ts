@@ -41,10 +41,7 @@ export class AppHeaderComponent implements AfterViewInit {
             this.router.navigateByUrl(url);
         } else if (menuitem.action == 'loginOrLogout') {
             if (this.authService.authenticated) this.authService.logout();
-            else this.authService.login();
-            let url = this.router.url.replace(/(admin|user)/, menuitem.route);
-            console.log(url);
-            this.router.navigateByUrl(url);
+            else this.router.navigateByUrl('/login');
         } else throw new Error('Unknown action was given!');
     }
 
