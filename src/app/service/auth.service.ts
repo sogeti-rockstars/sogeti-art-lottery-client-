@@ -19,21 +19,27 @@ export class AuthService {
 
     constructor(private http: HttpClient, private router: Router) {}
 
-    login() {
+    login(user: string, pass: string) {
         this.authHeaders$ = new HttpHeaders();
-        this.authHeaders$.append('Access-Control-Allow-Credentials', 'true');
-        this.authHeaders$ = this.authHeaders$.set('Content-Type', 'application/json');
-        this.authHeaders$ = this.authHeaders$.set('Authorization', 'Basic ' + btoa('admin:admin'));
-        this.http.get(`${this.apiServerUrl}/user`, { headers: this.authHeaders }).subscribe((d) => {
-            this.authenticated = true;
-            console.log(d);
+        this.authHeaders$ = this.authHeaders$.set('Authorization', 'Basic ' + btoa(`${user}:${pass}`));
+
+        this.http.get(`${this.apiServerUrl}/user`, { headers: this.authHeaders }).subscribe({
+            next: (_) => {
+                this.authenticated = true;
+                this.loginLogoutChanged.emit(true);
+            },
+            error: (_) => {
+                this.authHeaders$ = undefined;
+            },
         });
     }
+
     logout() {
         this.http.get(`${this.apiServerUrl}/logout`, { headers: this.authHeaders }).subscribe(() => {
             this.authenticated = false;
             this.authHeaders$ = undefined;
             this.router.navigateByUrl('/');
+            this.loginLogoutChanged.emit(false);
         });
     }
 }

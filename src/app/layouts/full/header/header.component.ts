@@ -1,5 +1,5 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { Lottery } from 'src/app/model/lottery';
@@ -39,9 +39,11 @@ export class AppHeaderComponent implements AfterViewInit {
         if (menuitem.action === 'showRoute') {
             let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
             this.router.navigateByUrl(url);
-        } else if (menuitem.action == 'loginOrLogout') {
-            if (this.authService.authenticated) this.authService.logout();
-            else this.router.navigateByUrl('/login');
+        } else if (menuitem.action == 'login') {
+            this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
+            this.router.setUpLocationChangeListener;
+        } else if (menuitem.action == 'logout') {
+            this.authService.logout();
         } else throw new Error('Unknown action was given!');
     }
 
@@ -102,7 +104,7 @@ const menuItems: MenuItem[] = [
         icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
-        action: 'loginOrLogout',
+        action: 'logout',
     },
     {
         route: 'admin',
@@ -110,7 +112,7 @@ const menuItems: MenuItem[] = [
         icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'user',
-        action: 'loginOrLogout',
+        action: 'login',
     },
 ];
 

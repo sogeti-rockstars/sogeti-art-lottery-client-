@@ -1,12 +1,17 @@
-<div class="container" [hidden]="authService.authenticated">
-    <form role="form" (submit)="authService.login()">
-        <div class="form-group">
-            <label for="username">Username:</label> <input type="text" class="form-control" id="username" name="username" [(ngModel)]="credentials.username" />
-        </div>
-        <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" class="form-control" id="password" name="password" [(ngModel)]="credentials.password" />
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+<div id="main-content">
+    <div id="form-wrap">
+        <form id="login-form" role="form" (submit)="submit()">
+            <mat-form-field matLine name="login" class="search-form" appearance="outline">
+                <mat-label>Användarnamn:</mat-label>
+                <input matInput name="user" class="username-form-input" type="text" placeholder="Användarnamn" [(ngModel)]="credentials.username" />
+            </mat-form-field>
+
+            <mat-form-field matLine name="login" class="search-form" appearance="outline">
+                <mat-label>Lösenord:</mat-label>
+                <input matInput name="pass" class="username-form-input" type="text" placeholder="Användarnamn" [(ngModel)]="credentials.password" />
+            </mat-form-field>
+
+            <button mat-button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 </div>
