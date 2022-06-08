@@ -24,8 +24,8 @@
                     mat-button
                     fxHide.xs
                     (click)="this.doAction(item, $event)"                >
-                    <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon>
-                    {{ item.label }}
+                    <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon> 
+                    {{ item.label }} <mat-icon>keyboard_arrow_down</mat-icon>
                 </button>
                 <button  
                     *ngIf="item.subMenuItems.length == 0"              
