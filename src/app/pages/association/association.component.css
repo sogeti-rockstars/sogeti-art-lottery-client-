@@ -1,23 +1,22 @@
 h1 {
-  background: #2485c1;
-  text-shadow: 1px 1px black;
-  padding: 1em;
-  color: white;
-  text-align: center;
+    font-size: 40px;
+    padding: 10px;
+    color: blue;
+    text-align: center;
 }
 .text1 {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  text-align: center;
-  color: black;
-  font-size: 12px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
 }
 .text2 {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  text-align: center;
-  color: black;
-  font-size: 12px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
 }
 .bild {
-  width: 100%;
-  margin-top: 20px;
+    width: 100%;
+    margin-top: 20px;
 }

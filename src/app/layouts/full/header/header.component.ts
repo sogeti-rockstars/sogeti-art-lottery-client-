@@ -62,6 +62,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'winners',
@@ -70,14 +71,41 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
-        route: 'association',
-        label: 'Om föreningen',
+        route: '',
+        label: 'Om oss',
         icon: '',
         cls: 'header-buttons route-button',
-        limitedTo: 'user',
-        action: 'showRoute',
+        limitedTo: '',
+        action: '',
+        subMenuItems: [
+            {
+                route: 'association',
+                label: 'Styrelsen',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'flow',
+                label: 'Flöde',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'about',
+                label: 'Info',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+        ],
     },
     {
         route: 'members',
@@ -86,6 +114,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'lottery-start',
@@ -94,6 +123,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'user',
@@ -102,6 +132,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
         action: 'loginOrLogout',
+        subMenuItems: [],
     },
     {
         route: 'admin',
@@ -110,6 +141,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons login-out-button',
         limitedTo: 'user',
         action: 'loginOrLogout',
+        subMenuItems: [],
     },
 ];
 
@@ -120,4 +152,5 @@ export interface MenuItem {
     cls: string;
     limitedTo: string /*admin, user or blank (=not limited to any user group)*/;
     action: string;
+    subMenuItems: any[];
 }
