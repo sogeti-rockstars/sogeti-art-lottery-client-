@@ -4,7 +4,7 @@
         <mat-card-title>{{object.itemName}}</mat-card-title>
         <mat-card-subtitle>{{object.artistName}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="loadImageUrl()" alt="Photo of item" />
+    <img mat-card-image [src]="imgURL" alt="Photo of item" />
     <mat-card-content class="mat-card-body">
         <ul class="list-group">
             <div *ngIf="objectContent[1][0]=='itemName'">
@@ -53,6 +53,9 @@
     <mat-card-actions>
         <div *ngIf="editMode == false"><button *ngIf="this.authService.isAdmin == true" mat-button (click)="enableEdit()">Edit</button></div>
         <div *ngIf="editMode == true">
+            <div>
+                <input type="file" (change)="onFileChanged($event)">
+                </div>
             <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button>
         </div>
         <!-- <button mat-button>SHARE</button> -->
