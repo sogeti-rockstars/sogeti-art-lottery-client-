@@ -24,6 +24,8 @@ export class AutoCardComponent implements OnInit {
     editMode!: boolean;
     lotteries: Lottery[] = [];
     lottery!: Lottery;
+    file: any;
+    imgURL: any;
     selected!: number;
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
     profileForm = this.fb.group(this.fb.control('wtf'));
@@ -43,7 +45,20 @@ export class AutoCardComponent implements OnInit {
         this.editMode = true;
         console.log(this.profileForm);
 
-        this.lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        this.lotteryService.getLotteriesSummary().subscribe((resp) => (this.lotteries = resp));
+        if (this.lotteryService.currLotteryId !== undefined)
+            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id));
+    }
+
+    onFileChanged(event: any) {
+        console.log(event);
+        this.file = event.target.files[0];
+
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (event2) => {
+            this.imgURL = reader.result;
+        };
     }
 
     onSubmit(object: ArtItem) {
@@ -54,12 +69,23 @@ export class AutoCardComponent implements OnInit {
             // this.matDialog.closeAll();
             this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
                 console.log(resp);
+                if (this.file != null) this.onUpload(data);
                 this.matDialog.closeAll();
             });
         });
     }
+
+    onUpload(artItem: ArtItem) {
+        console.log(artItem);
+        const formData: FormData = new FormData();
+        formData.append('image', <File>this.file);
+        formData.append('newImage', new Blob([this.file], { type: 'application/json' }));
+        this.artItemService.observeUpdateImage(artItem, formData).subscribe((resp) => resp);
+    }
+
     ngOnInit(): void {
         this.editMode = false;
+        this.loadImageUrl();
         this.objectValueExtraction();
         this.formCreation();
     }
@@ -91,6 +117,6 @@ export class AutoCardComponent implements OnInit {
     }
 
     loadImageUrl() {
-        return this.itemApiService.getArtItemImageUrl(this.object.id);
+        this.imgURL = this.itemApiService.getArtItemImageUrl(this.object.id);
     }
 }
