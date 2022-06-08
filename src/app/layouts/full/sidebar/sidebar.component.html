@@ -8,7 +8,10 @@
                 <div [id]="i">{{ menuitem.title }}</div>
             </mat-list-item>
         </span>
-        <button *ngIf="authService.isAdmin == true"  mat-raised-button class="create-lottery-button" [routerLink]="['admin/create-lottery']">Skapa nytt lotteri
+        <button *ngIf="authService.authenticated == true" mat-raised-button class="create-lottery-button" [routerLink]="['admin/create-lottery']">
+            Skapa nytt lotteri
             <mat-icon>create</mat-icon>
         </button>
-    </mat-nav-list>
+    </mat-nav-list></mat-sidenav
+>
+

@@ -36,11 +36,12 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        console.log(this.authService.isAdmin);
         if (menuitem.action === 'showRoute') {
-            let url = this.authService.isAdmin ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
+            let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
             this.router.navigateByUrl(url);
         } else if (menuitem.action == 'loginOrLogout') {
+            if (this.authService.authenticated) this.authService.logout();
+            else this.authService.login();
             let url = this.router.url.replace(/(admin|user)/, menuitem.route);
             console.log(url);
             this.router.navigateByUrl(url);
@@ -49,7 +50,10 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public getMenuItems() {
         return menuItems.filter(
-            (item) => item.limitedTo == '' || (item.limitedTo == 'user' && !this.authService.isAdmin) || (item.limitedTo == 'admin' && this.authService.isAdmin)
+            (item) =>
+                item.limitedTo == '' ||
+                (item.limitedTo == 'user' && !this.authService.authenticated) ||
+                (item.limitedTo == 'admin' && this.authService.authenticated)
         );
     }
 }
