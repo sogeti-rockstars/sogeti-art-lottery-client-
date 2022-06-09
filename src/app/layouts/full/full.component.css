@@ -1,29 +1,29 @@
-.main-container {
-    margin-right: 0px;
-    margin-left: 0px;
+#page-wrapper {
+    position: absolute;
+    background: none;
+    top: 4rem;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
 }
 
-.navbar-header {
-    display: none;
+#page-content {
+    position: absolute;
+    top: 0rem;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    padding-top: 1rem;
+    padding-left: 1%;
+    padding-right: 1%;
 }
-.main-buttons {
-    background-color: white;
-}
-.main-buttons mat-icon {
-    color: black;
-}
-.main-buttons-a {
-    color: black;
-}
-.mat-toolbar {
-    background-color: white;
-}
-.mat-drawer-container {
-    background-color: white;
-}
-.page-wrapper {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 30px;
-    margin-right: 30px;
+#header {
+    top: 0;
+    position: absolute;
+    right: 0;
+    left: 0;
 }
