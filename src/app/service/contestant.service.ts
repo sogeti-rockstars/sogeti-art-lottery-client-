@@ -2,7 +2,6 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Contestant } from '../model/contestant';
 import { ContestantApiService } from './api/contestant-api.service';
-import { LotteryService } from './lottery.service';
 
 @Injectable({
     providedIn: 'root',
@@ -10,7 +9,7 @@ import { LotteryService } from './lottery.service';
 export class ContestantService {
     @Output() contestantsChanged = new EventEmitter<Contestant[]>();
 
-    constructor(private service: ContestantApiService, private lotteryService: LotteryService) {}
+    constructor(private service: ContestantApiService) {}
 
     public getContestants(): Observable<Contestant[]> {
         return this.service.getContestants();
