@@ -27,8 +27,10 @@ export class AppHeaderComponent implements AfterViewInit {
         private _focusMonitor: FocusMonitor,
         public lotteryService: LotteryService
     ) {
-        lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
-        lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        lotteryService.lotteryChanged.subscribe((lott) => {
+            this.currLotteryTitle = lott.title;
+            lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        });
     }
 
     ngAfterViewInit(): void {
@@ -60,10 +62,6 @@ export class AppHeaderComponent implements AfterViewInit {
                 (item.limitedTo == 'admin' && this.authService.authenticated)
         );
     }
-
-    // updateId(i: any) {
-    //     this.lotteryService.setCurrentLottery(i);
-    // }
 }
 
 const menuItems: MenuItem[] = [
