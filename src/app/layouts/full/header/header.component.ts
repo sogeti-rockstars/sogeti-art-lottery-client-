@@ -16,6 +16,7 @@ export class AppHeaderComponent implements AfterViewInit {
 
     currLotteryTitle!: string;
     lotteries!: Lottery[];
+    currIndex!: number;
 
     public readonly menuItems = menuItems;
 
@@ -32,6 +33,10 @@ export class AppHeaderComponent implements AfterViewInit {
 
     ngAfterViewInit(): void {
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
+    }
+
+    public setCurrIndex(index: number) {
+        this.currIndex = index;
     }
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {

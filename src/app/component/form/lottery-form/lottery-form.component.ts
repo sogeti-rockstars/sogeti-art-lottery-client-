@@ -4,6 +4,7 @@ import { Contestant } from 'src/app/model/contestant';
 import { Lottery } from 'src/app/model/lottery';
 import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
+import { runInThisContext } from 'vm';
 
 @Component({
     selector: 'app-lottery-form',
@@ -15,7 +16,8 @@ export class LotteryFormComponent implements OnInit {
     @Input() inputPlaceholder!: string;
     @Input() lottery!: Lottery;
     @Output() artItemOutput = new EventEmitter<Lottery>();
-    update: boolean = false;
+    @Input() update: boolean = false;
+    @Input() id!: number;
     profileForm = this.fb.group({
         date: [''],
         title: [''],
@@ -33,19 +35,20 @@ export class LotteryFormComponent implements OnInit {
         this.lotteryService.addLottery(this.lottery);
     }
 
-    updateForm() {
+    updateForm(lottery: Lottery) {
         this.profileForm.patchValue({
-            id: this.lottery,
-            date: [''],
-            title: [''],
+            id: lottery.id,
+            date: lottery.date,
+            title: lottery.title,
         });
     }
 
     ngOnInit(): void {
-        if (this.lottery != undefined) {
-            this.updateForm();
-            this.update = true;
-            console.log('lottery is not null');
+        if (this.update == true) {
+            this.lotteryService.getLottery(this.id).subscribe((resp) => {
+                this.lottery = resp;
+                this.updateForm(resp);
+            });
         }
     }
 }

@@ -3,6 +3,7 @@ import { Lottery } from 'src/app/model/lottery';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { CreateLotteryComponent } from 'src/app/pages/create-lottery/create-lottery.component';
 import { AuthService } from 'src/app/service/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
@@ -25,6 +26,8 @@ export class AppSidebarComponent implements OnInit {
         console.log('init');
         this.lotteryService.getLotteriesSummary().subscribe((data: Lottery[]) => (this.lotteries$ = data));
     }
+
+    public editLottery(idx: any) {}
 
     public pickLottery(idx: any) {
         this.lotteryService.setCurrentLottery(idx);
