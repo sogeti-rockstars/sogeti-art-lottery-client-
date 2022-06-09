@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Lottery } from 'src/app/model/lottery';
+import { Contestant } from 'src/app/model/contestant';
 import { ContestantListPage } from '../contestant-list-page';
 
 @Component({
@@ -8,8 +8,7 @@ import { ContestantListPage } from '../contestant-list-page';
     styleUrls: ['./members.component.css'],
 })
 export class MembersComponent extends ContestantListPage {
-    protected loadContestants(lottery: Lottery): void {
-        super.populateRowData(lottery.contestants);
-        // this.contestantsChange.emit(lottery.contestants);
+    protected loadContestants(contestants: Contestant[]): void {
+        super.populateRowData(contestants);
     }
 }

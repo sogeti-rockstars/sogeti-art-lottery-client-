@@ -11,6 +11,9 @@ import { ArtItemApiService } from './api/art-item-api.service';
 export class ArtItemService {
     private artItemSubject: Subject<ArtItem> = new Subject();
     public artItemSubject$ = this.artItemSubject.asObservable();
+
+    private imageSubject: Subject<FormData> = new Subject();
+    public imageSubject$ = this.imageSubject.asObservable();
     paintings: ArtItem[] = [];
 
     constructor(private artItemApiService: ArtItemApiService) {}
@@ -36,6 +39,15 @@ export class ArtItemService {
         return this.artItemApiService.deleteArtItem(id).pipe(
             retry(1),
             tap((response) => this.artItemSubject.next(new ArtItem()))
+        );
+    }
+
+    //lyckades inte få detta att fungera, när man redigerar bilden på ett artitem
+    //så refreshar den inte bilden...
+    public observeUpdateImage(artItem: ArtItem, upload: FormData): Observable<FormData> {
+        return this.artItemApiService.updateImage(artItem.id, upload).pipe(
+            retry(1),
+            tap((response) => this.imageSubject.next(response))
         );
     }
 }

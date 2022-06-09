@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
 import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
+import { ContestantService } from 'src/app/service/contestant.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -25,7 +26,7 @@ export class ContestantRowComponent implements OnInit {
 
     public contestantForm!: FormGroup;
 
-    constructor(private fb: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant) {
+    constructor(private contestantService: ContestantService, private fb: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant) {
         if (data !== undefined) this.rowData = { data: data!, inModal: true, render: true };
     }
 
@@ -56,12 +57,12 @@ export class ContestantRowComponent implements OnInit {
     }
 
     onSubmit(contestant: Contestant) {
-        console.log(contestant);
+        this.contestantService.updateContestant(contestant).subscribe((resp) => (this.rowData.data = resp));
     }
 
     setEditMode(value: boolean) {
-        if (value) ['name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].enable());
-        else ['name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].disable());
+        if (value) ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].enable());
+        else ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].disable());
     }
 
     /**
@@ -74,6 +75,7 @@ export class ContestantRowComponent implements OnInit {
             case ClickableElements.edit:
                 this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
                 this.setEditMode(this.rowData.inEditMode!);
+                if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
                 break;
             case ClickableElements.accept:
                 this.rowData.data = this.contestantForm.value as Contestant;

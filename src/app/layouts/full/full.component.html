@@ -1,11 +1,9 @@
-<app-header (sidebarVisibleClicked)="toggleSideNav()"></app-header>
+<app-header id="header" (sidebarVisibleClicked)="toggleSideNav()"></app-header>
 <app-sidebar [visible]="sideNavVisible" (sidebarVisibleClicked)="toggleSideNav()"></app-sidebar>
-<div class="main-container">
-    <mat-sidenav-container class="example-sidenav-container">
-        <mat-sidenav-content class="page-wrapper">
-            <div class="page-content">
-                <app-spinner></app-spinner>
-            </div>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
-</div>
+<mat-sidenav-container id="page-wrapper">
+    <mat-sidenav-content>
+        <div id="page-content">
+            <app-spinner></app-spinner>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

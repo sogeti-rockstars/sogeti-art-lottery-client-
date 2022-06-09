@@ -25,7 +25,8 @@ export class ContestantApiService {
     }
 
     public updateContestant(cont: Contestant): Observable<Contestant> {
-        return this.httpPut(cont, cont.id);
+        console.log(`${this.apiBase}` + this.getHeaders());
+        return this.httpPut<Contestant>(cont, cont.id);
     }
 
     public deleteContestant(id: number): Observable<Object> {
