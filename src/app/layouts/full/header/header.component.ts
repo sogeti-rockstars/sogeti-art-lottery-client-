@@ -43,15 +43,21 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        if (menuitem.action === 'showRoute') {
-            let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
-            this.router.navigateByUrl(url);
-        } else if (menuitem.action == 'login') {
-            this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
-            this.router.setUpLocationChangeListener;
-        } else if (menuitem.action == 'logout') {
-            this.authService.logout();
-        } else throw new Error('Unknown action was given!');
+        switch (menuitem.action) {
+            case 'showRoute':
+                let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
+                this.router.navigateByUrl(url);
+                break;
+            case 'login':
+                this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
+                this.router.setUpLocationChangeListener;
+                break;
+            case 'logout':
+                this.authService.logout();
+                break;
+            case 'nothing':
+                break;
+        }
     }
 
     public getMenuItems() {
@@ -72,6 +78,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'winners',
@@ -80,14 +87,41 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
-        route: 'association',
-        label: 'Om föreningen',
+        route: '',
+        label: 'Om oss',
         icon: '',
         cls: 'header-buttons route-button',
-        limitedTo: 'user',
-        action: 'showRoute',
+        limitedTo: '',
+        action: 'nothing',
+        subMenuItems: [
+            {
+                route: 'association',
+                label: 'Styrelsen',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'flow',
+                label: 'Flöde',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'about',
+                label: 'Info',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+        ],
     },
     {
         route: 'members',
@@ -96,6 +130,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'lottery-start',
@@ -104,6 +139,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'user',
@@ -111,6 +147,7 @@ const menuItems: MenuItem[] = [
         icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
+        subMenuItems: [],
         action: 'logout',
     },
     {
@@ -119,6 +156,7 @@ const menuItems: MenuItem[] = [
         icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'user',
+        subMenuItems: [],
         action: 'login',
     },
 ];
@@ -130,4 +168,5 @@ export interface MenuItem {
     cls: string;
     limitedTo: string /*admin, user or blank (=not limited to any user group)*/;
     action: string;
+    subMenuItems: any[];
 }
