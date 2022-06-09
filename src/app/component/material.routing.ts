@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { AssociationComponent } from '../pages/association/association.component';
 import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
+import { FlowComponent } from '../pages/flow/flow.component';
+import { AboutComponent } from '../pages/info/about.component';
 import { LoginComponent } from '../pages/login/login.component';
 import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
 import { MembersComponent } from '../pages/members/members.component';
@@ -27,6 +29,14 @@ export const MaterialRoutes: Routes = [
         component: AssociationComponent,
     },
     {
+        path: 'user/about',
+        component: AboutComponent,
+    },
+    {
+        path: 'user/flow',
+        component: FlowComponent,
+    },
+    {
         path: 'user/lottery-start',
         component: LotteryStartComponent,
     },
@@ -49,6 +59,14 @@ export const MaterialRoutes: Routes = [
     {
         path: 'admin/association',
         component: AssociationComponent,
+    },
+    {
+        path: 'admin/about',
+        component: AboutComponent,
+    },
+    {
+        path: 'admin/flow',
+        component: FlowComponent,
     },
     {
         path: 'admin/lottery-start',
