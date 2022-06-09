@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { AnyMxRecord } from 'dns';
 import { ArtItem } from 'src/app/model/art-item';
 import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -20,6 +21,8 @@ export class ArtItemFormComponent implements OnInit {
     update: boolean = false;
     selected!: number;
     lotteries: Lottery[] = [];
+    file: any;
+    imgURL: any;
     profileForm = this.fb.group({
         id: [''],
         lottery_id: [''],
@@ -46,31 +49,33 @@ export class ArtItemFormComponent implements OnInit {
 
     onFileChanged(event: any) {
         console.log(event);
-        const file = event.target.files[0];
+        this.file = event.target.files[0];
+
+        let reader = new FileReader();
+        reader.readAsDataURL(event.target.files[0]);
+        reader.onload = (event2) => {
+            this.imgURL = reader.result;
+        };
     }
 
     onSubmit(artItem: ArtItem) {
-        // if (this.update == true) {
-        //     console.log('update is true');
-        //     this.artItemService.observeUpdateArtItem(artItem).subscribe((data) => {
-        //         console.log(data.id);
-        //         this.matDialog.closeAll();
-        //     });
-        // }
-        // if (this.update == false) {
-        // this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
-        //     console.log(data.id);
-        //     if (this.lotteryService.currLotteryId !== undefined) {
-        //         this.lotteryService.addItemToLottery(this.lotteryService.currLotteryId, data).subscribe((resp) => console.log(resp));
-        //     }
-        // });
-        console.log(artItem);
         artItem.lottery_id = this.selected;
-        this.lotteryService.addItemToLottery(this.selected, artItem).subscribe((data) => {
-            console.log(data.title);
-            this.matDialog.closeAll();
+        this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
+            console.log(data);
+            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
+                console.log(resp);
+                if (this.file != null) this.onUpload(data);
+                this.matDialog.closeAll();
+            });
         });
         // }
+    }
+
+    onUpload(artItem: ArtItem) {
+        const formData: FormData = new FormData();
+        formData.append('image', <File>this.file);
+        formData.append('newImage', new Blob([this.file], { type: 'application/json' }));
+        this.artItemService.observeUpdateImage(artItem, formData).subscribe((resp) => resp);
     }
 
     updateForm() {
