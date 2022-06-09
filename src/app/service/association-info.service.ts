@@ -1,51 +1,81 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AssociationInfo } from '../model/association-info';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { AssociationInfoApiService } from './api/association-info-api.service';
-
 @Injectable({
     providedIn: 'root',
 })
 export class AssociationInfoService {
-    constructor(private service: AssociationInfoApiService) {}
+    private fieldsChangedEmitter = new EventEmitter<AssociationInfoService>();
+    private cacheMap!: Map<string, string>;
+    private subscriptions = new Map<Object, Subscription>();
 
-    public getAllFields(): Observable<Map<String, String>> {
-        return this.service.getAllFields();
+    constructor(private service: AssociationInfoApiService) {
+        this.service.getAllFields().subscribe((resp) => {
+            this.cacheMap = new Map(Object.entries(resp));
+        });
     }
 
-    public getByField(field: string): Observable<String> {
-        return this.service.getByField(field);
+    public unsubscribe(subscriber: Object) {
+        this.subscriptions.get(subscriber)?.unsubscribe();
     }
 
-    public updateField(field: string, body: string): Observable<AssociationInfo> {
-        return this.service.updateField(field, body);
+    public subscribe(subscriber: Object, receiver: (newData: AssociationInfoService) => void) {
+        let subscription = this.fieldsChangedEmitter.subscribe(receiver);
+        if (this.cacheMap !== undefined) receiver(this);
+        else
+            this.service.getAllFields().subscribe((resp) => {
+                this.cacheMap = new Map(Object.entries(resp));
+                receiver(this);
+            });
+        this.subscriptions.set(subscriber, subscription);
+        return subscription;
     }
 
-    public addField(field: string, body: string): Observable<AssociationInfo> {
-        return this.service.addField(field, body);
+    public getField(field: string) {
+        if (!this.ensureCache(field, '', this.updateField)) return '';
+        let resp = this.cacheMap.get(field);
+        return resp !== undefined ? resp : '';
     }
 
-    public delField(field: string): Observable<boolean> {
-        return this.service.delField(field);
+    /**
+     * Acts like a map, i.e. no errors when the field didn't exist!
+     */
+    public setField(field: string, body: string) {
+        if (!this.ensureCache(field, body, this.setField)) return;
+        if (this.cacheMap.get(field) === undefined) this.addField(field, body);
+        else this.updateField(field, body);
     }
 
-    public getAll(): Observable<AssociationInfo[]> {
-        return this.service.getAll();
+    public updateField(field: string, body: string): void {
+        if (!this.ensureCache(field, body, this.updateField)) return;
+        this.service.updateField(field, body).subscribe((_) => {
+            this.cacheMap!.set(field, body);
+            this.fieldsChangedEmitter.emit(this);
+        });
     }
 
-    public getById(id: number): Observable<AssociationInfo> {
-        return this.service.getById(id);
+    public addField(field: string, body: string): void {
+        if (!this.ensureCache(field, body, this.addField)) return;
+        this.service.addField(field, body).subscribe((_) => {
+            this.cacheMap!.set(field, body);
+            this.fieldsChangedEmitter.emit(this);
+        });
     }
 
-    public deleteInfoItem(id: number): Observable<boolean> {
-        return this.service.deleteInfoItem(id);
+    public delField(field: string, _: string) {
+        if (!this.ensureCache(field, '', this.delField)) return;
+        this.service.delField(field).subscribe((_) => {
+            this.cacheMap!.delete(field);
+            this.fieldsChangedEmitter.emit(this);
+        });
     }
 
-    public addInfoItem(infoItem: AssociationInfo): Observable<AssociationInfo> {
-        return this.service.addInfoItem(infoItem);
-    }
-
-    public updateInfoItem(infoItem: AssociationInfo): Observable<AssociationInfo> {
-        return this.service.updateInfoItem(infoItem);
+    private ensureCache(field: string, body: string, caller: (field: string, body: string) => void) {
+        if (this.cacheMap !== undefined) return true;
+        this.service.getAllFields().subscribe((resp) => {
+            this.cacheMap = new Map(Object.entries(resp));
+            caller(field, body);
+        });
+        return false;
     }
 }

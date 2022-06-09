@@ -13,12 +13,12 @@ export class AssociationInfoApiService {
 
     constructor(private http: HttpClient, private auth: AuthService) {}
 
-    public getAllFields(): Observable<Map<String, String>> {
-        return this.http.get<Map<String, String>>(`${this.apiBase}field`, this.getHeaders());
+    public getAllFields(): Observable<Map<string, string>> {
+        return this.http.get<Map<string, string>>(`${this.apiBase}field`, this.getHeaders());
     }
 
-    public getByField(field: string): Observable<String> {
-        return this.http.get<String>(`${this.apiBase}field/${field}`, this.getHeaders());
+    public getByField(field: string): Observable<string> {
+        return this.http.get<string>(`${this.apiBase}field/${field}`, this.getHeaders());
     }
 
     public updateField(field: string, body: string): Observable<AssociationInfo> {

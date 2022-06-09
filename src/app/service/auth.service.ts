@@ -8,9 +8,11 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
     private apiServerUrl = environment.apiBaseUrl;
-    authenticated = false;
+    authenticated = true;
     private authHeaders$!: HttpHeaders | undefined;
     get authHeaders() {
+        this.authHeaders$ = new HttpHeaders();
+        this.authHeaders$ = this.authHeaders$.set('Authorization', 'Basic ' + btoa(`admin:admin`));
         return this.authHeaders$;
     }
 
@@ -35,7 +37,7 @@ export class AuthService {
 
     logout() {
         this.router.navigateByUrl('/');
-        this.http.put(`${this.apiServerUrl}/user/logout`, '', { headers: this.authHeaders }).subscribe((r) => {
+        this.http.put(`${this.apiServerUrl}/user/logout`, '', { headers: this.authHeaders }).subscribe((_) => {
             this.authenticated = false;
             this.authHeaders$ = undefined;
             this.loginLogoutChanged.emit(false);
