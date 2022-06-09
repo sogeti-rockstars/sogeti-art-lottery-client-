@@ -33,12 +33,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         if (this.lotteryService.currLotteryId !== undefined)
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
-                // this.loadContestants(lottery);
             });
 
         this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
             this.currLottery = lottery;
-            // this.loadContestants(lottery);
         });
         this.contestantsService.getContestants().subscribe((contestants) => {
             this.loadContestants(contestants);
@@ -87,11 +85,6 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.contestantsService
                 .addContestant(cont)
                 .subscribe((resp) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
-            // TODO: fix backend
-            // this.lotteryService.addContestantToLottery(this.currLottery.id, cont).subscribe((resp) => {
-            //     this.populateRowData([resp.contestants, resp.winners]);
-            //     console.log(resp);
-            // });
         },
     };
 
@@ -99,8 +92,14 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         this.rowData = [];
 
         if (data.length < 1) return;
-        // Check if type is Contestant or [Winner[]|Contestant[]]
-        else if ((data[0] as any).employeeId !== undefined) (data as Contestant[]).forEach((c, _) => this.rowData.push({ data: c, render: false }));
+
+        let dataSample = data[0] as any;
+
+        // Check if type is Contestant, [Winner[], Contestant[]] or sanitized Contestant
+        if (dataSample.sanitize === true || dataSample.employeeId !== undefined)
+            (data as Contestant[]).forEach((c, _) => {
+                this.rowData.push({ data: c, render: false });
+            });
         else {
             let [winners, conts] = data as [Winner[], Contestant[]];
             winners.forEach((w, _) => {
