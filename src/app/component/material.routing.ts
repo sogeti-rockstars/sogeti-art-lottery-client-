@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { ArtItemsComponent } from '../pages/art-items/art-items.component';
 import { AssociationComponent } from '../pages/association/association.component';
 import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
+import { EditLotteryComponent } from '../pages/edit-lottery/edit-lottery.component';
 import { FlowComponent } from '../pages/flow/flow.component';
 import { AboutComponent } from '../pages/info/about.component';
 import { LoginComponent } from '../pages/login/login.component';
@@ -83,5 +84,9 @@ export const MaterialRoutes: Routes = [
     {
         path: 'admin/create-lottery',
         component: CreateLotteryComponent,
+    },
+    {
+        path: 'admin/edit-lottery/:id',
+        component: EditLotteryComponent,
     },
 ];

@@ -16,6 +16,7 @@ export class AppHeaderComponent implements AfterViewInit {
 
     currLotteryTitle!: string;
     lotteries!: Lottery[];
+    currIndex!: number;
 
     public readonly menuItems = menuItems;
 
@@ -26,12 +27,18 @@ export class AppHeaderComponent implements AfterViewInit {
         private _focusMonitor: FocusMonitor,
         public lotteryService: LotteryService
     ) {
-        lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
-        lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        lotteryService.lotteryChanged.subscribe((lott) => {
+            this.currLotteryTitle = lott.title;
+            lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        });
     }
 
     ngAfterViewInit(): void {
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
+    }
+
+    public setCurrIndex(index: number) {
+        this.currIndex = index;
     }
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {

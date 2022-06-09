@@ -65,7 +65,22 @@
 }
 
 .mat-menu-autosize {
-    width: 170px !important;
+    width: auto !important;
+}
+.mat-menu-penbutton {
+    margin-right: 0px;
+}
+.edit-lottery-button {
+    padding: 0px;
+    margin-left: 10px;
+    min-width: none;
+}
+.mat-raised-button {
+    min-width: auto;
+    box-shadow: none;
+}
+.mat-menu-item .mat-icon {
+    margin-right: 0px;
 }
 
 .create-lottery-button {
