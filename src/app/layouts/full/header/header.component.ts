@@ -60,6 +60,10 @@ export class AppHeaderComponent implements AfterViewInit {
                 (item.limitedTo == 'admin' && this.authService.authenticated)
         );
     }
+
+    // updateId(i: any) {
+    //     this.lotteryService.setCurrentLottery(i);
+    // }
 }
 
 const menuItems: MenuItem[] = [

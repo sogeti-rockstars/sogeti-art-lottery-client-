@@ -1,6 +1,6 @@
 <div id="flex-form-container">
   <div class="flex-form-content">
-  <p *ngIf="lottery!=undefined">ID = {{ lottery.id }}</p>
+  <p *ngIf="id!=undefined">ID = {{ id }}</p>
   <form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
   <div class="form-div">
       <mat-form-field appearance="outline" width="inherit">

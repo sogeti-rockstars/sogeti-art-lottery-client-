@@ -61,6 +61,7 @@ export class ArtItemsComponent implements OnInit {
             },
             next: (resp: ArtItem[]) => {
                 this.artItems = resp;
+                console.log(resp);
             },
         });
     }

@@ -1,10 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Contestant } from 'src/app/model/contestant';
+import { ActivatedRoute } from '@angular/router';
 import { Lottery } from 'src/app/model/lottery';
-import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
-import { runInThisContext } from 'vm';
 
 @Component({
     selector: 'app-lottery-form',
@@ -18,21 +16,32 @@ export class LotteryFormComponent implements OnInit {
     @Output() artItemOutput = new EventEmitter<Lottery>();
     @Input() update: boolean = false;
     @Input() id!: number;
+    lotId!: number;
     profileForm = this.fb.group({
         date: [''],
         title: [''],
-        addContestants: [''],
     });
-    constructor(private fb: FormBuilder, private contestantService: ContestantService, private lotteryService: LotteryService) {}
+    constructor(private route: ActivatedRoute, private fb: FormBuilder, private lotteryService: LotteryService) {}
 
     onSubmit(event: any) {
-        this.lottery = new Lottery();
-        // if (event.addContestants == true) {
-        //     this.contestantService.getContestants().subscribe((data: Contestant[]) => (this.lottery.contestants = data));
-        // }
-        this.lottery.title = event.title;
-        this.lottery.date = event.date;
-        this.lotteryService.addLottery(this.lottery);
+        console.log(event);
+        if (this.update == false) {
+            this.lottery = new Lottery();
+            this.lottery.title = event.title;
+            this.lottery.date = event.date;
+            this.lotteryService.addLottery(this.lottery).subscribe((resp) => console.log(resp));
+        } else
+            this.lotteryService.getLottery(this.id).subscribe((resp) => {
+                this.lottery = resp;
+                this.lottery.title = event.title;
+                this.lottery.date = event.date;
+                this.lotteryService.updateLottery(this.lottery).subscribe((resp) => console.log(resp));
+            });
+    }
+
+    getLottery(): void {
+        const id = Number(this.route.snapshot.paramMap.get('id'));
+        this.id = id;
     }
 
     updateForm(lottery: Lottery) {
@@ -41,12 +50,12 @@ export class LotteryFormComponent implements OnInit {
             date: lottery.date,
             title: lottery.title,
         });
+        this.getLottery();
     }
 
     ngOnInit(): void {
         if (this.update == true) {
-            this.lotteryService.getLottery(this.id).subscribe((resp) => {
-                this.lottery = resp;
+            this.lotteryService.lotteryChanged.subscribe((resp) => {
                 this.updateForm(resp);
             });
         }

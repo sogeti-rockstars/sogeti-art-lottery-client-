@@ -25,7 +25,6 @@ export class LotteryService {
      * @param idx the INDEX of the lottery as given by the list returned by getLotteries() and getLotteriesSummary()
      */
     public async setCurrentLottery(idx: number) {
-        console.log(idx);
         if (this.lotteries === undefined) await firstValueFrom(this.getLotteriesSummary());
         this.getLottery(this.lotteries![idx].id).subscribe((lottery) => {
             this.currLottery = lottery;
