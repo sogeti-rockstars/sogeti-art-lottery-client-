@@ -19,7 +19,7 @@
 
 <ng-template #editTitle>
     <div class="editing-wrapper">
-        <form id="edit-form" role="form" (submit)="infoService.updateField('aboutUsTitle', title.text) ; title.editing=false">
+        <form id="edit-form" role="form" (submit)="infoService.setField('aboutUsTitle', title.text) ; title.editing=false">
             <div class="edit-buttons-wrapper">
                 <button mat-icon-button type="submit" class="edit-button btn btn-primary" aria-label="Verkställ">
                     <mat-icon>done</mat-icon>
