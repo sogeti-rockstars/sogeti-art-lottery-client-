@@ -36,15 +36,21 @@ export class AppHeaderComponent implements AfterViewInit {
 
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        if (menuitem.action === 'showRoute') {
-            let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
-            this.router.navigateByUrl(url);
-        } else if (menuitem.action == 'login') {
-            this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
-            this.router.setUpLocationChangeListener;
-        } else if (menuitem.action == 'logout') {
-            this.authService.logout();
-        } else throw new Error('Unknown action was given!');
+        switch (menuitem.action) {
+            case 'showRoute':
+                let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
+                this.router.navigateByUrl(url);
+                break;
+            case 'login':
+                this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
+                this.router.setUpLocationChangeListener;
+                break;
+            case 'logout':
+                this.authService.logout();
+                break;
+            case 'nothing':
+                break;
+        }
     }
 
     public getMenuItems() {
@@ -82,7 +88,7 @@ const menuItems: MenuItem[] = [
         icon: '',
         cls: 'header-buttons route-button',
         limitedTo: '',
-        action: '',
+        action: 'nothing',
         subMenuItems: [
             {
                 route: 'association',
