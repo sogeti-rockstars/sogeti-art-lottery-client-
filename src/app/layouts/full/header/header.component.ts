@@ -73,7 +73,16 @@ export class AppHeaderComponent implements AfterViewInit {
 const menuItems: MenuItem[] = [
     {
         route: 'artitems',
-        label: 'Konstverk',
+        label: 'Högvinster',
+        icon: '',
+        cls: 'header-buttons route-button',
+        limitedTo: '',
+        action: 'showRoute',
+        subMenuItems: [],
+    },
+    {
+        route: 'artitemSecond',
+        label: 'Garantivinst',
         icon: '',
         cls: 'header-buttons route-button',
         limitedTo: '',
