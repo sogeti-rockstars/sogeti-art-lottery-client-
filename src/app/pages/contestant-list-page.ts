@@ -1,11 +1,15 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ArtItem } from '../model/art-item';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
+import { ArtItemApiService } from '../service/api/art-item-api.service';
 import { WinnerApiService } from '../service/api/winner-api.service';
+import { ArtItemService } from '../service/art-item.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
+import { WinnerService } from '../service/winner.service';
 
 /**
  * Base class that all pages which use the ContestantListComponent should extend.
@@ -24,8 +28,15 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     protected contestants: Contestant[] = [];
 
     private loadContestantsSubscription?: Subscription;
+    private loadWinnerSubscription?: Subscription;
 
-    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService, public winnerService: WinnerApiService) {}
+    constructor(
+        public lotteryService: LotteryService,
+        public contestantsService: ContestantService,
+        public winnerService: WinnerApiService,
+        public winnerXService: WinnerService,
+        public artItemApiService: ArtItemApiService
+    ) {}
 
     protected abstract loadContestants(contestants: Contestant[]): void;
 
@@ -38,6 +49,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
             this.currLottery = lottery;
         });
+
         this.contestantsService.getContestants().subscribe((contestants) => {
             this.loadContestants(contestants);
             this.contestants = contestants;
@@ -102,9 +114,27 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             });
         else {
             let [winners, conts] = data as [Winner[], Contestant[]];
+
             winners.forEach((w, _) => {
+                let newItem = new ArtItem();
                 let cont = conts.find((c) => c.id == w.contestantId);
-                if (cont !== undefined) this.rowData.push({ data: cont, render: false });
+                // if (w.lotteryItemId != null)
+                //     this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
+                //         console.log(resp);
+                //         if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winnerId: w.id, artItem: resp });
+                //     });
+                if (w.lotteryItemId != null) {
+                    this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
+                        newItem = resp;
+                        if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                        this.contestantsChange.emit(this.rowData);
+                    });
+                    // this.loadWinnerSubscription = this.winnerXService.winnerChanged.subscribe((resp) => {
+                    //     this.contestantsChange.emit(this.rowData);
+                    //     console.log(this.rowData);
+                    //     console.log(resp);
+                    // });
+                } else if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
             });
         }
 
@@ -123,6 +153,9 @@ export interface RowData {
     filtered?: boolean;
     render?: boolean;
     inAddNewMode?: boolean;
+    artItem?: ArtItem;
+    placement?: number;
+    winner?: Winner;
 }
 
 export enum ClickableElements {
