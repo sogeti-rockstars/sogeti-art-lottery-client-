@@ -22,7 +22,7 @@ export class AuthService {
         this.authHeaders$ = new HttpHeaders();
         this.authHeaders$ = this.authHeaders$.set('Authorization', 'Basic ' + btoa(`${user}:${pass}`));
 
-        this.http.get(`${this.apiServerUrl}/user`, { headers: this.authHeaders }).subscribe({
+        this.http.get(`${this.apiServerUrl}/api/v1/users/current/`, { headers: this.authHeaders }).subscribe({
             next: (_) => {
                 this.authenticated = true;
                 this.loginLogoutChanged.emit(true);
@@ -35,7 +35,7 @@ export class AuthService {
 
     logout() {
         this.router.navigateByUrl('/');
-        this.http.put(`${this.apiServerUrl}/user/logout`, '', { headers: this.authHeaders }).subscribe((r) => {
+        this.http.put(`${this.apiServerUrl}/api/v1/users/logout`, '', { headers: this.authHeaders }).subscribe((r) => {
             this.authenticated = false;
             this.authHeaders$ = undefined;
             this.loginLogoutChanged.emit(false);
