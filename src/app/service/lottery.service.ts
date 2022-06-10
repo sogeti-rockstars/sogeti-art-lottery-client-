@@ -1,7 +1,6 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 import { ArtItem } from '../model/art-item';
-import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
 import { LotteryApiService } from './api/lottery-api.service';
@@ -11,7 +10,6 @@ import { LotteryApiService } from './api/lottery-api.service';
 })
 export class LotteryService {
     @Output() lotteryChanged = new EventEmitter<Lottery>();
-    // @Output() lotteryChanged = new EventEmitter<number>();
 
     private currLottery?: Lottery;
     private lotteries?: Lottery[];
@@ -36,10 +34,6 @@ export class LotteryService {
         return this.currLottery?.id;
     }
 
-    public getLotteries(): Observable<Lottery[]> {
-        return this.apiService.getLotteries().pipe(tap((response) => (this.lotteries = response)));
-    }
-
     public getLotteriesSummary(): Observable<Lottery[]> {
         return this.apiService.getLotteriesSummary().pipe(tap((response) => (this.lotteries = response)));
     }
@@ -52,29 +46,17 @@ export class LotteryService {
         return this.apiService.getArtItemsByLotteryId(id);
     }
 
+    public getCurrentWinners(): Observable<Winner[]> | undefined {
+        if (this.currLottery === undefined) return undefined;
+        return this.getWinnersByLotteryId(this.currLottery.id);
+    }
+
     public getWinnersByLotteryId(id: number): Observable<Winner[]> {
         return this.apiService.getWinnersByLotteryId(id);
     }
 
-    public getContestantsByLotteryId(id: number): Observable<Contestant[]> {
-        return this.apiService.getContestantsByLotteryId(id);
-    }
-
     public addLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.addLottery(lottery);
-    }
-
-    public addContestantToLottery(lotteryId: number, contestant: Contestant): Observable<Lottery> {
-        return this.apiService.addContestantToLottery(lotteryId, contestant);
-    }
-
-    public addItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.apiService.addItemToLottery(lotteryId, artItem).pipe(
-            tap((response) => {
-                this.currLottery = response;
-                this.lotteryChanged.emit(this.currLottery);
-            })
-        );
     }
 
     public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
@@ -85,6 +67,7 @@ export class LotteryService {
             })
         );
     }
+
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.updateLottery(lottery);
     }

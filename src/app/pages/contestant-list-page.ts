@@ -21,9 +21,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public rowData: RowData[] = [];
 
     protected currLottery!: Lottery;
-    protected contestants: Contestant[] = [];
+    protected contestants!: Contestant[];
 
-    private loadContestantsSubscription?: Subscription;
+    private onLotteryChanged?: Subscription;
+    private onContestChanged?: Subscription;
 
     constructor(public lotteryService: LotteryService, public contestantsService: ContestantService, public winnerService: WinnerApiService) {}
 
@@ -34,25 +35,25 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
             });
-
-        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
-            this.currLottery = lottery;
-        });
         this.contestantsService.getContestants().subscribe((contestants) => {
-            this.loadContestants(contestants);
             this.contestants = contestants;
+            this.loadContestants(contestants);
         });
-        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestants) => {
-            this.loadContestants(contestants);
+
+        this.onLotteryChanged = this.lotteryService.lotteryChanged.subscribe((lottery) => {
+            this.currLottery = lottery;
+            this.loadContestants(this.contestants);
+        });
+
+        this.onContestChanged = this.contestantsService.contestantsChanged.subscribe((contestants) => {
             this.contestants = contestants;
+            this.loadContestants(contestants);
         });
     }
 
     ngOnDestroy(): void {
-        if (this.loadContestantsSubscription !== undefined) {
-            this.loadContestantsSubscription.unsubscribe();
-            this.loadContestantsSubscription = undefined;
-        }
+        this.onLotteryChanged?.unsubscribe();
+        this.onContestChanged?.unsubscribe();
     }
 
     public readonly listManipulation = {
@@ -81,10 +82,9 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
-            console.log('HERE');
             this.contestantsService
                 .addContestant(cont)
-                .subscribe((resp) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
+                .subscribe((_) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
         },
     };
 
@@ -95,20 +95,23 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
         let dataSample = data[0] as any;
 
-        // Check if type is Contestant, [Winner[], Contestant[]] or sanitized Contestant
+        // Check if type is Contestant, winner or sanitized Contestant
         if (dataSample.sanitize === true || dataSample.employeeId !== undefined)
             (data as Contestant[]).forEach((c, _) => {
                 this.rowData.push({ data: c, render: false });
             });
         else {
-            let [winners, conts] = data as [Winner[], Contestant[]];
-            winners.forEach((w, _) => {
-                let cont = conts.find((c) => c.id == w.contestantId);
+            (data as Winner[]).forEach((w, _) => {
+                let cont = this.winnerToContestant(w);
                 if (cont !== undefined) this.rowData.push({ data: cont, render: false });
             });
         }
 
         this.contestantsChange.emit(this.rowData);
+    }
+
+    private winnerToContestant(winner: Winner) {
+        return this.contestants.find((contestant) => contestant.id == winner.contestantId);
     }
 }
 
