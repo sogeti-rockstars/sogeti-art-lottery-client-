@@ -69,7 +69,20 @@
     <mat-menu #dropMenu="matMenu">
         <button mat-menu-item [matMenuTriggerFor]="subMenu">Andra årtal</button>
         <ng-container *ngFor="let item of getMenuItems()">
-            <button mat-menu-item (click)="this.doAction(item, $event)">{{ item.label }}</button>
+            <button 
+                *ngIf="item.subMenuItems.length == 0" 
+                mat-menu-item 
+                (click)="this.doAction(item, $event)">
+                {{ item.label }}
+            </button>
+            <button 
+                *ngIf="item.subMenuItems.length > 0" 
+                mat-menu-item 
+                [matMenuTriggerFor]="dropMenuSubItems"
+                [matMenuTriggerData]="item"
+                (click)="this.doAction(item, $event)">
+                {{ item.label }}
+            </button>
             <mat-divider></mat-divider>
         </ng-container>
     </mat-menu>
