@@ -8,6 +8,12 @@ body {
 .custom-dialog-container .mat-dialog-container {
     padding: 0px;
 }
+.custom-thumbnail .mat-dialog-container {
+    overflow: auto;
+    outline: 0;
+    width: 95vw;
+    height: 90vh;
+}
 
 :root {
     position: absolute;
