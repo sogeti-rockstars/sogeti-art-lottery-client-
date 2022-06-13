@@ -58,6 +58,7 @@ export class AutoCardComponent implements OnInit {
     }
 
     onSubmit(item: ArtItem) {
+        console.log(this.selected);
         this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
             if (this.file != null) this.onUpload(data);
             this.matDialog.closeAll();

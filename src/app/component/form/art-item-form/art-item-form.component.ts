@@ -52,13 +52,13 @@ export class ArtItemFormComponent implements OnInit {
 
         let reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (event2) => {
+        reader.onload = (_) => {
             this.imgURL = reader.result;
         };
     }
 
     onSubmit(artItem: ArtItem) {
-        artItem.lotteryId = this.lotteryService.currLotteryId!;
+        artItem.lotteryId = this.lotteries[this.selected - 1].id;
         this.artItemService.add(artItem).subscribe((data) => {
             if (this.file != null) this.onUpload(data);
             this.matDialog.closeAll();
