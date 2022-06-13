@@ -25,10 +25,10 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public rowData: RowData[] = [];
 
     protected currLottery!: Lottery;
-    protected contestants: Contestant[] = [];
+    protected contestants!: Contestant[];
 
-    private loadContestantsSubscription?: Subscription;
-    private loadWinnerSubscription?: Subscription;
+    private onLotteryChanged?: Subscription;
+    private onContestChanged?: Subscription;
 
     constructor(
         public lotteryService: LotteryService,
@@ -45,26 +45,25 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => {
                 this.currLottery = lottery;
             });
-
-        this.loadContestantsSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => {
-            this.currLottery = lottery;
-        });
-
         this.contestantsService.getContestants().subscribe((contestants) => {
-            this.loadContestants(contestants);
             this.contestants = contestants;
+            this.loadContestants(contestants);
         });
-        this.loadContestantsSubscription = this.contestantsService.contestantsChanged.subscribe((contestants) => {
-            this.loadContestants(contestants);
+
+        this.onLotteryChanged = this.lotteryService.lotteryChanged.subscribe((lottery) => {
+            this.currLottery = lottery;
+            this.loadContestants(this.contestants);
+        });
+
+        this.onContestChanged = this.contestantsService.contestantsChanged.subscribe((contestants) => {
             this.contestants = contestants;
+            this.loadContestants(contestants);
         });
     }
 
     ngOnDestroy(): void {
-        if (this.loadContestantsSubscription !== undefined) {
-            this.loadContestantsSubscription.unsubscribe();
-            this.loadContestantsSubscription = undefined;
-        }
+        this.onLotteryChanged?.unsubscribe();
+        this.onContestChanged?.unsubscribe();
     }
 
     public readonly listManipulation = {
@@ -93,10 +92,9 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
-            console.log('HERE');
             this.contestantsService
                 .addContestant(cont)
-                .subscribe((resp) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
+                .subscribe((_) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
         },
     };
 
@@ -107,38 +105,33 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
 
         let dataSample = data[0] as any;
 
-        // Check if type is Contestant, [Winner[], Contestant[]] or sanitized Contestant
+        // Check if type is Contestant, winner or sanitized Contestant
         if (dataSample.sanitize === true || dataSample.employeeId !== undefined)
             (data as Contestant[]).forEach((c, _) => {
                 this.rowData.push({ data: c, render: false });
             });
         else {
-            let [winners, conts] = data as [Winner[], Contestant[]];
-
-            winners.forEach((w, _) => {
+            (data as Winner[]).forEach((w, _) => {
                 let newItem = new ArtItem();
-                let cont = conts.find((c) => c.id == w.contestantId);
-                // if (w.lotteryItemId != null)
-                //     this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
-                //         console.log(resp);
-                //         if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winnerId: w.id, artItem: resp });
-                //     });
-                if (w.lotteryItemId != null) {
-                    this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
-                        newItem = resp;
-                        if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
-                        this.contestantsChange.emit(this.rowData);
-                    });
-                    // this.loadWinnerSubscription = this.winnerXService.winnerChanged.subscribe((resp) => {
-                    //     this.contestantsChange.emit(this.rowData);
-                    //     console.log(this.rowData);
-                    //     console.log(resp);
-                    // });
-                } else if (cont !== undefined) this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                let cont = this.winnerToContestant(w);
+                if (cont !== undefined) {
+                    if (w.lotteryItemId != null)
+                        this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
+                            newItem = resp;
+                            this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                            this.contestantsChange.emit(this.rowData);
+                        });
+                    else this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                }
+                this.contestantsChange.emit(this.rowData);
             });
         }
 
         this.contestantsChange.emit(this.rowData);
+    }
+
+    private winnerToContestant(winner: Winner) {
+        return this.contestants.find((contestant) => contestant.id == winner.contestantId);
     }
 }
 
