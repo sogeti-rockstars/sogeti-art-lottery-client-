@@ -1,8 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { CheckboxControlValueAccessor } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 import { ArtItemFormComponent } from 'src/app/component/form/art-item-form/art-item-form.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ArtItem } from 'src/app/model/art-item';
@@ -16,10 +14,12 @@ import { LotteryService } from 'src/app/service/lottery.service';
     templateUrl: 'art-items.component.html',
     styleUrls: ['./art-items.component.css'],
 })
-export class ArtItemsComponent implements OnInit {
+export class ArtItemsComponent implements OnInit, OnDestroy {
     @Input() public artItems: ArtItem[] = [];
     allIsChecked = false;
+
     private loadPaintingSubscription!: Subscription;
+
     constructor(
         public authService: AuthService,
         private artItemApiService: ArtItemApiService,
@@ -28,6 +28,9 @@ export class ArtItemsComponent implements OnInit {
         private modalService: ModalService,
         private vcr: ViewContainerRef
     ) {}
+    ngOnDestroy(): void {
+        this.loadPaintingSubscription.unsubscribe();
+    }
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
         this.loadPaintingSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
@@ -88,7 +91,6 @@ export class ArtItemsComponent implements OnInit {
         if (confirm('Är du säker på att du vill radera?')) {
             var allCheckboxes = document.getElementsByName('artItemCheckbox');
             var cbox;
-            var arrSelected = [];
             for (var i = 0; i < allCheckboxes.length; i++) {
                 cbox = <any>allCheckboxes[i];
                 cbox.checked

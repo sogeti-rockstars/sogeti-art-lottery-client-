@@ -1,20 +1,20 @@
 <div id="flex-form-container">
-  <div class="flex-form-content">
-  <p *ngIf="id!=undefined">ID = {{ id }}</p>
-  <form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
-  <div class="form-div">
-      <mat-form-field appearance="outline" width="inherit">
-        <mat-label>Lotteriets namn</mat-label>
-       <input matInput id="title" type="text" formControlName="title" class="form-control" id="title" placeholder="Name of the lottery" required>
-      </mat-form-field>
-  </div>
-  <div class="modal-footer">
-  <div  class="form-value">
-       <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Ändra</button></div>
-       <div *ngIf="update==true" ><button [disabled]="!profileForm.valid" type="submit">Radera</button></div>
-       <div *ngIf="update!=true" ><button [disabled]="!profileForm.valid" type="submit">Lägg till</button></div>
+    <div class="flex-form-content">
+        <p *ngIf="lottIndex!=undefined">ID = {{ lottIndex }}</p>
+        <form mat-dialog-content [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
+            <div class="form-div">
+                <mat-form-field appearance="outline" width="inherit">
+                    <mat-label>Lotteriets namn</mat-label>
+                    <input matInput id="title" type="text" formControlName="title" class="form-control" id="title" placeholder="Name of the lottery" required />
+                </mat-form-field>
+            </div>
+            <div class="modal-footer">
+                <div class="form-value">
+                    <div *ngIf="update==true"><button [disabled]="!profileForm.valid" type="submit">Ändra</button></div>
+                    <div *ngIf="update!=true"><button [disabled]="!profileForm.valid" type="submit">Lägg till</button></div>
+                </div>
+            </div>
+        </form>
+        <button (click)="deleteLottery()">Radera</button>
     </div>
-  </div>
-  </form>
-  </div>
-  </div>
+</div>

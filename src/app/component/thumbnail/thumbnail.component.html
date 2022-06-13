@@ -1,5 +1,5 @@
 <mat-card class="card">
-    <img class="{{ cssClass }}" src="http://localhost:8080/api/v1/item/image/{{ id }}" (click)="loadModal(artItem)" />
+    <img class="{{ cssClass }}" src="http://localhost:8080/api/v1/item/image/{{ artItem.id }}" (click)="loadModal(artItem)" />
     <mat-card-content>
         <div class="text">
             <input *ngIf="authService.authenticated == true && winner==null" type="checkbox" id="artItem_{{ id }}" name="artItemCheckbox" value="{{ id }}" />
