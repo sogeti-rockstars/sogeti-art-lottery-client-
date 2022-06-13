@@ -54,6 +54,6 @@ export class AssociationInfoApiService {
     }
 
     private getHeaders() {
-        return { headers: this.auth.authHeaders };
+        return this.auth.getHttpOptions();
     }
 }

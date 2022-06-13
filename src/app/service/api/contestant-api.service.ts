@@ -25,7 +25,6 @@ export class ContestantApiService {
     }
 
     public updateContestant(cont: Contestant): Observable<Contestant> {
-        console.log(`${this.apiBase}` + this.getHeaders());
         return this.httpPut<Contestant>(cont, cont.id);
     }
 
@@ -50,6 +49,6 @@ export class ContestantApiService {
     }
 
     private getHeaders() {
-        return { headers: this.auth.authHeaders };
+        return this.auth.getHttpOptions();
     }
 }

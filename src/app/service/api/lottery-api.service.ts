@@ -65,7 +65,6 @@ export class LotteryApiService {
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        console.log(`${id}/spin`);
         return this.httpPut<Winner>(null, `${id}/spin`);
     }
 
@@ -86,6 +85,6 @@ export class LotteryApiService {
     }
 
     private getHeaders() {
-        return { headers: this.auth.authHeaders };
+        return this.auth.getHttpOptions();
     }
 }
