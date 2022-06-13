@@ -11,41 +11,29 @@ import { AuthService } from '../auth.service';
 })
 export class WinnerApiService {
     private apiServerUrl = environment.apiBaseUrl;
-    postId!: number;
-    status!: string;
     constructor(private http: HttpClient, private auth: AuthService) {}
 
     public getWinners(): Observable<Winner[]> {
-        return this.http.get<Winner[]>(`${this.apiServerUrl}/api/v1/winner/`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.http.get<Winner[]>(`${this.apiServerUrl}/api/v1/winner/`, this.auth.getHttpOptions());
     }
 
     public getWinner(id: number): Observable<Winner> {
-        return this.http.get<Winner>(`${this.apiServerUrl}/api/v1/winner/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.http.get<Winner>(`${this.apiServerUrl}/api/v1/winner/${id}`, this.auth.getHttpOptions());
     }
 
     public getWinningContestantsByLotteryId(lotteryId: number): Observable<Contestant[]> {
-        return this.http.get<Contestant[]>(`${this.apiServerUrl}/api/v1/winner/winning-contestants-in-lottery/${lotteryId}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.http.get<Contestant[]>(`${this.apiServerUrl}/api/v1/winner/winning-contestants-in-lottery/${lotteryId}`, this.auth.getHttpOptions());
     }
 
     public addWinner(winner: Winner): Observable<Winner> {
-        console.log(winner + 'addWinnerService');
-        return this.http.post<Winner>(`${this.apiServerUrl}/api/v1/winner/`, winner, { headers: this.auth.authHeaders });
+        return this.http.post<Winner>(`${this.apiServerUrl}/api/v1/winner/`, winner, this.auth.getHttpOptions());
     }
 
     public updateWinner(winner: Winner): Observable<Winner> {
-        // console.log(`Update: { id:${winner.id}, title:${winner.title} } `);
-        return this.http.put<Winner>(`${this.apiServerUrl}/api/v1/winner/${winner.id}`, winner, { headers: this.auth.authHeaders });
+        return this.http.put<Winner>(`${this.apiServerUrl}/api/v1/winner/${winner.id}`, winner, this.auth.getHttpOptions());
     }
 
     public deleteWinner(id: number): Observable<Object> {
-        return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/winner/${id}`, {
-            headers: this.auth.authHeaders,
-        });
+        return this.http.delete<Object>(`${this.apiServerUrl}/api/v1/winner/${id}`, this.auth.getHttpOptions());
     }
 }
