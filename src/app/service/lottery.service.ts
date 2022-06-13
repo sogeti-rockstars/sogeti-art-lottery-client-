@@ -42,6 +42,10 @@ export class LotteryService {
         return this.apiService.getLottery(id);
     }
 
+    public detectChanges() {
+        this.apiService.getLottery(this.currLotteryId!).subscribe((r) => this.lotteryChanged.emit(r));
+    }
+
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
         return this.apiService.getArtItemsByLotteryId(id);
     }
@@ -57,15 +61,6 @@ export class LotteryService {
 
     public addLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.addLottery(lottery);
-    }
-
-    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.apiService.editItemToLottery(lotteryId, artItem).pipe(
-            tap((response) => {
-                this.currLottery = response;
-                this.lotteryChanged.emit(this.currLottery);
-            })
-        );
     }
 
     public updateLottery(lottery: Lottery): Observable<Lottery> {
