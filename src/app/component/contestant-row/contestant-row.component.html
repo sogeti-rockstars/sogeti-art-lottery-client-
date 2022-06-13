@@ -66,8 +66,8 @@
             <div #collapsedItems class="collapsed-contestant-info-items">
                 <div class="collapsed-item" id="col-1">{{ rowData.data?.name }}</div>
                 <div class="collapsed-item" id="col-2">kontor: BACKENDWIP</div>
-                <div class="collapsed-item" id="col-3">dbId: {{ rowData.data?.id }}</div>
-                <div *ngIf="rowData.artItem!=null" class="collapsed-item" id="col-4">artItem: {{ rowData.artItem?.itemName }}</div>
+                <div *ngIf="rowData.artItem==null" class="collapsed-item" id="col-3">dbId: {{ rowData.data?.id }}</div>
+                <div *ngIf="rowData.artItem!=null" class="collapsed-item" id="col-3">Item name: {{ rowData.artItem.itemName }}</div>
                 <div *ngIf="rowData.artItem==null" class="collapsed-item" id="col-4">employeeId: {{ rowData.data?.employeeId }}</div>
                 <div *ngIf="rowData.placement==null"class="collapsed-item" id="col-5">teleNumber: {{ rowData.data?.teleNumber }}</div>
                 <div *ngIf="rowData.placement!=null" class="collapsed-item" id="col-5">placement: {{ rowData.placement }}</div>
@@ -118,8 +118,8 @@
             <mat-label>kontor</mat-label>
             <input matInput class="form-control" formControlName="office" type="text" placeholder="" />
         </mat-form-field>
-        <img *ngIf="rowData.winner!=null" class="winner-item-image" src="http://localhost:8080/api/v1/item/image/{{ rowData.artItem?.id }}">
-        <button *ngIf="rowData.winner!=null && this" (click)="openItemModal(rowData.winner)">Välj konstföremål</button>
+        <img *ngIf="rowData.winner!=null" class="winner-item-image" src="http://localhost:8080/api/v1/item/image/{{ rowData.winner?.lotteryItemId }}">
+        <button *ngIf="rowData.winner!=null && this.authService.authenticated==true " (click)="openItemModal(rowData.winner)">Välj konstföremål</button>
 
         <button type="submit" style="display: none">hidden submit</button>
     </form>

@@ -15,7 +15,7 @@ export class ArtItemApiService {
     constructor(private http: HttpClient, private auth: AuthService) {}
 
     public getArtItems(): Observable<ArtItem[]> {
-        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/item/`, {
+        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/item/get-all`, {
             headers: this.auth.authHeaders,
         });
     }
