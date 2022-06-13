@@ -18,8 +18,8 @@ export class AssociationComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.infoService.subscribe(this, (cache) => {
-            this.title.text = cache.getField('aboutUsTitle');
-            this.body.text = cache.getField('aboutUsBody');
+            this.title.text = cache.getField('aboutAssociationTitle');
+            this.body.text = cache.getField('aboutAssociationBody');
         });
     }
 }

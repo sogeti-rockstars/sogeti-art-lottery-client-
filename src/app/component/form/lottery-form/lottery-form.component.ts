@@ -18,7 +18,6 @@ export class LotteryFormComponent implements OnInit {
     @Input() id!: number;
     lotId!: number;
     profileForm = this.fb.group({
-        date: [''],
         title: [''],
     });
     constructor(private route: ActivatedRoute, private fb: FormBuilder, private lotteryService: LotteryService) {}
@@ -28,14 +27,17 @@ export class LotteryFormComponent implements OnInit {
         if (this.update == false) {
             this.lottery = new Lottery();
             this.lottery.title = event.title;
-            this.lottery.date = event.date;
-            this.lotteryService.addLottery(this.lottery).subscribe((resp) => console.log(resp));
+            this.lotteryService.addLottery(this.lottery).subscribe((resp) => {
+                console.log(resp);
+                //försökte setCurrentLottery(resp.id) men den gillade inte det av någon anledning
+            });
         } else
             this.lotteryService.getLottery(this.id).subscribe((resp) => {
                 this.lottery = resp;
                 this.lottery.title = event.title;
-                this.lottery.date = event.date;
-                this.lotteryService.updateLottery(this.lottery).subscribe((resp) => console.log(resp));
+                this.lotteryService.updateLottery(this.lottery).subscribe((resp) => {
+                    this.lotteryService.setCurrentLottery(this.id - 1);
+                });
             });
     }
 
@@ -47,7 +49,6 @@ export class LotteryFormComponent implements OnInit {
     updateForm(lottery: Lottery) {
         this.profileForm.patchValue({
             id: lottery.id,
-            date: lottery.date,
             title: lottery.title,
         });
         this.getLottery();

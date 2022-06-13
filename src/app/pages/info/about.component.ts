@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AssociationInfoService } from 'src/app/service/association-info.service';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
+    selector: 'app-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.css'],
 })
-export class AboutComponent implements OnInit {
+export class AboutComponent implements OnInit, OnDestroy {
+    title = { text: '', editing: false };
+    body = { text: '', editing: false };
+    constructor(public authService: AuthService, public infoService: AssociationInfoService) {}
 
-  constructor() { }
+    ngOnDestroy(): void {
+        this.infoService.unsubscribe(this);
+    }
 
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {
+        this.infoService.subscribe(this, (cache) => {
+            this.title.text = cache.getField('aboutUsTitle');
+            this.body.text = cache.getField('aboutUsBody');
+        });
+    }
 }

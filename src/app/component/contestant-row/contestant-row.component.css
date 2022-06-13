@@ -91,7 +91,10 @@
     top: 0;
     bottom: 0;
 }
-
+.winner-item-image {
+    max-width: 30vw;
+    max-height: 30vh;
+}
 #col-1 {
     left: var(--item-col-1);
 }

@@ -5,7 +5,7 @@
       <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
         <div class="column" *ngIf="i + pos < artItems.length">
           <!-- <app-materialmodal [artItem]="artItems[i + pos]"></app-materialmodal> -->
-          <thumbnail
+          <thumbnail [winner]="winner"
             [id]="artItems[i + pos].id"
             [artItem]="artItems[i + pos]"
             cssClass="thumbnailImg"

@@ -1,11 +1,15 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { ArtItem } from '../model/art-item';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
+import { ArtItemApiService } from '../service/api/art-item-api.service';
 import { WinnerApiService } from '../service/api/winner-api.service';
+import { ArtItemService } from '../service/art-item.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
+import { WinnerService } from '../service/winner.service';
 
 /**
  * Base class that all pages which use the ContestantListComponent should extend.
@@ -26,7 +30,13 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     private onLotteryChanged?: Subscription;
     private onContestChanged?: Subscription;
 
-    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService, public winnerService: WinnerApiService) {}
+    constructor(
+        public lotteryService: LotteryService,
+        public contestantsService: ContestantService,
+        public winnerService: WinnerApiService,
+        public winnerXService: WinnerService,
+        public artItemApiService: ArtItemApiService
+    ) {}
 
     protected abstract loadContestants(contestants: Contestant[]): void;
 
@@ -102,8 +112,18 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             });
         else {
             (data as Winner[]).forEach((w, _) => {
+                let newItem = new ArtItem();
                 let cont = this.winnerToContestant(w);
-                if (cont !== undefined) this.rowData.push({ data: cont, render: false });
+                if (cont !== undefined) {
+                    if (w.lotteryItemId != null)
+                        this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
+                            newItem = resp;
+                            this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                            this.contestantsChange.emit(this.rowData);
+                        });
+                    else this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                }
+                this.contestantsChange.emit(this.rowData);
             });
         }
 
@@ -126,6 +146,9 @@ export interface RowData {
     filtered?: boolean;
     render?: boolean;
     inAddNewMode?: boolean;
+    artItem?: ArtItem;
+    placement?: number;
+    winner?: Winner;
 }
 
 export enum ClickableElements {
