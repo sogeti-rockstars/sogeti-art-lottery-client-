@@ -1,36 +1,36 @@
-.XXsquare {
-  height: 50px;
-  width: 50px;
-  background-color: white;
-  display: table-cell;
-  justify-content: center;
-  vertical-align: middle;
-  text-align: center;
+.thumbnail-image {
+    max-height: 90%;
+    max-width: 100%;
+    object-fit: contain;
 }
-.thumbnailImg {
-  width: 110px;
-  border: 2px solid rosybrown;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  margin-top: auto !important;
-  max-width: 75%;
+
+.thumbnail-card {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.card {
-  margin: 10px;
-  max-width: 120px;
-  height: 180px;
-  position: relative;
-  background-color: #e1e1e1;
+
+.default-thumbnail-card {
+    max-width: 10rem;
+    min-width: 7rem;
+    height: 10rem;
+    background-color: #e1e1e1;
 }
+
 .mat-card-content {
-  position: absolute;
-  bottom: 0;
-  margin: auto;
+    position: absolute;
+    bottom: 0;
 }
+
 .text {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-size: 12.5px;
-  color: black;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    font-size: 12.5px;
+    color: black;
+}
+
+.thumbnail-checkbox {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
 }

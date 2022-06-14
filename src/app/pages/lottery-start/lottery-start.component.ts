@@ -1,5 +1,4 @@
 import { Component, EventEmitter } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
 import { Winner } from 'src/app/model/winner';
 import { ContestantListPage } from '../contestant-list-page';
 
@@ -9,20 +8,17 @@ import { ContestantListPage } from '../contestant-list-page';
     styleUrls: ['./lottery-start.component.css'],
 })
 export class LotteryStartComponent extends ContestantListPage {
+    readonly animationControlEvent = new EventEmitter<number>();
+    buttonShown = false;
     winners: Winner[] = [];
-    public readonly animationControlEvent = new EventEmitter<number>();
 
     async spinningAnimationEndHandler() {
         let currLotteryId = this.lotteryService.currLotteryId!;
-        let repetitions = Math.floor(this.contestants.length * 0.25 - this.winners.length);
-        let observables: Observable<Winner>[] = [];
-        if (repetitions > 0) {
-            [...Array(repetitions)].forEach((_) => {
-                observables.push(this.lotteryService.spinTheWheel(currLotteryId));
-            });
-        }
+        this.lotteryService.spinTheWheel(currLotteryId).subscribe((_) => this.loadContestants());
+    }
 
-        combineLatest(observables).subscribe((_) => this.loadContestants());
+    showButton() {
+        this.buttonShown = true;
     }
 
     spinTheWheel(ev: MouseEvent) {

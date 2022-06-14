@@ -15,16 +15,24 @@ export class LotteryService {
     private lotteries?: Lottery[];
 
     constructor(private apiService: LotteryApiService) {
-        this.getLotteriesSummary().subscribe((_) => this.setCurrentLottery(0));
+        this.getLotteriesSummary().subscribe((_) => this.setCurrentLotteryIndex(0));
     }
 
     /**
      * Set the current lottery.
      * @param idx the INDEX of the lottery as given by the list returned by getLotteries() and getLotteriesSummary()
      */
-    public async setCurrentLottery(idx: number) {
+    public async setCurrentLotteryIndex(idx: number) {
         if (this.lotteries === undefined) await firstValueFrom(this.getLotteriesSummary());
         this.getLottery(this.lotteries![idx].id).subscribe((lottery) => {
+            this.currLottery = lottery;
+            this.lotteryChanged.emit(this.currLottery);
+        });
+    }
+
+    public async setCurrentLottery(id: number) {
+        if (this.lotteries === undefined) await firstValueFrom(this.getLotteriesSummary());
+        this.getLottery(id).subscribe((lottery) => {
             this.currLottery = lottery;
             this.lotteryChanged.emit(this.currLottery);
         });
@@ -40,6 +48,10 @@ export class LotteryService {
 
     public getLottery(id: number): Observable<Lottery> {
         return this.apiService.getLottery(id);
+    }
+
+    public detectChanges() {
+        this.apiService.getLottery(this.currLotteryId!).subscribe((r) => this.lotteryChanged.emit(r));
     }
 
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
@@ -59,21 +71,18 @@ export class LotteryService {
         return this.apiService.addLottery(lottery);
     }
 
-    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.apiService.editItemToLottery(lotteryId, artItem).pipe(
-            tap((response) => {
-                this.currLottery = response;
-                this.lotteryChanged.emit(this.currLottery);
-            })
-        );
-    }
-
     public updateLottery(lottery: Lottery): Observable<Lottery> {
         return this.apiService.updateLottery(lottery);
     }
 
     public deleteLottery(id: number): Observable<Object> {
-        return this.apiService.deleteLottery(id);
+        this.lotteries = undefined;
+        this.currLottery = undefined;
+        return this.apiService.deleteLottery(id).pipe(
+            tap((_) => {
+                this.setCurrentLotteryIndex(0);
+            })
+        );
     }
 
     public spinTheWheel(id: number): Observable<Winner> {

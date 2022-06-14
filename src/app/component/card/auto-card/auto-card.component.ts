@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AppComponent } from 'src/app/app.component';
 import { ArtItem } from 'src/app/model/art-item';
 import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -43,44 +42,34 @@ export class AutoCardComponent implements OnInit {
 
     enableEdit() {
         this.editMode = true;
-        console.log(this.profileForm);
 
-        this.lotteryService.getLotteriesSummary().subscribe((resp) => (this.lotteries = resp));
         if (this.lotteryService.currLotteryId !== undefined)
             this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id));
     }
 
     onFileChanged(event: any) {
-        console.log(event);
         this.file = event.target.files[0];
 
         let reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (event2) => {
+        reader.onload = (_) => {
             this.imgURL = reader.result;
         };
     }
 
-    onSubmit(object: ArtItem) {
-        console.log(object);
+    onSubmit(item: ArtItem) {
         console.log(this.selected);
-        this.artItemService.observeUpdateArtItem(object).subscribe((data: ArtItem) => {
-            console.log(data);
-            // this.matDialog.closeAll();
-            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
-                console.log(resp);
-                if (this.file != null) this.onUpload(data);
-                this.matDialog.closeAll();
-            });
+        this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
+            if (this.file != null) this.onUpload(data);
+            this.matDialog.closeAll();
         });
     }
 
     onUpload(artItem: ArtItem) {
-        console.log(artItem);
         const formData: FormData = new FormData();
         formData.append('image', <File>this.file);
         formData.append('newImage', new Blob([this.file], { type: 'application/json' }));
-        this.artItemService.observeUpdateImage(artItem, formData).subscribe((resp) => resp);
+        this.artItemService.setImage(artItem, formData).subscribe((resp) => resp);
     }
 
     ngOnInit(): void {
@@ -88,6 +77,7 @@ export class AutoCardComponent implements OnInit {
         this.loadImageUrl();
         this.objectValueExtraction();
         this.formCreation();
+        this.lotteryService.getLotteriesSummary().subscribe((resp) => (this.lotteries = resp));
     }
 
     private formCreation() {
@@ -99,7 +89,7 @@ export class AutoCardComponent implements OnInit {
 
     private objectValueExtraction() {
         this.objectContent = Object.entries(this.object);
-        this.values = this.objectContent.map(function (value, index) {
+        this.values = this.objectContent.map(function (value, _) {
             if (value[0].toLowerCase().indexOf('lotteryId') != -1) {
                 if (typeof value[1] === 'object' && value[1] != null) {
                     return value[1].title;
@@ -107,7 +97,7 @@ export class AutoCardComponent implements OnInit {
             }
             return value[1];
         });
-        this.variableNames = this.objectContent.map(function (value, index) {
+        this.variableNames = this.objectContent.map(function (value, _) {
             return value[0];
         });
         for (let i = 0; i < this.variableNames.length; i++) {

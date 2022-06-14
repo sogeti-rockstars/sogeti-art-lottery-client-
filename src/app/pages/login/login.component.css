@@ -11,6 +11,10 @@
     align-items: center;
 }
 
+#wrong-pass-message {
+    text-align: center;
+}
+
 #form-wrap {
     max-width: 40rem;
 }

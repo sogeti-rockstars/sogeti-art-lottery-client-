@@ -12,4 +12,4 @@
         <a class="main-buttons-a">Visa alla artitems i databasen</a>
     </button>
 </div>
-<art-items-list [artItems]="this.artItems"></art-items-list>
+<art-items-list [artItems]="this.artItems" [showThumbnailCheckboxes]="authService.authenticated?true:false"></art-items-list>

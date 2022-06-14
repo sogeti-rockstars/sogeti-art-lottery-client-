@@ -1,5 +1,9 @@
 <div id="main-content">
     <div id="form-wrap">
+        <div *ngIf="passFailed" id="wrong-pass-message">
+            <p>Fel lösenord!</p>
+            <p>Var god fösök igen.</p>
+        </div>
         <form id="login-form" role="form" (submit)="submit()">
             <mat-form-field matLine name="login" class="search-form" appearance="outline">
                 <mat-label>Användarnamn:</mat-label>

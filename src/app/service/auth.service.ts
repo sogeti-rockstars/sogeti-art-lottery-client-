@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,6 +18,7 @@ export class AuthService {
     private authHeaders!: HttpHeaders;
 
     constructor(private http: HttpClient, private router: Router) {
+        this.login('admin', 'admin');
         this.checkAuthentication(); // this.login('admin', 'admin');
     }
 
@@ -24,16 +26,18 @@ export class AuthService {
         this.authHeaders = new HttpHeaders();
         this.authHeaders = this.authHeaders.set('Authorization', 'Basic ' + btoa(`${user}:${pass}`));
 
-        this.http.get(`${this.apiServerUrl}/api/v1/users/current`, { headers: this.authHeaders, observe: 'response' }).subscribe({
-            next: (_) => {
-                this.authenticated$ = true;
-                this.loginLogoutChanged.emit(true);
-            },
-            error: (_) => {
-                this.authHeaders = new HttpHeaders();
-            },
-            complete: () => {},
-        });
+        return this.http.get(`${this.apiServerUrl}/api/v1/users/current`, { headers: this.authHeaders, observe: 'response' }).pipe(
+            tap({
+                next: (_) => {
+                    this.authenticated$ = true;
+                    this.loginLogoutChanged.emit(true);
+                },
+                error: (_) => {
+                    this.authHeaders = new HttpHeaders();
+                },
+                complete: () => {},
+            })
+        );
     }
 
     logout() {
