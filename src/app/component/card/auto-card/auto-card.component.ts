@@ -44,7 +44,7 @@ export class AutoCardComponent implements OnInit {
         this.editMode = true;
 
         if (this.lotteryService.currLotteryId !== undefined)
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id));
+            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id - 1));
     }
 
     onFileChanged(event: any) {
@@ -58,7 +58,8 @@ export class AutoCardComponent implements OnInit {
     }
 
     onSubmit(item: ArtItem) {
-        console.log(this.selected);
+        item.lottery = this.lotteries[this.selected];
+        item.lotteryId = this.selected;
         this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
             if (this.file != null) this.onUpload(data);
             this.matDialog.closeAll();
