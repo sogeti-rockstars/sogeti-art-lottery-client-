@@ -8,14 +8,10 @@
         <ul class="list-group">
             <div *ngIf="viewData.inEditMode == true" class="form-group">
                 <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
-                    <div *ngFor="let field of fieldnames; let i=index">
-                        <li class="list-group-item">
-                            {{ field.key }}
-                            <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
-                            <!-- <mat-form-field appearance="fill" [va> -->
-                            <!-- </mat-form-field> -->
-                        </li>
-                    </div>
+                    <li *ngFor="let field of fieldnames; let i=index" class="list-group-item">
+                        {{ field.key }}
+                        <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
+                    </li>
                 </form>
             </div>
         </ul>
@@ -29,18 +25,14 @@
     <mat-card-actions>
         <div *ngIf="this.viewData.isAdmin == true">
             <div *ngIf="viewData.inEditMode != true; else acceptForm">
-                <!-- <button *ngIf="this.viewData.isAdmin == true" mat-button (click)="onClick()">Edit</button> -->
                 <button mat-button (click)="enableEdit()">Redigera</button>
             </div>
             <ng-template #acceptForm>
                 <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
+                <div>
+                    <input type="file" (change)="onFileChanged($event)" />
+                </div>
             </ng-template>
         </div>
-        <!--     <div> -->
-        <!--         <input type="file" (change)="onFileChanged($event)" /> -->
-        <!--     </div> -->
-        <!--     <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button> -->
-        <!-- </div> -->
-        <!-- <button mat-button>SHARE</button> -->
     </mat-card-actions>
 </mat-card>

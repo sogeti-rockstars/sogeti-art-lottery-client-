@@ -99,7 +99,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     protected populateRowData(data: any): void {
         this.rowData = [];
 
-        if (data.length < 1) return;
+        if (data === undefined || data.length < 1) return;
 
         let dataSample = data[0] as any;
 
@@ -147,7 +147,8 @@ export enum ClickableElements {
     checkbox,
     body,
     addNew,
-    accept,
+    acceptNew,
+    acceptEdit,
     abort,
     selectAll,
     selectNone,

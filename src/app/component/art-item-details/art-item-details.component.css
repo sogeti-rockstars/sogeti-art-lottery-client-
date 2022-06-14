@@ -1,13 +1,28 @@
 ::ng-deep .art-item-details-card {
     max-height: 90vh;
+    max-width: 30rem;
 }
 ::ng-deep mat-dialog-container {
     padding: 0 !important;
     margin: 0 !important;
 }
+/* .art-item-details-card { */
+/* max-width: 100%; */
+/* max-height: 100%; */
+/* } */
 .mat-card-image {
-    max-height: 55vh;
-    width: auto;
+    /* height: 30rem; */
+    /* width: auto; */
+    /* max-height: 100%; */
+
+    /* width: 30rem; */
+    /* height: auto; */
+    /* max-height: 100%; */
+
+    max-width: 100%;
+    max-height: 100%;
+    margin: auto;
+    display: block;
 }
 .mat-card-header {
     margin: -8px;

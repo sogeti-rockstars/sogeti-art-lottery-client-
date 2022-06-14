@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
+import { ContestantService } from 'src/app/service/contestant.service';
 
 @Component({
     selector: 'contestant-list-component',
@@ -37,7 +38,13 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private colGap = 20;
     private loadContestantsSubscription!: Subscription;
 
-    constructor(public cdr: ChangeDetectorRef, private modService: ModalService, private vcr: ViewContainerRef, @Inject(DOCUMENT) private document: Document) {}
+    constructor(
+        public cdr: ChangeDetectorRef,
+        private modService: ModalService,
+        private vcr: ViewContainerRef,
+        @Inject(DOCUMENT) private document: Document,
+        private contestantService: ContestantService
+    ) {}
 
     ngOnInit(): void {
         this.loadContestantsSubscription = this.contestantListParent.contestantsChange.subscribe((data) => {
@@ -110,8 +117,12 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
             case ClickableElements.addNew:
                 this.addNewRowData = { inAddNewMode: true };
                 break;
-            case ClickableElements.accept:
+            case ClickableElements.acceptNew:
                 this.contestantListParent.listManipulation.addNew(this.addNewRowData!.data!);
+                this.addNewRowData = undefined;
+                break;
+            case ClickableElements.acceptEdit:
+                this.contestantService.updateContestant(row?.data!).subscribe();
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.abort:

@@ -3,7 +3,7 @@
 </div>
 
 <ng-template #buttons class="buttons">
-    <span *ngIf="!rowData.inAddNewMode; else buttonsAddNewMode">
+    <span *ngIf="!rowData.inAddNewMode && !rowData.inEditMode; else buttonsEditMode">
         <span *ngIf="editable">
             <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
                 <mat-icon aria-label="Redigera">edit</mat-icon>
@@ -16,13 +16,23 @@
             <mat-icon aria-label="Mer info">open_in_full</mat-icon>
         </button>
     </span>
-    <ng-template #buttonsAddNewMode>
-        <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
-            <mat-icon aria-label="Avbryt">close</mat-icon>
-        </button>
-        <button id="accept" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.accept, $event)">
-            <mat-icon aria-label="Verkställ">done</mat-icon>
-        </button>
+    <ng-template #buttonsEditMode>
+        <span *ngIf="rowData.inAddNewMode; else buttonsEditExistingMode">
+            <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
+                <mat-icon aria-label="Avbryt">close</mat-icon>
+            </button>
+            <button id="accept" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.acceptNew, $event)">
+                <mat-icon aria-label="Verkställ">done</mat-icon>
+            </button>
+        </span>
+        <ng-template #buttonsEditExistingMode>
+            <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
+                <mat-icon aria-label="Avbryt">close</mat-icon>
+            </button>
+            <button id="accept" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.acceptEdit, $event)">
+                <mat-icon aria-label="Verkställ">done</mat-icon>
+            </button>
+        </ng-template>
     </ng-template>
 </ng-template>
 
@@ -127,7 +137,12 @@
             <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal()">Välj konstföremål</button>
             <div *ngIf="rowData.winner!.lotteryItem!==undefined">
                 <!-- <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail> -->
-                <art-item-details [data]="rowData.winner.lotteryItem" [onClickOverride]="artItemClicked" [viewData]="{isAdmin:true}"></art-item-details>
+                <art-item-details
+                    class="art-item-details"
+                    [data]="rowData.winner.lotteryItem"
+                    [onClickOverride]="artItemClicked"
+                    [viewData]="{isAdmin:true}"
+                ></art-item-details>
             </div>
         </div>
     </div>

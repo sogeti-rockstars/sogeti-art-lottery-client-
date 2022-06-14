@@ -85,6 +85,7 @@ export class ContestantRowComponent implements OnInit {
                 next: (resp: ArtItem[]) => {
                     const component = this.vcr.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
                     component.instance.artItems = resp;
+                    console.log(resp);
                     component.instance.onThumbnailClick = (artItem: ArtItem) => {
                         let winner = this.rowData.winner!;
                         winner.lotteryItem = artItem;
@@ -98,8 +99,8 @@ export class ContestantRowComponent implements OnInit {
             });
     }
 
-    artItemClicked(artItemComp: ArtItemDetailsComponent) {
-        this.matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
+    artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
+        matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 
     onSubmit(contestant: Contestant) {
@@ -123,7 +124,13 @@ export class ContestantRowComponent implements OnInit {
                 this.setEditMode(this.rowData.inEditMode!);
                 if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
                 break;
-            case ClickableElements.accept:
+            case ClickableElements.acceptNew:
+                console.log(this.rowData);
+                this.rowData.data = this.contestantForm.value as Contestant;
+                break;
+            case ClickableElements.acceptEdit:
+                console.log('EDITACC');
+                console.log(this.rowData);
                 this.rowData.data = this.contestantForm.value as Contestant;
                 break;
         }
