@@ -126,7 +126,8 @@
         <div class="choosen-item-wrapper" *ngIf="rowData.winner!==undefined">
             <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal()">Välj konstföremål</button>
             <div *ngIf="rowData.winner!.lotteryItem!==undefined">
-                <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail>
+                <!-- <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail> -->
+                <art-item-details [data]="rowData.winner.lotteryItem" [onClickOverride]="artItemClicked" [viewData]="{isAdmin:true}"></art-item-details>
             </div>
         </div>
     </div>

@@ -54,6 +54,7 @@ import { EditLotteryComponent } from '../pages/edit-lottery/edit-lottery.compone
 import { LoginComponent } from '../pages/login/login.component';
 import { FlowComponent } from '../pages/flow/flow.component';
 import { AboutComponent } from '../pages/info/about.component';
+import { ArtItemDetailsComponent } from './art-item-details/art-item-details.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -139,6 +140,7 @@ const components: Array<any> = [
     LoginComponent,
     FlowComponent,
     AboutComponent,
+    ArtItemDetailsComponent,
 ];
 
 @NgModule({

@@ -14,12 +14,12 @@
                             <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
                                 <li class="list-group-item">
                                     <div *ngIf="editMode == true">
-                                        <div *ngIf="variableNames[i]!= 'lottery_id'">
+                                        <div *ngIf="variableNames[i]!= 'lotteryId'">
                                             {{prettyVarNames[i]}}:
                                             <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
                                         </div>
                                         <!--  -->
-                                        <div *ngIf="variableNames[i]== 'lottery_id'">
+                                        <div *ngIf="variableNames[i]== 'lotteryId'">
                                             <mat-form-field appearance="fill">
                                                 <mat-label>Lottery</mat-label>
                                                 <mat-select [(value)]="selected">

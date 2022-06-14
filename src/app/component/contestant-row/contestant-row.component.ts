@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { WinnerService } from 'src/app/service/winner.service';
+import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
 import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
 import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ModalService } from '../modal/modal.service';
@@ -100,6 +101,11 @@ export class ContestantRowComponent implements OnInit {
                     this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.vcr);
                 },
             });
+    }
+
+    artItemClicked(artItemComp: ArtItemDetailsComponent) {
+        console.log('hi' + artItemComp.data.itemName);
+        this.matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 
     onSubmit(contestant: Contestant) {

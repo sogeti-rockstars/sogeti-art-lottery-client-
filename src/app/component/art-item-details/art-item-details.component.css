@@ -1,0 +1,20 @@
+::ng-deep .art-item-details-card {
+    max-height: 90vh;
+}
+::ng-deep mat-dialog-container {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+.mat-card-image {
+    max-height: 55vh;
+    width: auto;
+}
+.mat-card-header {
+    margin: -8px;
+}
+.mat-card-actions {
+    padding: 0px;
+}
+.mat-card-body {
+    margin-bottom: 10px;
+}
