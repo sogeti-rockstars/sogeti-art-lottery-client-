@@ -1,48 +1,40 @@
 <mat-card class="art-item-details-card">
     <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>{{data.itemName}}</mat-card-title>
         <mat-card-subtitle>{{data.artistName}}</mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image [src]="imgURL" alt="Photo of item" (click)="onClick()" />
     <mat-card-content class="mat-card-body">
         <ul class="list-group">
-            <!-- <div *ngFor="let value of values; let i=index"> -->
-            <!-- <div class="form-group"> -->
-            <!--     <div *ngIf="rowData.inEditMode == true"> -->
-            <!--         <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)"> -->
-            <!--             <li class="list-group-item"> -->
-            <!--                 <div *ngIf="editMode == true"> -->
-            <!--                     <div *ngIf="variableNames[i]!= 'lottery_id'"> -->
-            <!--                         {{prettyVarNames[i]}}: -->
-            <!--                         <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" /> -->
-            <!--                     </div> -->
-            <!--                     &#60;&#33;&#45;&#45;  &#45;&#45;&#62; -->
-            <!--                     <div *ngIf="variableNames[i]== 'lottery_id'"> -->
-            <!--                         <mat-form-field appearance="fill"> -->
-            <!--                             <mat-label>Lottery</mat-label> -->
-            <!--                             <mat-select [(value)]="selected"> -->
-            <!--                                 <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id"> -->
-            <!--                                     {{lottery.title}} -->
-            <!--                                 </mat-option> -->
-            <!--                             </mat-select> -->
-            <!--                         </mat-form-field> -->
-            <!--                     </div> -->
-            <!--                 </div> -->
-            <!--             </li> -->
-            <!--         </form> -->
-            <!-- </div> -->
-
-            <div *ngIf="viewData.inEditMode == false">
-                <div *ngFor="let value of values; let i=index">
-                    <li class="list-group-item">{{prettyVarNames[i]}}: {{value}}</li>
-                </div>
+            <div *ngIf="viewData.inEditMode == true" class="form-group">
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+                    <div *ngFor="let field of fieldnames; let i=index">
+                        <li class="list-group-item">
+                            {{ field.key }}
+                            <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
+                            <!-- <mat-form-field appearance="fill" [va> -->
+                            <!-- </mat-form-field> -->
+                        </li>
+                    </div>
+                </form>
             </div>
         </ul>
+
+        <div *ngIf="viewData.inEditMode != true">
+            <div *ngFor="let field of fieldnames; let i=index">
+                <li class="list-group-item">{{field.key}}: {{field.value}}</li>
+            </div>
+        </div>
     </mat-card-content>
     <mat-card-actions>
-        <div *ngIf="viewData.inEditMode != true">
-            <button *ngIf="this.viewData.isAdmin == true" mat-button (click)="onClick()">Edit</button>
+        <div *ngIf="this.viewData.isAdmin == true">
+            <div *ngIf="viewData.inEditMode != true; else acceptForm">
+                <!-- <button *ngIf="this.viewData.isAdmin == true" mat-button (click)="onClick()">Edit</button> -->
+                <button mat-button (click)="enableEdit()">Redigera</button>
+            </div>
+            <ng-template #acceptForm>
+                <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
+            </ng-template>
         </div>
         <!--     <div> -->
         <!--         <input type="file" (change)="onFileChanged($event)" /> -->

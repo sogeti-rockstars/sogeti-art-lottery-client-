@@ -51,11 +51,6 @@ export class ContestantRowComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // if (this.rowData.index! < 2) { // I am leaving this. useful when making changes.
-        //     this.rowData.expanded = true;
-        //     if (this.rowData.index! == 0) this.rowData.inEditMode = true;
-        // }
-
         if (this.rowData === undefined) this.rowData = {};
         if (this.rowData.data === undefined) this.rowData.data = new Contestant();
 
@@ -104,7 +99,6 @@ export class ContestantRowComponent implements OnInit {
     }
 
     artItemClicked(artItemComp: ArtItemDetailsComponent) {
-        console.log('hi' + artItemComp.data.itemName);
         this.matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 

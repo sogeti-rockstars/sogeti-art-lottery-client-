@@ -2,12 +2,14 @@ import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
+import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 
 interface ArtItemDetailsViewData {
     inEditMode?: boolean;
     isAdmin?: boolean;
+    isThumbnail?: boolean;
 }
 
 @Component({
@@ -19,8 +21,7 @@ export class ArtItemDetailsComponent implements OnInit {
     file: any;
     imgURL: any;
 
-    prettyVarNames: string[] = [];
-    values: string[] = [];
+    fieldnames: { key: string; value: string }[] = [];
 
     @Input() onClickOverride?: (artItemComp: ArtItemDetailsComponent) => void;
 
@@ -28,8 +29,10 @@ export class ArtItemDetailsComponent implements OnInit {
     @Input() viewData: ArtItemDetailsViewData = { inEditMode: false, isAdmin: false };
     @Input() dataa!: { file: string; imgUrl: string };
 
+    @Input() lotteries: Lottery[] = [];
+
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
-    // profileForm = this.fb.group(this.fb.control('wtf'));
+    profileForm = this.fb.group(this.fb.control('wtf'));
 
     constructor(
         private fb: FormBuilder,
@@ -44,34 +47,20 @@ export class ArtItemDetailsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log(this.viewData.isAdmin);
-        console.log(this.viewData.inEditMode);
-
-        // let entries = Object.entries(this.viewData).map(entr=>{
-        //     if ( entr[1] == undefined )
-        //         entr[1]
-        // });
-
-        // this.editMode = false;
+        Object.entries(this.data).forEach((entr) => {
+            this.fieldnames.push({ key: entr[0], value: entr[1] as string });
+        });
         this.loadImageUrl();
-        // this.objectValueExtraction();
-        // this.formCreation();
-        // this.lotteryService.getLotteriesSummary().subscribe((resp) => (this.lotteries = resp));
     }
 
     onClick() {
         console.log('image clicked!');
         if (this.onClickOverride != undefined) this.onClickOverride(this);
-        else this.openModal();
     }
 
-    openModal() {}
-
     enableEdit() {
+        this.createForm();
         this.viewData.inEditMode = true;
-
-        // if (this.lotteryService.currLotteryId !== undefined)
-        //     this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => ());
     }
 
     onFileChanged(event: any) {
@@ -87,11 +76,20 @@ export class ArtItemDetailsComponent implements OnInit {
         };
     }
 
-    onSubmit(item: ArtItem) {
-        this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
-            if (this.file != null) this.onUpload(data);
-            this.matDialog.closeAll();
+    onSubmit(fieldValues: any) {
+        let artItem = this.constructArtItemFromInputFields(fieldValues);
+        console.log(artItem);
+        artItem.lottery = this.data.lottery;
+        this.artItemService.observeUpdateArtItem(artItem).subscribe();
+    }
+
+    private constructArtItemFromInputFields(item: any) {
+        let artItemEntries = Object.entries(this.data).map((entry) => {
+            let key = entry[0];
+            let value = item[key] !== undefined && key !== 'id' ? item[key] : (this.data as any)[key];
+            return [key, value];
         });
+        return Object.fromEntries(artItemEntries) as ArtItem;
     }
 
     onUpload(artItem: ArtItem) {
@@ -101,12 +99,9 @@ export class ArtItemDetailsComponent implements OnInit {
         this.artItemService.setImage(artItem, formData).subscribe((resp) => resp);
     }
 
-    // private formCreation() {
-    //     for (let i = 0; i < this.objectContent.length; i++) {
-    //         this.profileForm.addControl(this.variableNames[i], this.fb.control(this.values[i]));
-    //     }
-    //     this.profileForm.patchValue({ value: this.values[6] });
-    // }
+    private createForm() {
+        this.fieldnames.forEach((field) => this.profileForm.addControl(field.key, this.fb.control(field.value)));
+    }
 
     loadImageUrl() {
         this.imgURL = this.itemApiService.getArtItemImageUrl(this.data.id);
