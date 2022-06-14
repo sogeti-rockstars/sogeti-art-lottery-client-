@@ -29,7 +29,7 @@ export class ArtItemDetailsComponent implements OnInit {
     @Input() dataa!: { file: string; imgUrl: string };
 
     // profileForm = this.fb.group({ aliases: this.fb.array([this.fb.control('')]) });
-    profileForm = this.fb.group(this.fb.control('wtf'));
+    // profileForm = this.fb.group(this.fb.control('wtf'));
 
     constructor(
         private fb: FormBuilder,
