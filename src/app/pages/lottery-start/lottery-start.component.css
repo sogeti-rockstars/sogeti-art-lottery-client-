@@ -23,18 +23,18 @@
     font-size: 18px;
     width: 200px;
     height: 40px;
-    background-color: #f44336;
+    background-color: #2485c1;
     color: white;
     border: none;
     border: none;
     border-radius: 15px;
 }
 .lottery-button:hover {
-    background-color: #a52a2a;
+    background-color: #666;
 }
 
 .lottery-button:active {
-    background-color: #a52a2a;
+    background-color: #666;
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
