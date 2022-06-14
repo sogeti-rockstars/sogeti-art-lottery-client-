@@ -1,12 +1,13 @@
 <h1>Starta lotteri</h1>
-<button *ngIf="buttonShown" class="lottery-button" (click)="spinTheWheel($event)">Lotta ut</button>
-
-<p> </p>
-<app-spinning-wheel
-    (onAnimationEnd)="spinningAnimationEndHandler()"
-    [animationControlEvent]="animationControlEvent"
-    [parentComponent]="this"
-></app-spinning-wheel>
-
-<h1>Vinnare</h1>
+<table class="lottery-start-button-table">
+        <tr>
+            <td>
+                <button class="lottery-button" (click)="spinTheWheel($event)">Utför dragning</button>
+            </td>
+            <td>
+                <app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [animationControlEvent]="animationControlEvent"></app-spinning-wheel>
+            </td>
+        </tr>
+</table>
+<h2>Vinnare</h2>
 <contestant-list-component [contestantListParent]="this"></contestant-list-component>

@@ -4,7 +4,15 @@ body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
+h1 {
+    color: #2485c1;
+    font-size: 35px !important;
+    padding: 10px;
+    text-align: center;
+}
+h2 {
+    text-align: center !important;
+}
 .custom-dialog-container .mat-dialog-container {
     padding: 0px;
 }
