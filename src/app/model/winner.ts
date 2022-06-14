@@ -5,6 +5,5 @@ export class Winner {
     placement!: number;
     contestantId!: number;
     lotteryId!: number;
-    lotteryItemId!: number;
-    lotteryItem!: ArtItem;
+    lotteryItem?: ArtItem;
 }

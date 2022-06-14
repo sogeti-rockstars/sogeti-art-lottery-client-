@@ -1,12 +1,10 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { ArtItem } from '../model/art-item';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
 import { ArtItemApiService } from '../service/api/art-item-api.service';
 import { WinnerApiService } from '../service/api/winner-api.service';
-import { ArtItemService } from '../service/art-item.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
 import { WinnerService } from '../service/winner.service';
@@ -112,16 +110,9 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             });
         else {
             (data as Winner[]).forEach((w, _) => {
-                let newItem = new ArtItem();
                 let cont = this.winnerToContestant(w);
                 if (cont !== undefined) {
-                    if (w.lotteryItemId != null)
-                        this.artItemApiService.getArtItem(w.lotteryItemId).subscribe((resp) => {
-                            newItem = resp;
-                            this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
-                            this.contestantsChange.emit(this.rowData);
-                        });
-                    else this.rowData.push({ data: cont, render: false, placement: w.placement, winner: w, artItem: newItem });
+                    this.rowData.push({ data: cont, render: false, winner: w });
                 }
                 this.contestantsChange.emit(this.rowData);
             });
@@ -146,8 +137,6 @@ export interface RowData {
     filtered?: boolean;
     render?: boolean;
     inAddNewMode?: boolean;
-    artItem?: ArtItem;
-    placement?: number;
     winner?: Winner;
 }
 

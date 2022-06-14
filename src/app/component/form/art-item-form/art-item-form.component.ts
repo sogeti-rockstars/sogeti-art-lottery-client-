@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { AnyMxRecord } from 'dns';
 import { ArtItem } from 'src/app/model/art-item';
 import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
@@ -53,35 +52,30 @@ export class ArtItemFormComponent implements OnInit {
 
         let reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
-        reader.onload = (event2) => {
+        reader.onload = (_) => {
             this.imgURL = reader.result;
         };
     }
 
     onSubmit(artItem: ArtItem) {
-        artItem.lottery_id = this.selected;
-        this.artItemService.observeAddArtItem(artItem).subscribe((data) => {
-            console.log(data);
-            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
-                console.log(resp);
-                if (this.file != null) this.onUpload(data);
-                this.matDialog.closeAll();
-            });
+        artItem.lotteryId = this.lotteries[this.selected - 1].id;
+        this.artItemService.add(artItem).subscribe((data) => {
+            if (this.file != null) this.onUpload(data);
+            this.matDialog.closeAll();
         });
-        // }
     }
 
     onUpload(artItem: ArtItem) {
         const formData: FormData = new FormData();
         formData.append('image', <File>this.file);
         formData.append('newImage', new Blob([this.file], { type: 'application/json' }));
-        this.artItemService.observeUpdateImage(artItem, formData).subscribe((resp) => resp);
+        this.artItemService.setImage(artItem, formData).subscribe((resp) => resp);
     }
 
     updateForm() {
         this.profileForm.patchValue({
             id: this.artItem.id,
-            lottery_id: this.artItem.lottery_id,
+            lottery_id: this.artItem.lotteryId,
             itemName: this.artItem.itemName,
             artistName: this.artItem.artistName,
             size: this.artItem.size,
@@ -89,7 +83,6 @@ export class ArtItemFormComponent implements OnInit {
             value: this.artItem.value,
             technique: this.artItem.technique,
         });
-        console.log(this.artItem.itemName + 'updateForm');
     }
 
     ngOnInit(): void {

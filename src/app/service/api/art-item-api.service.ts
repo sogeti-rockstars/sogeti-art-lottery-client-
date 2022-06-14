@@ -15,7 +15,7 @@ export class ArtItemApiService {
     constructor(private http: HttpClient, private auth: AuthService) {}
 
     public getArtItems(): Observable<ArtItem[]> {
-        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/item/get-all`, this.auth.getHttpOptions());
+        return this.http.get<ArtItem[]>(`${this.apiServerUrl}/api/v1/item`, this.auth.getHttpOptions());
     }
 
     public getArtItem(id: number): Observable<ArtItem> {
@@ -23,7 +23,7 @@ export class ArtItemApiService {
     }
 
     public addArtItem(artItem: ArtItem): Observable<ArtItem> {
-        return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item/`, artItem, this.auth.getHttpOptions());
+        return this.http.post<ArtItem>(`${this.apiServerUrl}/api/v1/item?lotteryId=${artItem.lotteryId}`, artItem, this.auth.getHttpOptions());
     }
 
     public updateArtItem(artItem: ArtItem): Observable<ArtItem> {

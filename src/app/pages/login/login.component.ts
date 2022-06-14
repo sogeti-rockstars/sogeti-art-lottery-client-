@@ -10,6 +10,7 @@ import { AuthService } from 'src/app/service/auth.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
     credentials = { username: '', password: '' };
+    passFailed = false;
     private loginStateChangedSubs = new Subscription();
 
     constructor(public authService: AuthService, private router: Router) {}
@@ -27,6 +28,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
 
     public submit() {
-        this.authService.login(this.credentials.username, this.credentials.password);
+        this.authService.login(this.credentials.username, this.credentials.password).subscribe({
+            error: (_) => (this.passFailed = true),
+        });
     }
 }

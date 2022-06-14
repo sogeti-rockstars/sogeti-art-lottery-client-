@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Contestant } from 'src/app/model/contestant';
 import { Winner } from 'src/app/model/winner';
 import { environment } from 'src/environments/environment';
 import { AuthService } from '../auth.service';
@@ -19,10 +18,6 @@ export class WinnerApiService {
 
     public getWinner(id: number): Observable<Winner> {
         return this.http.get<Winner>(`${this.apiServerUrl}/api/v1/winner/${id}`, this.auth.getHttpOptions());
-    }
-
-    public getWinningContestantsByLotteryId(lotteryId: number): Observable<Contestant[]> {
-        return this.http.get<Contestant[]>(`${this.apiServerUrl}/api/v1/winner/winning-contestants-in-lottery/${lotteryId}`, this.auth.getHttpOptions());
     }
 
     public addWinner(winner: Winner): Observable<Winner> {

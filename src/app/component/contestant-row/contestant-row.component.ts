@@ -1,16 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
 import { Contestant } from 'src/app/model/contestant';
-import { Winner } from 'src/app/model/winner';
 import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
+import { AuthService } from 'src/app/service/auth.service';
 import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
+import { WinnerService } from 'src/app/service/winner.service';
 import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
+import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ModalService } from '../modal/modal.service';
-import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -34,12 +35,15 @@ export class ContestantRowComponent implements OnInit {
     public contestantForm!: FormGroup;
 
     constructor(
-        private lotteryService: LotteryService,
         public authService: AuthService,
+        private lotteryService: LotteryService,
+        private contestantService: ContestantService,
+        private winnerService: WinnerService,
+        private matDialog: MatDialog,
         private vcr: ViewContainerRef,
         private modalService: ModalService,
-        private contestantService: ContestantService,
         private fb: FormBuilder,
+        private viewContainerRef: ViewContainerRef,
         @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant
     ) {
         if (data !== undefined) this.rowData = { data: data!, inModal: true, render: true };
@@ -71,17 +75,28 @@ export class ContestantRowComponent implements OnInit {
         }
     }
 
-    openItemModal(winner: Winner) {
+    openItemModal(artItem: ArtItem) {
+        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
+        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
+    }
+
+    openItemPickerModal() {
         if (this.lotteryService.currLotteryId != null)
             this.lotteryService.getArtItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
                 error: (error: HttpErrorResponse) => {
                     alert(error.message);
                 },
                 next: (resp: ArtItem[]) => {
-                    console.log(resp);
                     const component = this.vcr.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
                     component.instance.artItems = resp;
-                    component.instance.winner = winner;
+                    component.instance.onThumbnailClick = (artItem: ArtItem) => {
+                        let winner = this.rowData.winner!;
+                        winner.lotteryItem = artItem;
+                        winner.contestantId = this.rowData.data?.id!;
+                        console.log(winner);
+                        this.winnerService.updateWinner(winner).subscribe();
+                        this.matDialog.closeAll();
+                    };
                     this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.vcr);
                 },
             });

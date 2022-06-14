@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Lottery } from 'src/app/model/lottery';
 import { LotteryService } from 'src/app/service/lottery.service';
 
@@ -9,56 +10,59 @@ import { LotteryService } from 'src/app/service/lottery.service';
     templateUrl: './lottery-form.component.html',
     styleUrls: ['./lottery-form.component.css'],
 })
-export class LotteryFormComponent implements OnInit {
-    @Input() label!: string;
-    @Input() inputPlaceholder!: string;
-    @Input() lottery!: Lottery;
-    @Output() artItemOutput = new EventEmitter<Lottery>();
+export class LotteryFormComponent implements OnInit, OnDestroy {
     @Input() update: boolean = false;
-    @Input() id!: number;
-    lotId!: number;
+
+    lottIndex!: number;
     profileForm = this.fb.group({
         title: [''],
     });
-    constructor(private route: ActivatedRoute, private fb: FormBuilder, private lotteryService: LotteryService) {}
+
+    private lottery!: Lottery;
+    private lotteryChangedSubscription = new Subscription();
+
+    constructor(private fb: FormBuilder, private lotteryService: LotteryService, private router: Router) {}
 
     onSubmit(event: any) {
-        console.log(event);
         if (this.update == false) {
             this.lottery = new Lottery();
             this.lottery.title = event.title;
             this.lotteryService.addLottery(this.lottery).subscribe((resp) => {
-                console.log(resp);
-                //försökte setCurrentLottery(resp.id) men den gillade inte det av någon anledning
+                this.lotteryService.setCurrentLottery(resp.id);
+                this.router.navigateByUrl('/admin/artitems');
             });
-        } else
-            this.lotteryService.getLottery(this.id).subscribe((resp) => {
-                this.lottery = resp;
-                this.lottery.title = event.title;
-                this.lotteryService.updateLottery(this.lottery).subscribe((resp) => {
-                    this.lotteryService.setCurrentLottery(this.id - 1);
-                });
+        } else {
+            this.lottery.title = event.title;
+            this.lotteryService.updateLottery(this.lottery).subscribe((_) => {
+                this.lotteryService.detectChanges();
             });
-    }
-
-    getLottery(): void {
-        const id = Number(this.route.snapshot.paramMap.get('id'));
-        this.id = id;
-    }
-
-    updateForm(lottery: Lottery) {
-        this.profileForm.patchValue({
-            id: lottery.id,
-            title: lottery.title,
-        });
-        this.getLottery();
+        }
     }
 
     ngOnInit(): void {
         if (this.update == true) {
-            this.lotteryService.lotteryChanged.subscribe((resp) => {
+            this.lotteryChangedSubscription = this.lotteryService.lotteryChanged.subscribe((resp) => {
                 this.updateForm(resp);
+                this.lottery = resp;
             });
         }
+    }
+
+    ngOnDestroy(): void {
+        this.lotteryChangedSubscription.unsubscribe();
+    }
+
+    deleteLottery() {
+        this.lotteryChangedSubscription.unsubscribe();
+        this.lotteryService.deleteLottery(this.lottery.id).subscribe();
+        this.router.navigateByUrl('/');
+    }
+
+    private updateForm(lottery: Lottery) {
+        this.profileForm.patchValue({
+            id: lottery.id,
+            title: lottery.title,
+        });
+        this.lottery = lottery;
     }
 }
