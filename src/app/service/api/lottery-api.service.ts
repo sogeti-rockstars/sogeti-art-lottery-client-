@@ -28,10 +28,6 @@ export class LotteryApiService {
         return this.httpGet<Lottery>(id);
     }
 
-    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
-        return this.httpPut<Lottery>(artItem, `change-item-lottery/${lotteryId}`);
-    }
-
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
         return this.httpGet<ArtItem[]>(`${id}/items`);
     }
