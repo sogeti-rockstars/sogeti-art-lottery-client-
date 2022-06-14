@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { LotteryStartComponent } from 'src/app/pages/lottery-start/lottery-start.component';
 
 @Component({
     selector: 'app-spinning-wheel',
@@ -14,17 +15,20 @@ export class SpinningWheelComponent implements OnInit, OnDestroy, AfterViewInit 
 
     @ViewChild('circleContainer') private circleContainer!: ElementRef<HTMLDivElement>;
 
+    @Input() parentComponent!: LotteryStartComponent;
+
+    private animationControlEventSubscription?: Subscription;
+    private animate = false;
+
     ngAfterViewInit(): void {
         this.circleContainer.nativeElement.style.opacity = '0';
         this.circleContainer.nativeElement.addEventListener('animationstart', (ev) => {
             if (this.animate || ev.animationName != 'spin1') return;
             this.circleContainer.nativeElement.classList.add('circle-paused');
             this.circleContainer.nativeElement.style.opacity = '1';
+            this.parentComponent.showButton();
         });
     }
-
-    private animationControlEventSubscription?: Subscription;
-    private animate = false;
 
     ngOnDestroy(): void {
         if (this.animationControlEventSubscription?.closed) this.animationControlEventSubscription.unsubscribe();

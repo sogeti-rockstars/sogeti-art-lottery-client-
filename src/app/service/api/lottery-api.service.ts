@@ -57,7 +57,7 @@ export class LotteryApiService {
     }
 
     public spinTheWheel(id: number): Observable<Winner> {
-        return this.httpPut<Winner>(null, `${id}/spin`);
+        return this.httpPut<Winner>(undefined, `${id}/spin`);
     }
 
     private httpGet<T>(restPath?: string | number): Observable<T> {

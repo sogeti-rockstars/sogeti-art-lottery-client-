@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { ArtItemFormComponent } from 'src/app/component/form/art-item-form/art-item-form.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ArtItem } from 'src/app/model/art-item';
-import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { LotteryService } from 'src/app/service/lottery.service';
@@ -16,24 +15,23 @@ import { LotteryService } from 'src/app/service/lottery.service';
 })
 export class ArtItemsComponent implements OnInit, OnDestroy {
     @Input() public artItems: ArtItem[] = [];
-    allIsChecked = false;
 
-    private loadPaintingSubscription!: Subscription;
+    private lotteryChanged!: Subscription;
+    private allIsChecked = false;
 
     constructor(
         public authService: AuthService,
-        private artItemApiService: ArtItemApiService,
         private artItemService: ArtItemService,
         private lotteryService: LotteryService,
         private modalService: ModalService,
         private vcr: ViewContainerRef
     ) {}
     ngOnDestroy(): void {
-        this.loadPaintingSubscription.unsubscribe();
+        this.lotteryChanged.unsubscribe();
     }
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
-        this.loadPaintingSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
+        this.lotteryChanged = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
         this.artItemService.artItemSubject$.subscribe(() => {
             if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
             else this.loadAllItems;
@@ -41,10 +39,7 @@ export class ArtItemsComponent implements OnInit, OnDestroy {
     }
 
     public loadAllItems() {
-        this.artItemApiService.getArtItems().subscribe({
-            complete: () => {
-                console.log('Loading complete!');
-            },
+        this.artItemService.getArtItems().subscribe({
             error: (error: HttpErrorResponse) => {
                 alert(error.message);
             },
@@ -56,15 +51,11 @@ export class ArtItemsComponent implements OnInit, OnDestroy {
 
     public loadPaintingsFromLottery(lotteryId: number): void {
         this.lotteryService.getArtItemsByLotteryId(lotteryId).subscribe({
-            complete: () => {
-                console.log('Loading complete!');
-            },
             error: (error: HttpErrorResponse) => {
                 alert(error.message);
             },
             next: (resp: ArtItem[]) => {
                 this.artItems = resp;
-                console.log(resp);
             },
         });
     }
@@ -80,11 +71,8 @@ export class ArtItemsComponent implements OnInit, OnDestroy {
     }
 
     public newItem() {
-        console.log('newItem');
         const component = this.vcr.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-
         this.modalService.loadModal(component, this.vcr);
-        console.log(component);
     }
 
     public removeSelectedArtItems() {
@@ -93,13 +81,12 @@ export class ArtItemsComponent implements OnInit, OnDestroy {
             var cbox;
             for (var i = 0; i < allCheckboxes.length; i++) {
                 cbox = <any>allCheckboxes[i];
-                cbox.checked
-                    ? this.artItemService.deleteArtItem(cbox.value).subscribe({
-                          complete: () => {
-                              this.artItemApiService.getArtItems();
-                          },
-                      })
-                    : void 0;
+                if (cbox.checked)
+                    this.artItemService.deleteArtItem(cbox.value).subscribe({
+                        complete: () => {
+                            this.artItemService.getArtItems();
+                        },
+                    });
             }
         }
     }

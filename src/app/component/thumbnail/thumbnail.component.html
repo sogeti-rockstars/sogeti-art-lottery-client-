@@ -1,10 +1,9 @@
-<mat-card class="card">
-    <img class="{{ cssClass }}" src="http://localhost:8080/api/v1/item/image/{{ artItem.id }}" (click)="loadModal(artItem)" />
+<mat-card class="{{ cssClass }} thumbnail-card">
+    <input class="thumbnail-checkbox" *ngIf="showCheckbox" type="checkbox" name="artItemCheckbox" value="{{ artItem.id }}" />
+    <img class="thumbnail-image" src="http://localhost:8080/api/v1/item/image/{{ artItem.id }}" (click)="thumbnailClickHandler()" />
     <mat-card-content>
         <div class="text">
-            <input *ngIf="authService.authenticated == true && winner==null" type="checkbox" id="artItem_{{ id }}" name="artItemCheckbox" value="{{ id }}" />
-            <button *ngIf="authService.authenticated == true && winner!=null" (click)="saveWinnerArtItem(artItem)">Välj föremål</button>
-            <label for="artItem_{{ id }}"> {{ artItem.id}}. {{ artItem.itemName }}</label>
+            <label for="artItem_{{ artItem.id }}"> {{ artItem.id}}. {{ artItem.itemName }}</label>
         </div>
     </mat-card-content>
 </mat-card>

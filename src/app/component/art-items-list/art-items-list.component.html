@@ -2,7 +2,7 @@
 <ng-template #mainContent>
     <div id="art-item-wrapper">
         <div *ngFor="let item of artItems">
-            <thumbnail class="art-item-thumbnail" [artItem]="item" [winner]="winner"></thumbnail>
+            <thumbnail class="art-item-thumbnail" [artItem]="item" [onClickOverride]="onThumbnailClick" [showCheckbox]="showThumbnailCheckboxes"></thumbnail>
         </div>
     </div>
 </ng-template>

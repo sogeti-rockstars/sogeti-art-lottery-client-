@@ -65,12 +65,16 @@
             </div>
             <div #collapsedItems class="collapsed-contestant-info-items">
                 <div class="collapsed-item" id="col-1">{{ rowData.data?.name }}</div>
-                <div class="collapsed-item" id="col-2">kontor: BACKENDWIP</div>
-                <div *ngIf="rowData.artItem==null" class="collapsed-item" id="col-3">dbId: {{ rowData.data?.id }}</div>
-                <div *ngIf="rowData.artItem!=null" class="collapsed-item" id="col-3">Item name: {{ rowData.artItem.itemName }}</div>
-                <div *ngIf="rowData.artItem==null" class="collapsed-item" id="col-4">employeeId: {{ rowData.data?.employeeId }}</div>
-                <div *ngIf="rowData.placement==null"class="collapsed-item" id="col-5">teleNumber: {{ rowData.data?.teleNumber }}</div>
-                <div *ngIf="rowData.placement!=null" class="collapsed-item" id="col-5">placement: {{ rowData.placement }}</div>
+                <div *ngIf="rowData.winner === undefined ; else collapsedWinner">
+                    <div class="collapsed-item" id="col-2">anställningsnummer: {{ rowData.data?.employeeId }}</div>
+                    <div class="collapsed-item" id="col-4">telefonnummer: {{ rowData.data?.teleNumber }}</div>
+                </div>
+                <ng-template #collapsedWinner>
+                    <div class="collapsed-item" id="col-2">placering: {{ rowData.winner?.placement }}</div>
+                    <div class="collapsed-item" id="col-3">
+                        vald föremål: {{ rowData.winner?.lotteryItem !== undefined ? rowData.winner?.lotteryItem?.itemName : 'Ingen' }}
+                    </div>
+                </ng-template>
             </div>
             <div class="collapsed-contestant-buttons-cont">
                 <div class="collapsed-contestant-buttons">
@@ -93,75 +97,37 @@
 </ng-template>
 
 <ng-template #rowValueItemEdit>
-    <form [formGroup]="contestantForm" class="form-group" (ngSubmit)="onSubmit(contestantForm.value)">
-        <mat-form-field appearance="legacy">
-            <mat-label>namn</mat-label>
-            <input matInput class="form-control" formControlName="name" type="text" placeholder="" />
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>dbId</mat-label>
-            <input matInput class="form-control" formControlName="id" type="number" placeholder="" />
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>anställningsnummer</mat-label>
-            <input matInput class="form-control" formControlName="employeeId" type="text" placeholder="" />
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>telefonnummer</mat-label>
-            <input matInput class="form-control" formControlName="teleNumber" type="number" placeholder="" />
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>e-post</mat-label>
-            <input matInput class="form-control" formControlName="email" type="text" placeholder="" />
-        </mat-form-field>
-        <mat-form-field appearance="legacy">
-            <mat-label>kontor</mat-label>
-            <input matInput class="form-control" formControlName="office" type="text" placeholder="" />
-        </mat-form-field>
-        <img *ngIf="rowData.winner!=null" class="winner-item-image" src="http://localhost:8080/api/v1/item/image/{{ rowData.winner?.lotteryItemId }}">
-        <button *ngIf="rowData.winner!=null && this.authService.authenticated==true " (click)="openItemModal(rowData.winner)">Välj konstföremål</button>
+    <div class="expanded-row-wrapper">
+        <form [formGroup]="contestantForm" class="form-group" (ngSubmit)="onSubmit(contestantForm.value)">
+            <mat-form-field appearance="legacy">
+                <mat-label>namn</mat-label>
+                <input matInput class="form-control" formControlName="name" type="text" placeholder="" />
+            </mat-form-field>
+            <span *ngIf="authService.authenticated">
+                <mat-form-field appearance="legacy">
+                    <mat-label>anställningsnummer</mat-label>
+                    <input matInput class="form-control" formControlName="employeeId" type="text" placeholder="" />
+                </mat-form-field>
+                <mat-form-field appearance="legacy">
+                    <mat-label>telefonnummer</mat-label>
+                    <input matInput class="form-control" formControlName="teleNumber" type="number" placeholder="" />
+                </mat-form-field>
+                <mat-form-field appearance="legacy">
+                    <mat-label>e-post</mat-label>
+                    <input matInput class="form-control" formControlName="email" type="text" placeholder="" />
+                </mat-form-field>
+                <mat-form-field appearance="legacy">
+                    <mat-label>kontor</mat-label>
+                    <input matInput class="form-control" formControlName="office" type="text" placeholder="" />
+                </mat-form-field>
+            </span>
+        </form>
 
-        <button type="submit" style="display: none">hidden submit</button>
-    </form>
+        <div class="choosen-item-wrapper" *ngIf="rowData.winner!==undefined">
+            <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal()">Välj konstföremål</button>
+            <div *ngIf="rowData.winner!.lotteryItem!==undefined">
+                <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail>
+            </div>
+        </div>
+    </div>
 </ng-template>
-
-<!-- <ng-template #inViewMode> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'namn', content:rowData.data.name}"></ng-template> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'dbId', content:rowData.data.id}"></ng-template> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'anställningsnummer', content:rowData.data.employeeId}"></ng-template> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'telefonnummer', content:rowData.data.teleNumber}"></ng-template> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'epost', content:rowData.data.email}"></ng-template> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:'kontor', content:'BACKENDWIP'}"></ng-template> -->
-<!-- </ng-template> -->
-
-<!-- <ng-template #rowValueItemView let-header="header" let-content="content"> -->
-<!--     <div class="row-value-item" id="dbId" [ngStyle]="{'font-size':'12px'}">{{header}}:</div> -->
-<!--     <div>{{content}}</div> -->
-<!-- </ng-template> -->
-
-<!-- <ng-template #rowValueItemEdit let-header="header" let-formControl="formControl"> -->
-<!--     <mat-form-field appearance="legacy"> -->
-<!--         <mat-label>{{header}}</mat-label> -->
-<!--         <input matInput class="form-control" [formControlName]="formControl" type="text" placeholder=".." /> -->
-<!--     </mat-form-field> -->
-<!-- </ng-template> -->
-<!-- <span *ngFor="let line of getFormFieldsWithValues() "> -->
-<!--     <ng-template [ngTemplateOutlet]="rowValueItemView" [ngTemplateOutletContext]="{header:line[0], content:line[1]}"></ng-template> -->
-<!-- <div *ngFor="let line of getFormFields(); let i=index"> -->
-<!--     <mat-form-field appearance="legacy"> -->
-<!--         <mat-label [id]="line[0]">{{line[1]}}</mat-label> -->
-<!--         <input matInput [id]="line[0]" class="form-control" [formControlName]="line[0]" type="text" placeholder=".." /> -->
-<!--     </mat-form-field> -->
-<!-- </div> -->
-<!-- <form id="myForm" [formGroup]="thisIsMyForm"> -->
-<!--     <div [formArrayName]="'formArrayName'"> -->
-<!--         <mat-card *ngFor="let x of data; let i = index"> -->
-<!-- <div [formGroupName]="i"> -->
-<!-- <div [formArrayName]="'rowValuesForm'"> -->
-<!--     <mat-form-field appearance="legacy"> -->
-<!--         <mat-label [id]="'1'">namn</mat-label> -->
-<!--         <input matInput [id]="'1'" class="form-control" [formControlName]="'name'" type="text" placeholder=".." /> -->
-<!--     </mat-form-field> -->
-<!-- </div> -->
-<!-- <ng-template [ngTemplateOutlet]="rowValueItemEdit" [ngTemplateOutletContext]="{header:'namn', formControl:'name'}"></ng-template> -->
-<!-- </span> -->
