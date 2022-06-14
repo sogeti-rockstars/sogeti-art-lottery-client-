@@ -58,30 +58,12 @@ export class AutoCardComponent implements OnInit {
     }
 
     onSubmit(item: ArtItem) {
-        // From revertd brach
-        console.log(this.selected);
         item.lottery = this.lotteries[this.selected];
         item.lotteryId = this.selected;
-        console.log(item);
-
-        console.log(this.selected);
         this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
             if (this.file != null) this.onUpload(data);
             this.matDialog.closeAll();
         });
-
-        // from revertd branch
-        // this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
-        //     if (this.file != null) this.onUpload(data);
-        //     this.matDialog.closeAll();
-        //     console.log(data);
-        //     // this.matDialog.closeAll();
-        //     this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
-        //         console.log(resp);
-        //         if (this.file != null) this.onUpload(data);
-        //         this.matDialog.closeAll();
-        //     });
-        // });
     }
 
     onUpload(artItem: ArtItem) {
