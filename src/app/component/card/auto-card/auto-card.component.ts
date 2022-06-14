@@ -58,10 +58,17 @@ export class AutoCardComponent implements OnInit {
     }
 
     onSubmit(item: ArtItem) {
-        console.log(this.selected);
+        item.lottery = this.lotteries[this.selected];
+        item.lotteryId = this.selected;
+        console.log(item);
         this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
-            if (this.file != null) this.onUpload(data);
-            this.matDialog.closeAll();
+            console.log(data);
+            // this.matDialog.closeAll();
+            this.lotteryService.editItemToLottery(this.selected, data).subscribe((resp) => {
+                console.log(resp);
+                if (this.file != null) this.onUpload(data);
+                this.matDialog.closeAll();
+            });
         });
     }
 

@@ -38,6 +38,15 @@ export class LotteryService {
         });
     }
 
+    public editItemToLottery(lotteryId: number, artItem: ArtItem): Observable<Lottery> {
+        return this.apiService.editItemToLottery(lotteryId, artItem).pipe(
+            tap((response) => {
+                this.currLottery = response;
+                this.lotteryChanged.emit(this.currLottery);
+            })
+        );
+    }
+
     public get currLotteryId(): number | undefined {
         return this.currLottery?.id;
     }

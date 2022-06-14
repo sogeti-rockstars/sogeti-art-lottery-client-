@@ -1,3 +1,5 @@
+import { Lottery } from './lottery';
+
 export class ArtItem {
     id!: number;
     lotteryId!: number;
@@ -7,4 +9,5 @@ export class ArtItem {
     frameDescription: string = '';
     value: string = '';
     technique: string = '';
+    lottery!: Lottery;
 }
