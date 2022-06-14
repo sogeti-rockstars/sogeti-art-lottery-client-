@@ -58,7 +58,8 @@ export class AutoCardComponent implements OnInit {
     }
 
     onSubmit(item: ArtItem) {
-        console.log(this.selected);
+        item.lottery = this.lotteries[this.selected];
+        item.lotteryId = this.selected;
         this.artItemService.observeUpdateArtItem(item).subscribe((data: ArtItem) => {
             if (this.file != null) this.onUpload(data);
             this.matDialog.closeAll();
