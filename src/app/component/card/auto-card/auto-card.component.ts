@@ -44,7 +44,7 @@ export class AutoCardComponent implements OnInit {
         this.editMode = true;
 
         if (this.lotteryService.currLotteryId !== undefined)
-            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id));
+            this.lotteryService.getLottery(this.lotteryService.currLotteryId).subscribe((lottery) => (this.selected = lottery.id - 1));
     }
 
     onFileChanged(event: any) {
