@@ -7,8 +7,16 @@ import { ArtItem } from 'src/app/model/art-item';
     styleUrls: ['./art-items-list.component.css'],
 })
 export class ArtItemsListComponent {
-    @Input() public artItems: ArtItem[] = [];
+    @Input() set artItems(artItems: ArtItem[]) {
+        this.artItems$ = artItems.sort((a, b) => a.id - b.id);
+    }
+    get artItems() {
+        return this.artItems$;
+    }
+
     @Input() onThumbnailClick?: (artItem: ArtItem) => void;
     @Input() showThumbnailCheckboxes = true;
+
+    private artItems$: ArtItem[] = [];
     constructor() {}
 }

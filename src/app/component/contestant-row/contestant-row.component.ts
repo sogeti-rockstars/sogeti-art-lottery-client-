@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/service/auth.service';
 import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { WinnerService } from 'src/app/service/winner.service';
+import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
 import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
 import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 import { ModalService } from '../modal/modal.service';
@@ -50,11 +51,6 @@ export class ContestantRowComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // if (this.rowData.index! < 2) { // I am leaving this. useful when making changes.
-        //     this.rowData.expanded = true;
-        //     if (this.rowData.index! == 0) this.rowData.inEditMode = true;
-        // }
-
         if (this.rowData === undefined) this.rowData = {};
         if (this.rowData.data === undefined) this.rowData.data = new Contestant();
 
@@ -89,6 +85,7 @@ export class ContestantRowComponent implements OnInit {
                 next: (resp: ArtItem[]) => {
                     const component = this.vcr.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
                     component.instance.artItems = resp;
+                    console.log(resp);
                     component.instance.onThumbnailClick = (artItem: ArtItem) => {
                         let winner = this.rowData.winner!;
                         winner.lotteryItem = artItem;
@@ -100,6 +97,10 @@ export class ContestantRowComponent implements OnInit {
                     this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.vcr);
                 },
             });
+    }
+
+    artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
+        matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 
     onSubmit(contestant: Contestant) {
@@ -123,7 +124,13 @@ export class ContestantRowComponent implements OnInit {
                 this.setEditMode(this.rowData.inEditMode!);
                 if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
                 break;
-            case ClickableElements.accept:
+            case ClickableElements.acceptNew:
+                console.log(this.rowData);
+                this.rowData.data = this.contestantForm.value as Contestant;
+                break;
+            case ClickableElements.acceptEdit:
+                console.log('EDITACC');
+                console.log(this.rowData);
                 this.rowData.data = this.contestantForm.value as Contestant;
                 break;
         }

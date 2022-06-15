@@ -144,6 +144,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    max-height: 20rem;
 }
 .choosen-item-wrapper {
     display: flex;
@@ -152,4 +153,8 @@
     justify-content: space-between;
 
     align-items: center;
+}
+
+.art-item-details {
+    height: 100%;
 }
