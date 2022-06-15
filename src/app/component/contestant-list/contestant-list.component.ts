@@ -36,7 +36,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private lastWinScrollY = 0;
     private firstRenderFinished = false;
     private colGap = 20;
-    private loadContestantsSubscription!: Subscription;
+    private contestantsListChangeSubs!: Subscription;
 
     constructor(
         public cdr: ChangeDetectorRef,
@@ -47,15 +47,16 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     ) {}
 
     ngOnInit(): void {
-        this.loadContestantsSubscription = this.contestantListParent.contestantsChange.subscribe((data) => {
+        this.contestantsListChangeSubs = this.contestantListParent.contestantsChange.subscribe((data) => {
             data.slice(0, this.firstRenderRowCount).forEach((rd) => (rd.render = true));
             this.rowData = data;
+            this.rowData.sort((a, b) => a.data!.name.localeCompare(b.data!.name));
         });
         this.setColWidths([200, 150, 65, 150]);
     }
 
     ngOnDestroy(): void {
-        this.loadContestantsSubscription.unsubscribe();
+        this.contestantsListChangeSubs.unsubscribe();
     }
 
     ngAfterViewChecked(): void {
