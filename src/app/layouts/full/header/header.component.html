@@ -58,7 +58,7 @@
     <mat-menu #dropMenuFull="matMenu">
         <div class="mat-menu-autosize">
             <ng-container *ngFor="let lottery of lotteries; let i=index">
-                <button mat-menu-item (click)="this.lotteryService.setCurrentLottery(i)">
+                <button mat-menu-item (click)="this.lotteryService.setCurrentLotteryIndex(i)">
                     {{ lottery.title }}
                     <button
                         *ngIf="authService.authenticated == true"
@@ -98,7 +98,7 @@
     <mat-menu #subMenu>
         <div class="submenu-container">
             <span *ngFor="let lott of lotteries; let i=index">
-                <button mat-menu-item (click)="lotteryService.setCurrentLottery(i)">{{ lott.title }}</button>
+                <button mat-menu-item (click)="lotteryService.setCurrentLotteryIndex(i)">{{ lott.title }}</button>
                 <mat-divider></mat-divider>
             </span>
             <button *ngIf="authService.authenticated == true" mat-raised-button class="create-lottery-button" [routerLink]="['admin/create-lottery']">
