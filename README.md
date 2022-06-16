@@ -1,6 +1,50 @@
-Hej
+# Vad gör Applikationen allmänt, vad är den till för?
 
-Hej
+-   Konstlotteri per år
+-   visa konstverk
+-   lotta ut
+-   medlemmar
+-   vinnare
+    Applikationen hanterar Sogetis årliga konstlotteri.
+
+Strukturen, vilka knappar finns? Hur är de kopplade till lotterierna?
+
+-   huvudmeny överst
+-   "års-knappar" / huvudknapp i "mobilläge"
+-   funktionsknappar
+    -   knapp 1
+    -   knapp 2
+-   logga in
+
+Vilka listor med data finns?
+
+-   konstverk
+-   medlemmar
+-   vinnare
+
+Vad kan användare göra?
+
+-   se olika år
+-   titta på konstverk
+-   välja konstverk om man vunnit
+-   se vinnare
+-   se info
+
+Vad kan admin göra?
+
+-   utöver det användare kan se:
+    -   redigera konstverk
+    -   redigera medlemmar
+    -   redigera vinnare
+    -   lotta fram vinnare
+    -   redigera info-sidor
+
+Vilken teknik ligger bakom?
+
+-   Frontend/Backend
+-   Java (med Spring Boot)
+-   Angular (med Material Design)
+-   mySQL
 
 # SogetiArtLotteryClient
 
