@@ -32,6 +32,10 @@ export class LotteryApiService {
         return this.httpGet<ArtItem[]>(`${id}/items`);
     }
 
+    public getAvailableItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.httpGet<ArtItem[]>(`${id}/available-items`);
+    }
+
     public getWinnersByLotteryId(id: number): Observable<Winner[]> {
         return this.httpGet<Winner[]>(`${id}/winners`);
     }

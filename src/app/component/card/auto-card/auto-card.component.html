@@ -1,61 +1,55 @@
 <mat-card class="example-card">
+    <div class="ribbon-wrapper">
+        <span *ngIf="object.available; else taken">
+            <div class="ribbon" id="ribbon-available">Ej taget!</div>
+        </span>
+        <ng-template #taken>
+            <div class="ribbon" id="ribbon-taken">Taget!</div>
+        </ng-template>
+    </div>
     <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>{{object.itemName}}</mat-card-title>
         <mat-card-subtitle>{{object.artistName}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="imgURL" alt="Photo of item" />
+
+    <span *ngIf="editMode != true">
+        <img mat-card-image [src]="imgURL" alt="Photo of item" />
+    </span>
     <mat-card-content class="mat-card-body">
-        <ul class="list-group">
-            <div *ngIf="objectContent[1][0]=='itemName'">
-                <div *ngFor="let value of values; let i=index">
-                    <div class="form-group">
-                        <div *ngIf="editMode == true">
-                            <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
-                                <li class="list-group-item">
-                                    <div *ngIf="editMode == true">
-                                        <div *ngIf="variableNames[i]!= 'lotteryId'">
-                                            {{prettyVarNames[i]}}:
-                                            <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
-                                        </div>
-                                        <!--  -->
-                                        <!-- <div *ngIf="variableNames[i]== 'lottery_id'">
-                                        {{prettyVarNames[i]}}:
-                                        <select class="custom-select" formControlName="{{variableNames[i]}}" >
-
-                                            <option value="">Choose lottery</option>
-                                            <option *ngFor="let lottery of lotteries" [value]="selected">{{lottery.title}}</option>
-                                          </select>
-                                    </div> -->
-                                        <!--  -->
-                                    </div>
-                                </li>
-                            </form>
-                        </div>
-                    </div>
-                    <div *ngIf="editMode == false">
-                        <li class="list-group-item">{{prettyVarNames[i]}}: {{value}}</li>
+        <ul class="list-group" *ngIf="objectContent[1][0]=='itemName'">
+            <div *ngFor="let value of values; let i=index">
+                <div class="form-group">
+                    <div *ngIf="editMode == true && prettyVarNames[i]!=='ID' && prettyVarNames[i]!==''">
+                        <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+                            <li class="list-group-item">
+                                {{prettyVarNames[i]}}:
+                                <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
+                            </li>
+                        </form>
                     </div>
                 </div>
-
-                <div *ngIf="editMode == true">
-                    <mat-form-field appearance="fill">
-                        <mat-label>Lottery</mat-label>
-                        <mat-select [(value)]="selected">
-                            <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id-1"> {{lottery.title}} </mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                <div *ngIf="editMode == false && prettyVarNames[i]!==''">
+                    <li class="list-group-item">{{prettyVarNames[i]}}: {{value}}</li>
                 </div>
+            </div>
+            <div *ngIf="editMode == true && object.available">
+                <mat-form-field id="lottery-picker" appearance="fill">
+                    <mat-label>Lottery</mat-label>
+                    <mat-select [(value)]="selected">
+                        <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id-1"> {{lottery.title}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </ul>
     </mat-card-content>
     <mat-card-actions>
-        <div *ngIf="editMode == false"><button *ngIf="this.authService.authenticated == true" mat-button (click)="enableEdit()">Edit</button></div>
-        <div *ngIf="editMode == true">
-            <div>
-                <input type="file" (change)="onFileChanged($event)" />
-            </div>
-            <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button>
+        <div *ngIf="editMode == false"><button *ngIf="this.authService.authenticated == true" mat-button (click)="enableEdit()">Redigera</button></div>
+        <div *ngIf="editMode == true" id="buttons-wrapper">
+            <button id="file-pick-button" mat-button type="button" (click)="fileInput.click()">
+                <span>Välj fil</span>
+                <input #fileInput type="file" (change)="onFileChanged($event)" style="display: none" />
+            </button>
+            <button id="accept-button" [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
         </div>
         <!-- <button mat-button>SHARE</button> -->
     </mat-card-actions>

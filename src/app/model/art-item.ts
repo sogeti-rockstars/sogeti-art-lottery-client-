@@ -10,4 +10,5 @@ export class ArtItem {
     value: string = '';
     technique: string = '';
     lottery!: Lottery;
+    available!: boolean;
 }

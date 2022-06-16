@@ -58,6 +58,10 @@ export class LotteryService {
         return this.apiService.getArtItemsByLotteryId(id);
     }
 
+    public getAvailableItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.apiService.getAvailableItemsByLotteryId(id);
+    }
+
     public getCurrentWinners(): Observable<Winner[]> | undefined {
         if (this.currLottery === undefined) return undefined;
         return this.getWinnersByLotteryId(this.currLottery.id);

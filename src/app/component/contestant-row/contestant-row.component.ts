@@ -1,17 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ArtItem } from 'src/app/model/art-item';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
 import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
 import { AuthService } from 'src/app/service/auth.service';
-import { LotteryService } from 'src/app/service/lottery.service';
-import { WinnerService } from 'src/app/service/winner.service';
-import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
-import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
-import { AutoCardComponent } from '../card/auto-card/auto-card.component';
-import { ModalService } from '../modal/modal.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -24,7 +16,7 @@ export class ContestantRowComponent implements OnInit {
     @Input() public rowData!: RowData;
     @Output() public rowDataChange = new EventEmitter<RowData>();
 
-    @Input() public editable = false;
+    @Input() public enabledRowActions!: { delete: boolean; edit: boolean; selections: boolean; buttonRow: boolean };
     @Input() set index(idx: number) {
         this.rowData.index = idx;
     }
@@ -115,14 +107,12 @@ export class ContestantRowComponent implements OnInit {
             this.preEditValues = new Map();
             this.enabledFields.forEach((formName) => {
                 let formCtrl = this.contestantForm.controls[formName];
-                console.log(formCtrl.value);
                 this.preEditValues!.set(formName, formCtrl.value);
                 formCtrl.enable();
             });
         } else {
             this.enabledFields.forEach((formName) => {
                 let formCtrl = this.contestantForm.controls[formName];
-                console.log(formCtrl.value);
                 if (restore) formCtrl.setValue(this.preEditValues!.get(formName));
                 formCtrl.disable();
             });

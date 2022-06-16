@@ -1,4 +1,12 @@
 <mat-card class="{{ cssClass }} thumbnail-card">
+    <!-- <div class="ribbon-wrapper"> -->
+    <!--     <span *ngIf="artItem.available; else taken"> -->
+    <!--         <div class="ribbon" id="ribbon-available">Ej taget!</div> -->
+    <!--     </span> -->
+    <!--     <ng-template #taken> -->
+    <!--         <div class="ribbon" id="ribbon-taken">Taget!</div> -->
+    <!--     </ng-template> -->
+    <!-- </div> -->
     <input class="thumbnail-checkbox" *ngIf="showCheckbox" type="checkbox" name="artItemCheckbox" value="{{ artItem.id }}" />
     <img class="thumbnail-image" src="http://localhost:8080/api/v1/item/image/{{ artItem.id }}" (click)="thumbnailClickHandler()" />
     <mat-card-content>

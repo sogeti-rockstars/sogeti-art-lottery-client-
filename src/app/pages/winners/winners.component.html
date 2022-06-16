@@ -1,2 +1,6 @@
 <h1>Vinnare</h1>
-<contestant-list-component [contestantListParent]="this" [contestantComparator]="contestantComparator"></contestant-list-component>
+<contestant-list-component
+    [contestantListParent]="this"
+    [contestantComparator]="contestantComparator"
+    [enabledRowActions]="{edit:false,delete:true,selections:false,buttonRow:false}"
+></contestant-list-component>

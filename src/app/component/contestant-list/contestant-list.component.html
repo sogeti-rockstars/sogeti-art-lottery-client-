@@ -13,12 +13,12 @@
             (interactionEvent)="interactionEventListener(-1, $event)"
             [(rowData)]="addNewRowData"
             [index]="-1"
-            [editable]="true"
+            [enabledRowActions]="enabledRowActions"
         ></app-contestant-row>
     </div>
     <ng-template #selectionButtons>
         <app-contestant-sel-buttons
-            *ngIf="editable"
+            *ngIf="enabledRowActions.buttonRow"
             [selectedItemsAmount]="selectedItemsAmount"
             [interactionEventListener]="buttonEventListener"
         ></app-contestant-sel-buttons>
@@ -33,7 +33,7 @@
                 (interactionEvent)="interactionEventListener(idx, $event)"
                 [(rowData)]="rowData[idx]"
                 [index]="idx"
-                [editable]="editable"
+                [enabledRowActions]="enabledRowActions"
             ></app-contestant-row>
             <ng-template #notRenderedRow>
                 <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>

@@ -1,7 +1,10 @@
 .example-card {
     max-height: 90vh;
+    z-index: 90;
 }
 .mat-card-image {
+    max-width: 100%;
+    margin: 0px;
     max-height: 55vh;
     width: auto;
 }
@@ -13,4 +16,64 @@
 }
 .mat-card-body {
     margin-bottom: 10px;
+    padding-right: 4rem;
+}
+
+.ribbon-wrapper {
+    width: 85px;
+    height: 88px;
+    overflow: hidden;
+    position: absolute;
+    top: -3px;
+    right: 0px;
+}
+.form-control {
+    width: 95%;
+}
+/* .form-group { */
+/* } */
+#lottery-picker {
+    width: 100%;
+    /* padding-left: 2rem; */
+    margin-top: 1rem;
+    margin-bottom: -3rem;
+    margin-left: -5px;
+}
+.ribbon {
+    font: bold 15px sans-serif;
+    color: #333;
+    text-align: center;
+    transform: none;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    position: relative;
+    padding: 7px 0;
+    top: 15px;
+    right: 6px;
+    width: 120px;
+    color: #fff;
+}
+#ribbon-available {
+    background-color: #2ee47e;
+}
+
+#ribbon-taken {
+    background-color: #ebb134;
+}
+
+#buttons-wrapper {
+    height: 3rem;
+}
+
+#file-pick-button {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+}
+#accept-button {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
 }

@@ -10,6 +10,7 @@ interface ArtItemDetailsViewData {
     inEditMode?: boolean;
     isAdmin?: boolean;
     isThumbnail?: boolean;
+    isModal?: boolean;
 }
 
 @Component({
@@ -26,7 +27,7 @@ export class ArtItemDetailsComponent implements OnInit {
     @Input() onClickOverride?: (artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) => void;
 
     @Input() data!: ArtItem;
-    @Input() viewData: ArtItemDetailsViewData = { inEditMode: false, isAdmin: false };
+    @Input() viewData: ArtItemDetailsViewData = { inEditMode: false, isAdmin: false, isThumbnail: true, isModal: false };
     @Input() dataa!: { file: string; imgUrl: string };
 
     @Input() lotteries: Lottery[] = [];
@@ -40,9 +41,10 @@ export class ArtItemDetailsComponent implements OnInit {
         private matDialog: MatDialog,
         @Optional()
         @Inject(MAT_DIALOG_DATA)
-        data?: ArtItem
+        data?: { item?: ArtItem; viewData?: ArtItemDetailsViewData }
     ) {
-        if (data !== undefined) this.data = data;
+        if (data?.item !== undefined) this.data = data.item;
+        if (data?.viewData !== undefined) this.viewData = data.viewData;
     }
 
     ngOnInit(): void {
@@ -54,6 +56,13 @@ export class ArtItemDetailsComponent implements OnInit {
 
     onClick() {
         if (this.onClickOverride != undefined) this.onClickOverride(this, this.matDialog);
+        else if (!this.viewData.isModal) {
+            let nViewData = Object.create(this.viewData);
+            nViewData.isModal = true;
+            this.matDialog.open(ArtItemDetailsComponent, { data: { item: this.data, viewData: nViewData }, panelClass: 'art-item-details-card' });
+        } else {
+            this.matDialog.closeAll();
+        }
     }
 
     enableEdit() {

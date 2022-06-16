@@ -20,10 +20,9 @@ import { ContestantRowComponent } from 'src/app/component/contestant-row/contest
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ArtItem } from 'src/app/model/art-item';
 import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
-import { ContestantService } from 'src/app/service/contestant.service';
+import { AuthService } from 'src/app/service/auth.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { WinnerService } from 'src/app/service/winner.service';
-import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
 import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
 import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 
@@ -34,7 +33,7 @@ import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 })
 export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() contestantListParent!: ContestantListPage;
-    @Input() editable = false;
+    @Input() enabledRowActions = { edit: false, delete: false, selections: false, buttonRow: false };
     @Input() contestantComparator = (a: RowData, b: RowData) => {
         return a.data!.name.localeCompare(b.data!.name);
     };
@@ -63,14 +62,14 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private currentExpandedRow?: ContestantRowComponent;
 
     constructor(
-        public cdr: ChangeDetectorRef,
-        private modalService: ModalService,
-        private viewContainerRef: ViewContainerRef,
+        private authService: AuthService,
         private lotteryService: LotteryService,
         private winnerService: WinnerService,
+        private cdr: ChangeDetectorRef,
+        private modalService: ModalService,
+        private viewContainerRef: ViewContainerRef,
         private matDialog: MatDialog,
-        @Inject(DOCUMENT) private document: Document,
-        private contestantService: ContestantService
+        @Inject(DOCUMENT) private document: Document
     ) {}
 
     ngOnInit(): void {
@@ -80,6 +79,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
             this.rowData.sort(this.contestantComparator);
         });
         this.setColWidths([200, 150, 65, 150]);
+        if (!this.authService.authenticated) this.enabledRowActions = { buttonRow: false, selections: false, delete: false, edit: false };
     }
 
     ngOnDestroy(): void {
@@ -119,7 +119,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
 
     openItemPickerModal(contRowComp: ContestantRowComponent) {
         if (this.lotteryService.currLotteryId != null)
-            this.lotteryService.getArtItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
+            this.lotteryService.getAvailableItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
                 error: (error: HttpErrorResponse) => {
                     alert(error.message);
                 },
@@ -139,11 +139,6 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 },
             });
     }
-
-    openItemPickerModal2() {}
-    // artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
-    //     matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
-    // }
 
     public buttonEventListener = (elem: ClickableElements) => this.interactionEventListener(-1, { comp: undefined, elem: elem });
 
@@ -186,7 +181,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.acceptEdit:
-                this.contestantService.updateContestant(row?.data!).subscribe((r) => (row!.data = r));
+                this.contestantListParent.listManipulation.update(this.addNewRowData!.data!);
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;

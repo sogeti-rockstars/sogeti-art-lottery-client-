@@ -3,11 +3,13 @@
 </div>
 
 <ng-template #buttons class="buttons">
-    <span *ngIf="!rowData.inAddNewMode && !rowData.inEditMode; else buttonsEditMode">
-        <span *ngIf="editable">
+    <span *ngIf="!rowData.inEditMode; else buttonsEditMode">
+        <span *ngIf="enabledRowActions.edit">
             <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
                 <mat-icon aria-label="Redigera">edit</mat-icon>
             </button>
+        </span>
+        <span *ngIf="enabledRowActions.delete">
             <button id="remove" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.remove, $event)">
                 <mat-icon aria-label="Ta bort">delete</mat-icon>
             </button>
@@ -29,7 +31,7 @@
 <ng-template #notInModal>
     <mat-list-item matLine checkboxPosition="before" class="contestant-row">
         <mat-pseudo-checkbox
-            *ngIf="editable && !rowData.inAddNewMode"
+            *ngIf="enabledRowActions.edit && !rowData.inAddNewMode"
             [state]="rowData.selected ? 'checked' : 'unchecked'"
             (click)="clickEventHandler(ClickElems.checkbox, $event)"
         ></mat-pseudo-checkbox>
@@ -128,16 +130,13 @@
         </form>
 
         <div class="choosen-item-wrapper" *ngIf="rowData.winner!==undefined">
-            <button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">Välj konstföremål1</button>
-            <button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">Välj konstföremål2</button>
+            <button mat-button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">
+                Välj konstföremål
+            </button>
             <div *ngIf="rowData.winner!.lotteryItem!==undefined">
                 <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail>
-                <!-- <art-item-details -->
-                <!--     class="art-item-details" -->
-                <!--     [data]="rowData.winner.lotteryItem" -->
-                <!--     [onClickOverride]="artItemClicked" -->
-                <!--     [viewData]="{isAdmin:true}" -->
-                <!-- ></art-item-details> -->
+                <!-- <art-item-details class="art-item-details" [data]="rowData.winner.lotteryItem" [viewData]="{isAdmin:true}"></art-item-details> -->
+                <!-- [onClickOverride]="artItemClicked" -->
             </div>
         </div>
     </div>

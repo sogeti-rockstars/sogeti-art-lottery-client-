@@ -3,11 +3,8 @@ import { Subscription } from 'rxjs';
 import { Contestant } from '../model/contestant';
 import { Lottery } from '../model/lottery';
 import { Winner } from '../model/winner';
-import { ArtItemApiService } from '../service/api/art-item-api.service';
-import { WinnerApiService } from '../service/api/winner-api.service';
 import { ContestantService } from '../service/contestant.service';
 import { LotteryService } from '../service/lottery.service';
-import { WinnerService } from '../service/winner.service';
 
 /**
  * Base class that all pages which use the ContestantListComponent should extend.
@@ -28,13 +25,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     private onLotteryChanged?: Subscription;
     private onContestChanged?: Subscription;
 
-    constructor(
-        public lotteryService: LotteryService,
-        public contestantsService: ContestantService,
-        public winnerService: WinnerApiService,
-        public winnerXService: WinnerService,
-        public artItemApiService: ArtItemApiService
-    ) {}
+    constructor(public lotteryService: LotteryService, public contestantsService: ContestantService) {}
 
     // IMPLEMENTING CLASSES MUST CALL THIS.
     protected abstract loadContestants(contestants: Contestant[]): void;
@@ -66,7 +57,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         this.onContestChanged?.unsubscribe();
     }
 
-    public readonly listManipulation = {
+    public listManipulation = {
         deleteByIdx: (idx: number) => {
             let removedId = this.rowData.splice(idx, 1)[0];
             if (removedId !== undefined) this.contestantsService.deleteContestant(removedId.data!.id).subscribe();
@@ -91,6 +82,12 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         addNew: (cont: Contestant) => {
             this.contestantsService
                 .addContestant(cont)
+                .subscribe((_) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
+        },
+        update: (cont: Contestant) => {
+            // this.contestantService.updateContestant(row?.data!).subscribe((r) => (row!.data = r));
+            this.contestantsService
+                .updateContestant(cont)
                 .subscribe((_) => this.contestantsService.getContestants().subscribe((resp) => this.loadContestants(resp)));
         },
     };

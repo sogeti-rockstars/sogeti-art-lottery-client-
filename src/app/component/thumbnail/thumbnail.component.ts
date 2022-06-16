@@ -22,7 +22,6 @@ export class ThumbnailComponent {
     }
 
     loadModal(artItem: ArtItem) {
-        console.log(artItem.itemName);
         const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
         this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
     }

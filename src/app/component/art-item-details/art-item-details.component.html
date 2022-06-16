@@ -1,38 +1,40 @@
 <mat-card class="art-item-details-card">
-    <mat-card-header>
-        <mat-card-title>{{data.itemName}}</mat-card-title>
-        <mat-card-subtitle>{{data.artistName}}</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image [src]="imgURL" alt="Photo of item" (click)="onClick()" />
-    <mat-card-content class="mat-card-body">
-        <ul class="list-group">
-            <div *ngIf="viewData.inEditMode == true" class="form-group">
-                <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
-                    <li *ngFor="let field of fieldnames; let i=index" class="list-group-item">
-                        {{ field.key }}
-                        <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
-                    </li>
-                </form>
-            </div>
-        </ul>
-
-        <div *ngIf="viewData.inEditMode != true">
-            <div *ngFor="let field of fieldnames; let i=index">
-                <li class="list-group-item">{{field.key}}: {{field.value}}</li>
-            </div>
-        </div>
-    </mat-card-content>
-    <mat-card-actions>
-        <div *ngIf="this.viewData.isAdmin == true">
-            <div *ngIf="viewData.inEditMode != true; else acceptForm">
-                <button mat-button (click)="enableEdit()">Redigera</button>
-            </div>
-            <ng-template #acceptForm>
-                <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
-                <div>
-                    <input type="file" (change)="onFileChanged($event)" />
+    <div id="art-item-card-wrapper">
+        <mat-card-header>
+            <mat-card-title>{{data.itemName}}</mat-card-title>
+            <mat-card-subtitle>{{data.artistName}}</mat-card-subtitle>
+        </mat-card-header>
+        <img mat-card-image [src]="imgURL" alt="Photo of item" (click)="onClick()" />
+        <mat-card-content class="mat-card-body">
+            <ul class="list-group">
+                <div *ngIf="viewData.inEditMode == true" class="form-group">
+                    <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+                        <li *ngFor="let field of fieldnames; let i=index" class="list-group-item">
+                            {{ field.key }}
+                            <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
+                        </li>
+                    </form>
                 </div>
-            </ng-template>
-        </div>
-    </mat-card-actions>
+            </ul>
+
+            <div *ngIf="viewData.inEditMode != true && !viewData.isThumbnail">
+                <div *ngFor="let field of fieldnames; let i=index">
+                    <li class="list-group-item">{{field.key}}: {{field.value}}</li>
+                </div>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <div *ngIf="this.viewData.isAdmin == true">
+                <div *ngIf="viewData.inEditMode != true; else acceptForm">
+                    <button mat-button (click)="enableEdit()">Redigera</button>
+                </div>
+                <ng-template #acceptForm>
+                    <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
+                    <div>
+                        <input type="file" (change)="onFileChanged($event)" />
+                    </div>
+                </ng-template>
+            </div>
+        </mat-card-actions>
+    </div>
 </mat-card>
