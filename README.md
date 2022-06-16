@@ -1,19 +1,13 @@
 # Vad gör Applikationen allmänt, vad är den till för?
 
--   Konstlotteri per år
--   visa konstverk
--   lotta ut
--   medlemmar
--   vinnare
-
 Applikationen hanterar Sogetis årliga konstlotteri. Där konstverk årsvis
 lottas ut till de anställda. Utöver att visa upp de konstverk som ingår i en utlottning, sköter
 systemet bl.a. allmän information om lotteriet, vinsthistorik, dragning av vinnare, register
 över medlemmar med mera.
 
-Strukturen, vilka knappar finns? Hur är de kopplade till lotterierna?
+## Vilka knappar finns? Hur är de kopplade till lotterierna?
 
--   ## Huvudmeny överst finns:
+-   # Huvudmeny överst finns:
     # För användare:
     -   Norrkonst knapp med dropdown funktion där man kan se konstverk för de olika åren (denna knapp är huvudknapp i "mobilläge")
     -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet.
