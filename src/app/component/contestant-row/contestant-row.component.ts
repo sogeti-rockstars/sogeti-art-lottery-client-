@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
@@ -38,7 +38,7 @@ export class ContestantRowComponent implements OnInit {
     constructor(
         public authService: AuthService,
         private lotteryService: LotteryService,
-        private contestantService: ContestantService,
+        private cdr: ChangeDetectorRef,
         private winnerService: WinnerService,
         private matDialog: MatDialog,
         private vcr: ViewContainerRef,
@@ -60,7 +60,7 @@ export class ContestantRowComponent implements OnInit {
             employeeId: new FormControl({ value: this.rowData.data.employeeId, disabled: true }),
             email: new FormControl({ value: this.rowData.data.email, disabled: true }),
             teleNumber: new FormControl({ value: this.rowData.data.teleNumber, disabled: true }),
-            office: new FormControl({ value: 'BACKENDWIP', disabled: true }),
+            office: new FormControl({ value: this.rowData.data.office, disabled: true }),
         });
 
         if (this.rowData.inAddNewMode) {
@@ -99,12 +99,9 @@ export class ContestantRowComponent implements OnInit {
             });
     }
 
+    openItemPickerModal2() {}
     artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
         matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
-    }
-
-    onSubmit(contestant: Contestant) {
-        this.contestantService.updateContestant(contestant).subscribe((resp) => (this.rowData.data = resp));
     }
 
     setEditMode(value: boolean) {
@@ -125,12 +122,16 @@ export class ContestantRowComponent implements OnInit {
                 if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
                 break;
             case ClickableElements.acceptNew:
-                console.log(this.rowData);
                 this.rowData.data = this.contestantForm.value as Contestant;
                 break;
             case ClickableElements.acceptEdit:
-                console.log('EDITACC');
-                console.log(this.rowData);
+                this.rowData.inEditMode = false;
+                this.setEditMode(this.rowData.inEditMode!);
+                this.rowData.data = this.contestantForm.value as Contestant;
+                break;
+            case ClickableElements.abort:
+                this.rowData.inEditMode = false;
+                this.setEditMode(this.rowData.inEditMode!);
                 this.rowData.data = this.contestantForm.value as Contestant;
                 break;
         }
@@ -138,6 +139,11 @@ export class ContestantRowComponent implements OnInit {
         event?.stopPropagation();
         let iEvent = Object.assign({ srcElement: element }, this.rowData);
         this.interactionEvent.emit(iEvent);
+    }
+
+    public inputContDataSubmit(event?: MouseEvent) {
+        if (this.rowData.inAddNewMode) this.clickEventHandler(ClickableElements.acceptNew, event);
+        else this.clickEventHandler(ClickableElements.acceptEdit, event);
     }
 
     public getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {

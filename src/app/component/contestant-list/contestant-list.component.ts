@@ -123,8 +123,11 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.acceptEdit:
-                this.contestantService.updateContestant(row?.data!).subscribe();
-                this.addNewRowData = undefined;
+                this.contestantService.updateContestant(row?.data!).subscribe((r) => {
+                    console.log(row?.data);
+                    row!.data = r;
+                    console.log(row?.data);
+                });
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;

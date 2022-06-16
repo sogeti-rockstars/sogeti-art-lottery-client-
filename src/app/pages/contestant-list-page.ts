@@ -67,12 +67,14 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public readonly listManipulation = {
         deleteByIdx: (idx: number) => {
             let removedId = this.rowData.splice(idx, 1)[0];
-            this.contestantsChange.emit(this.rowData);
-            if (removedId !== undefined) this.contestantsService.deleteContestant(removedId.data!.id).subscribe((resp) => console.log(resp));
+            if (removedId !== undefined)
+                this.contestantsService.deleteContestant(removedId.data!.id).subscribe((_resp) => {
+                    // this.contestantsChange.emit(this.rowData);
+                    // this.loadContestants
+                });
         },
         deleteById: (id: number) => {
             let idx = this.rowData.find((c) => c.data!.id == id)?.index;
-            this.contestantsChange.emit(this.rowData);
             return idx !== undefined ? this.listManipulation.deleteByIdx(idx) : undefined;
         },
         getSelected: (): RowData[] => {
@@ -87,7 +89,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
                     } else return c;
                 })
                 .filter((c) => c !== undefined) as RowData[];
-            this.contestantsChange.emit(this.rowData);
+            // this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
             this.contestantsService
@@ -114,7 +116,6 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
                 if (cont !== undefined) {
                     this.rowData.push({ data: cont, render: false, winner: w });
                 }
-                this.contestantsChange.emit(this.rowData);
             });
         }
 
