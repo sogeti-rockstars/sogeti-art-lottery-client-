@@ -5,32 +5,32 @@ lottas ut till de anställda. Utöver att visa upp de konstverk som ingår i en 
 systemet bl.a. allmän information om lotteriet, vinsthistorik, dragning av vinnare, register
 över medlemmar med mera.
 
-## Vilka knappar finns? Hur är de kopplade till lotterierna?
+# Vilka knappar finns? Hur är de kopplade till lotterierna?
 
--   # Huvudmeny överst finns:
-    # För användare:
+-   ## Huvudmeny överst finns:
+    ## För användare:
     -   Norrkonst knapp med dropdown funktion där man kan se konstverk för de olika åren (denna knapp är huvudknapp i "mobilläge")
-    -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet.
+    -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet. Användare kan klicka på ett konstverk för att få upp en modal med info om konstverket.
     -   Garantivinster knapp för att se garantivinster för tidigare år eller i de aktuella lotteriet
     -   Vinnare knapp för att se tidigare vinnare.
     -   Om oss med en dropdown funktion som visar Styrelse, flöde och info.
-    # För admin:
+    ## För admin:
     -   Norrkonstknapp med dropdown med de olika lotterierna där admin kan skapa nytt lotteri, redigera och ta bort tidigare lotteri.
-    -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet, även har finns det tre knappar: Ta bort valda, välj alla och lägg till ny.
+    -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet, även har finns det tre knappar: Ta bort valda, välj alla och lägg till ny. Som admin kan man klicka på konstverket och redigera och uppdatera det valda konstverket.
     -   Logga in knapp där man loggar in med användarnamn och lösenord (för admin)
     -   Medlemmar knapp för att se vilka som är medlemmar, sökfunktion för att söka bland medlemmar. Kunna redigera, ta bort medlemmar.
     -   Vinnare knapp för att se tidigare vinnare och välja konstföremål som vinnarna har valt.
     -   Starta Lotteri. Där finns en utför dragning knapp som lottar slumpvist ut vinnare, 25% av medlemmarna vinner högvinster och resten får garantivinst.
+    -   Om oss med en dropdown funktion som visar Styrelse, flöde och info. I samtliga kan man klicka på pennan för att redigera text.
     -   Logga ut
--   logga in
 
-Vilka listor med data finns?
+## Vilka listor med data finns?
 
 -   konstverk
 -   medlemmar
 -   vinnare
 
-Vad kan användare göra?
+## Vad kan användare göra?
 
 -   se olika år
 -   titta på konstverk
@@ -38,7 +38,7 @@ Vad kan användare göra?
 -   se vinnare
 -   se info
 
-Vad kan admin göra?
+## Vad kan admin göra?
 
 -   utöver det användare kan se:
     -   redigera konstverk
@@ -47,7 +47,7 @@ Vad kan admin göra?
     -   lotta fram vinnare
     -   redigera info-sidor
 
-Vilken teknik ligger bakom?
+## Vilken teknik ligger bakom?
 
 -   Frontend/Backend
 -   Java (med Spring Boot)
