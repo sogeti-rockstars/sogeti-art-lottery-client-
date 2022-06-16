@@ -50,6 +50,14 @@ export class LotteryService {
         return this.apiService.getLottery(id);
     }
 
+    public getGuaranteePrize(id: number) {
+        return this.apiService.getGuaranteePrize(id);
+    }
+
+    public setGuaranteePrize(id: number, data: ArtItem) {
+        return this.apiService.setGuaranteePrize(id, data);
+    }
+
     public detectChanges() {
         this.apiService.getLottery(this.currLotteryId!).subscribe((r) => this.lotteryChanged.emit(r));
     }

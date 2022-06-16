@@ -4,13 +4,13 @@
             <mat-card-title>{{data.itemName}}</mat-card-title>
             <mat-card-subtitle>{{data.artistName}}</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image [src]="imgURL" alt="Photo of item" (click)="onClick()" />
+        <img mat-card-image [src]="imgURL" alt="Photo of item" />
         <mat-card-content class="mat-card-body">
             <ul class="list-group">
                 <div *ngIf="viewData.inEditMode == true" class="form-group">
                     <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
                         <li *ngFor="let field of fieldnames; let i=index" class="list-group-item">
-                            {{ field.key }}
+                            {{ fieldGuiNames.get(field.key) }}
                             <input formControlName="{{field.key}}" type="text" class="form-control" id="{{field.key}}" />
                         </li>
                     </form>
@@ -19,22 +19,22 @@
 
             <div *ngIf="viewData.inEditMode != true && !viewData.isThumbnail">
                 <div *ngFor="let field of fieldnames; let i=index">
-                    <li class="list-group-item">{{field.key}}: {{field.value}}</li>
+                    <li class="list-group-item">{{fieldGuiNames.get(field.key)}}: {{field.value}}</li>
                 </div>
             </div>
         </mat-card-content>
         <mat-card-actions>
-            <div *ngIf="this.viewData.isAdmin == true">
-                <div *ngIf="viewData.inEditMode != true; else acceptForm">
-                    <button mat-button (click)="enableEdit()">Redigera</button>
-                </div>
-                <ng-template #acceptForm>
-                    <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
-                    <div>
-                        <input type="file" (change)="onFileChanged($event)" />
-                    </div>
-                </ng-template>
+            <div *ngIf="this.viewData.isAdmin">
+                <button *ngIf="this.viewData.inEditMode != true" mat-button (click)="enableEdit()">Redigera</button>
             </div>
+            <div *ngIf="this.viewData.inEditMode == true" id="buttons-wrapper">
+                <button id="file-pick-button" mat-button type="button" (click)="fileInput.click()">
+                    <span>Välj fil</span>
+                    <input #fileInput type="file" (change)="onFileChanged($event)" style="display: none" />
+                </button>
+                <button id="accept-button" [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
+            </div>
+            <!-- <button mat-button>SHARE</button> -->
         </mat-card-actions>
     </div>
 </mat-card>

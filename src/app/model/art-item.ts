@@ -1,7 +1,7 @@
 import { Lottery } from './lottery';
 
 export class ArtItem {
-    id!: number;
+    id?: number;
     lotteryId!: number;
     itemName: string = '';
     artistName: string = '';

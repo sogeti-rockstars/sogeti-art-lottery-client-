@@ -8,7 +8,7 @@ import { ArtItem } from 'src/app/model/art-item';
 })
 export class ArtItemsListComponent {
     @Input() set artItems(artItems: ArtItem[]) {
-        this.artItems$ = artItems.sort((a, b) => a.id - b.id);
+        this.artItems$ = artItems.sort((a, b) => a.id! - b.id!);
     }
     get artItems() {
         return this.artItems$;

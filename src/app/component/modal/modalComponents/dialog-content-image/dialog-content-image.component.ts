@@ -29,7 +29,7 @@ export class DialogContentImageComponent {
     ) {}
 
     loadImageUrl(): string {
-        return this.itemApiService.getArtItemImageUrl(this.data.artItem.id);
+        return this.itemApiService.getArtItemImageUrl(this.data.artItem.id!);
     }
 
     saveUpdateItem(artItem: ArtItem) {

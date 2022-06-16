@@ -16,6 +16,13 @@ export class ArtItemFormComponent implements OnInit {
     @Input() label!: string;
     @Input() inputPlaceholder!: string;
     @Input() artItem!: ArtItem;
+    @Input() onSubmit = (artItem: ArtItem) => {
+        artItem.lotteryId = this.lotteries[this.selected - 1].id;
+        this.artItemService.add(artItem).subscribe((data) => {
+            if (this.file != null) this.onUpload(data);
+            this.matDialog.closeAll();
+        });
+    };
     @Output() artItemOutput = new EventEmitter<ArtItem>();
     update: boolean = false;
     selected!: number;
@@ -43,7 +50,7 @@ export class ArtItemFormComponent implements OnInit {
     ) {}
 
     loadImageUrl() {
-        return this.itemApiService.getArtItemImageUrl(this.artItem.id);
+        return this.itemApiService.getArtItemImageUrl(this.artItem.id!);
     }
 
     onFileChanged(event: any) {
@@ -55,14 +62,6 @@ export class ArtItemFormComponent implements OnInit {
         reader.onload = (_) => {
             this.imgURL = reader.result;
         };
-    }
-
-    onSubmit(artItem: ArtItem) {
-        artItem.lotteryId = this.lotteries[this.selected - 1].id;
-        this.artItemService.add(artItem).subscribe((data) => {
-            if (this.file != null) this.onUpload(data);
-            this.matDialog.closeAll();
-        });
     }
 
     onUpload(artItem: ArtItem) {

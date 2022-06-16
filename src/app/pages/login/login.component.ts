@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.loginStateChangedSubs = this.authService.loginLogoutChanged.subscribe((state) => {
             if (!state) return;
-            let nUrl = '/admin/' + this.router.url.split('?from=').slice(-1);
+            let from = this.router.url.split('?from=').slice(-1)[0];
+            let nUrl = from === '/login' ? '' : '/admin/' + from;
             this.router.navigate([nUrl], { queryParams: {} });
         });
     }

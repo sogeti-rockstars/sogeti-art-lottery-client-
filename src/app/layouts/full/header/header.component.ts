@@ -159,15 +159,15 @@ const menuItems: MenuItem[] = [
         subMenuItems: [],
         action: 'logout',
     },
-    {
-        route: 'admin',
-        label: 'Logga in',
-        icon: 'person',
-        cls: 'header-buttons login-out-button',
-        limitedTo: 'user',
-        subMenuItems: [],
-        action: 'login',
-    },
+    // {
+    //     route: 'admin',
+    //     label: 'Logga in',
+    //     icon: 'person',
+    //     cls: 'header-buttons login-out-button',
+    //     limitedTo: 'user',
+    //     subMenuItems: [],
+    //     action: 'login',
+    // },
 ];
 
 export interface MenuItem {
