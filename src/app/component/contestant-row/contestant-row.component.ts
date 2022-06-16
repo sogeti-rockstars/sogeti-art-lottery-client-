@@ -6,7 +6,6 @@ import { ArtItem } from 'src/app/model/art-item';
 import { Contestant } from 'src/app/model/contestant';
 import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
 import { AuthService } from 'src/app/service/auth.service';
-import { ContestantService } from 'src/app/service/contestant.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 import { WinnerService } from 'src/app/service/winner.service';
 import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
@@ -20,10 +19,10 @@ import { ModalService } from '../modal/modal.service';
     styleUrls: ['./contestant-row.component.css'],
 })
 export class ContestantRowComponent implements OnInit {
-    @Output() public interactionEvent = new EventEmitter<RowData>();
+    @Output() public interactionEvent = new EventEmitter<{ comp: ContestantRowComponent; elem: ClickableElements }>();
 
-    @Output() public rowDataChange = new EventEmitter<RowData>();
     @Input() public rowData!: RowData;
+    @Output() public rowDataChange = new EventEmitter<RowData>();
 
     @Input() public editable = false;
     @Input() set index(idx: number) {
@@ -35,10 +34,12 @@ export class ContestantRowComponent implements OnInit {
 
     public contestantForm!: FormGroup;
 
+    private preEditValues?: Map<string, any>;
+    private enabledFields = ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'];
+
     constructor(
         public authService: AuthService,
         private lotteryService: LotteryService,
-        private cdr: ChangeDetectorRef,
         private winnerService: WinnerService,
         private matDialog: MatDialog,
         private vcr: ViewContainerRef,
@@ -66,7 +67,6 @@ export class ContestantRowComponent implements OnInit {
         if (this.rowData.inAddNewMode) {
             this.rowData.expanded = true;
             this.rowData.inEditMode = true;
-            this.rowData.expanded = true;
             this.setEditMode(true);
         }
     }
@@ -104,49 +104,75 @@ export class ContestantRowComponent implements OnInit {
         matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 
-    setEditMode(value: boolean) {
-        if (value) ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].enable());
-        else ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].disable());
-    }
-
     /**
      * Overlapping HTMLElements call this function and getting their id was awkard when they overlapped like in ( <button><mat-icon></m></b>)
      * so we go with a custom enum....
      * @param element enum value of element clicked.
      * @param event When we want to stop the propagation (because more elements use the same event) */
-    public clickEventHandler(element: ClickableElements, event?: MouseEvent) {
+    clickEventHandler(element: ClickableElements, event?: MouseEvent) {
+        event?.stopPropagation();
+
         switch (element) {
             case ClickableElements.edit:
-                this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
-                this.setEditMode(this.rowData.inEditMode!);
-                if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
+                this.setEditMode(!this.rowData.inEditMode);
+                if (!this.rowData.expanded) this.setExpanded(true);
                 break;
             case ClickableElements.acceptNew:
                 this.rowData.data = this.contestantForm.value as Contestant;
+                this.setEditMode(false);
+                this.setExpanded(false);
                 break;
             case ClickableElements.acceptEdit:
-                this.rowData.inEditMode = false;
-                this.setEditMode(this.rowData.inEditMode!);
                 this.rowData.data = this.contestantForm.value as Contestant;
+                this.setEditMode(false);
+                this.setExpanded(false);
                 break;
             case ClickableElements.abort:
-                this.rowData.inEditMode = false;
-                this.setEditMode(this.rowData.inEditMode!);
-                this.rowData.data = this.contestantForm.value as Contestant;
+                this.setExpanded(false);
+                break;
+            case ClickableElements.expand:
+                this.setExpanded();
                 break;
         }
 
-        event?.stopPropagation();
-        let iEvent = Object.assign({ srcElement: element }, this.rowData);
-        this.interactionEvent.emit(iEvent);
+        this.interactionEvent.emit({ comp: this, elem: element });
     }
 
-    public inputContDataSubmit(event?: MouseEvent) {
+    inputContDataSubmit(event?: MouseEvent) {
         if (this.rowData.inAddNewMode) this.clickEventHandler(ClickableElements.acceptNew, event);
         else this.clickEventHandler(ClickableElements.acceptEdit, event);
     }
 
-    public getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
+    /**
+     * @param expanded omit to toggle.
+     */
+    setExpanded(expanded?: boolean) {
+        this.rowData.expanded = expanded !== undefined ? expanded : !this.rowData?.expanded;
+        if (!this.rowData.expanded && this.rowData.inEditMode) this.setEditMode(false, true);
+    }
+
+    private setEditMode(value: boolean, restore?: boolean) {
+        if (value) {
+            this.preEditValues = new Map();
+            this.enabledFields.forEach((formName) => {
+                let formCtrl = this.contestantForm.controls[formName];
+                console.log(formCtrl.value);
+                this.preEditValues!.set(formName, formCtrl.value);
+                formCtrl.enable();
+            });
+        } else {
+            this.enabledFields.forEach((formName) => {
+                let formCtrl = this.contestantForm.controls[formName];
+                console.log(formCtrl.value);
+                if (restore) formCtrl.setValue(this.preEditValues!.get(formName));
+                formCtrl.disable();
+            });
+            this.preEditValues = undefined;
+        }
+        this.rowData.inEditMode = value;
+    }
+
+    getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
         let currElem = elem?.nativeElement.children.item(0);
         let widths = [];
         while (currElem != null) {

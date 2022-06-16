@@ -9,7 +9,7 @@ import { ClickableElements } from 'src/app/pages/contestant-list-page';
 export class ContestantSelButtonsComponent implements OnInit {
     @Input() selectedItemsAmount: number = 0;
 
-    @Input() interactionEventListener!: (_: any, __: any, el: ClickableElements) => void;
+    @Input() interactionEventListener!: (elem: ClickableElements) => void;
 
     ClickableElements = ClickableElements;
 

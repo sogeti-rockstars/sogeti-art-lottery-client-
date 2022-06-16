@@ -17,11 +17,11 @@
         </button>
     </span>
     <ng-template #buttonsEditMode>
-        <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
-            <mat-icon aria-label="Avbryt">close</mat-icon>
-        </button>
         <button id="accept" mat-icon-button class="cont-button" (click)="inputContDataSubmit($event)">
             <mat-icon aria-label="Verkställ">done</mat-icon>
+        </button>
+        <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
+            <mat-icon aria-label="Avbryt">close</mat-icon>
         </button>
     </ng-template>
 </ng-template>
@@ -111,7 +111,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="legacy">
                     <mat-label>telefonnummer</mat-label>
-                    <input matInput class="form-control" formControlName="teleNumber" type="number" placeholder="" />
+                    <input matInput class="form-control" formControlName="teleNumber" type="text" placeholder="" />
                 </mat-form-field>
                 <mat-form-field appearance="legacy">
                     <mat-label>e-post</mat-label>

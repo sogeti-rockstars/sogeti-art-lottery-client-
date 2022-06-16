@@ -20,7 +20,7 @@
         <app-contestant-sel-buttons
             *ngIf="editable"
             [selectedItemsAmount]="selectedItemsAmount"
-            [interactionEventListener]="interactionEventListener"
+            [interactionEventListener]="buttonEventListener"
         ></app-contestant-sel-buttons>
     </ng-template>
     <mat-list *ngIf="rowData.length>0">

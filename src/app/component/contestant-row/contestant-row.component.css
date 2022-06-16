@@ -127,6 +127,11 @@
     color: black;
 }
 
+/* .mat-form-field-appearance-legacy.mat-form-field-disabled { */
+::ng-deep .mat-form-field-disabled .mat-form-field-underline {
+    display: none !important;
+}
+
 #expanded-topline {
     display: flex !important;
     justify-content: space-between;

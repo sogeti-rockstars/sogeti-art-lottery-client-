@@ -19,6 +19,7 @@ export class ContestantService {
         return this.service.getContestant(id);
     }
 
+    // There is a bug on the back-end, any lists submitted as responses seem unreliable...
     public addContestant(cont: Contestant): Observable<Contestant> {
         return this.service.addContestant(cont).pipe(
             tap((_) =>

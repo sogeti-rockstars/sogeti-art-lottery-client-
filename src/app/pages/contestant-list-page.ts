@@ -36,6 +36,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         public artItemApiService: ArtItemApiService
     ) {}
 
+    // IMPLEMENTING CLASSES MUST CALL THIS.
     protected abstract loadContestants(contestants: Contestant[]): void;
 
     ngOnInit(): void {
@@ -56,6 +57,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         this.onContestChanged = this.contestantsService.contestantsChanged.subscribe((contestants) => {
             this.contestants = contestants;
             this.loadContestants(contestants);
+            // loadContestants() will in turn emit this classes contestantsChanged... Sorry for the mess.
         });
     }
 
@@ -67,11 +69,7 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
     public readonly listManipulation = {
         deleteByIdx: (idx: number) => {
             let removedId = this.rowData.splice(idx, 1)[0];
-            if (removedId !== undefined)
-                this.contestantsService.deleteContestant(removedId.data!.id).subscribe((_resp) => {
-                    // this.contestantsChange.emit(this.rowData);
-                    // this.loadContestants
-                });
+            if (removedId !== undefined) this.contestantsService.deleteContestant(removedId.data!.id).subscribe();
         },
         deleteById: (id: number) => {
             let idx = this.rowData.find((c) => c.data!.id == id)?.index;
@@ -84,12 +82,11 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
             this.rowData = this.rowData
                 .map((c) => {
                     if (c.selected) {
-                        this.contestantsService.deleteContestant(c.data!.id).subscribe((resp) => console.log(resp));
+                        this.contestantsService.deleteContestant(c.data!.id).subscribe();
                         return undefined;
                     } else return c;
                 })
                 .filter((c) => c !== undefined) as RowData[];
-            // this.contestantsChange.emit(this.rowData);
         },
         addNew: (cont: Contestant) => {
             this.contestantsService

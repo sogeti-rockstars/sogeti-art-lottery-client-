@@ -37,6 +37,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private firstRenderFinished = false;
     private colGap = 20;
     private contestantsListChangeSubs!: Subscription;
+    private currentExpandedRow?: ContestantRowComponent;
 
     constructor(
         public cdr: ChangeDetectorRef,
@@ -85,23 +86,26 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
             .subscribe(() => (this.rowData[idx].data = component.instance.rowData.data));
     }
 
+    public buttonEventListener = (elem: ClickableElements) => this.interactionEventListener(-1, { comp: undefined, elem: elem });
+
     /* EVENT LISTENERS: */
-    public interactionEventListener = (_idx: number, row?: RowData, srcElement?: ClickableElements) => {
-        let element = srcElement === undefined ? row!.srcElement : srcElement;
+    public interactionEventListener = (idx: number, iEvent: { comp: any; elem: ClickableElements }) => {
+        let row = iEvent?.comp?.rowData;
+        let element = iEvent.elem;
         switch (element) {
             case ClickableElements.body:
-            case ClickableElements.expand:
-                this.rowData[_idx].expanded = !this.rowData[_idx].expanded;
+            case ClickableElements.expand: // Emitted here only so we can close other rows.
+                this.unexpandLastRow(iEvent.comp);
                 break;
             case ClickableElements.edit:
-                // handled by cont-row.
+                this.unexpandLastRow(iEvent.comp);
                 break;
             case ClickableElements.checkbox:
-                this.rowData[_idx].selected = !row!.selected;
+                this.rowData[idx].selected = !row!.selected;
                 this.selectedItemsAmount += !row!.selected ? 1 : -1;
                 break;
             case ClickableElements.remove:
-                this.contestantListParent.listManipulation.deleteByIdx(_idx);
+                this.contestantListParent.listManipulation.deleteByIdx(idx);
                 break;
             case ClickableElements.selectAll:
                 this.rowData.forEach((c) => (c.selected = true));
@@ -123,11 +127,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.acceptEdit:
-                this.contestantService.updateContestant(row?.data!).subscribe((r) => {
-                    console.log(row?.data);
-                    row!.data = r;
-                    console.log(row?.data);
-                });
+                this.contestantService.updateContestant(row?.data!).subscribe((r) => (row!.data = r));
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;
@@ -137,6 +137,15 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         }
         this.refreshList();
     };
+
+    // This isn't just a feature, removing it without other changes will introduce bugs.
+    // At the very least we need to check other rows are not in edit mode...
+    private unexpandLastRow(emittingRowComp: ContestantRowComponent) {
+        if (this.currentExpandedRow !== undefined && this.currentExpandedRow !== emittingRowComp) {
+            this.currentExpandedRow.setExpanded(false);
+        }
+        this.currentExpandedRow = emittingRowComp.rowData.expanded ? emittingRowComp : undefined;
+    }
 
     ////////////////////////////////
     // Just-in-time rendering stuff:
