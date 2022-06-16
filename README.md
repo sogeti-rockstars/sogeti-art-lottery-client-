@@ -9,13 +9,16 @@ systemet bl.a. allmän information om lotteriet, vinsthistorik, dragning av vinn
 
 ## I huvudmenyn överst finns:
 
-    ## För användare:
+## För användare:
+
     -   Norrkonst knapp med dropdown funktion där man kan se konstverk för de olika åren (denna knapp är huvudknapp i "mobilläge")
     -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet. Användare kan klicka på ett konstverk för att få upp en modal med info om konstverket.
     -   Garantivinster knapp för att se garantivinster för tidigare år eller i de aktuella lotteriet
     -   Vinnare knapp för att se tidigare vinnare.
     -   Om oss med en dropdown funktion som visar Styrelse, flöde och info.
-    ## För admin:
+
+## För admin:
+
     -   Norrkonstknapp med dropdown med de olika lotterierna där admin kan skapa nytt lotteri, redigera och ta bort tidigare lotteri.
     -   Högvinster knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet, även har finns det tre knappar: Ta bort valda, välj alla och lägg till ny. Som admin kan man klicka på konstverket och redigera och uppdatera det valda konstverket.
     -   Logga in knapp där man loggar in med användarnamn och lösenord (för admin)
