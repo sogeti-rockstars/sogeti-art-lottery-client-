@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
@@ -37,17 +37,7 @@ export class ContestantRowComponent implements OnInit {
     private preEditValues?: Map<string, any>;
     private enabledFields = ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'];
 
-    constructor(
-        public authService: AuthService,
-        private lotteryService: LotteryService,
-        private winnerService: WinnerService,
-        private matDialog: MatDialog,
-        private vcr: ViewContainerRef,
-        private modalService: ModalService,
-        private fb: FormBuilder,
-        private viewContainerRef: ViewContainerRef,
-        @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant
-    ) {
+    constructor(public authService: AuthService, private fb: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant) {
         if (data !== undefined) this.rowData = { data: data!, inModal: true, render: true };
     }
 
@@ -69,39 +59,6 @@ export class ContestantRowComponent implements OnInit {
             this.rowData.inEditMode = true;
             this.setEditMode(true);
         }
-    }
-
-    openItemModal(artItem: ArtItem) {
-        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
-        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
-    }
-
-    openItemPickerModal() {
-        if (this.lotteryService.currLotteryId != null)
-            this.lotteryService.getArtItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
-                error: (error: HttpErrorResponse) => {
-                    alert(error.message);
-                },
-                next: (resp: ArtItem[]) => {
-                    const component = this.vcr.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
-                    component.instance.artItems = resp;
-                    console.log(resp);
-                    component.instance.onThumbnailClick = (artItem: ArtItem) => {
-                        let winner = this.rowData.winner!;
-                        winner.lotteryItem = artItem;
-                        winner.contestantId = this.rowData.data?.id!;
-                        console.log(winner);
-                        this.winnerService.updateWinner(winner).subscribe();
-                        this.matDialog.closeAll();
-                    };
-                    this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.vcr);
-                },
-            });
-    }
-
-    openItemPickerModal2() {}
-    artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
-        matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
     }
 
     /**
@@ -132,6 +89,8 @@ export class ContestantRowComponent implements OnInit {
                 break;
             case ClickableElements.expand:
                 this.setExpanded();
+                break;
+            case ClickableElements.artItemPicker:
                 break;
         }
 

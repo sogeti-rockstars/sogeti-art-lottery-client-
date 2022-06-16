@@ -128,8 +128,8 @@
         </form>
 
         <div class="choosen-item-wrapper" *ngIf="rowData.winner!==undefined">
-            <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal()">Välj konstföremål1</button>
-            <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal2()">Välj konstföremål2</button>
+            <button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">Välj konstföremål1</button>
+            <button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">Välj konstföremål2</button>
             <div *ngIf="rowData.winner!.lotteryItem!==undefined">
                 <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail>
                 <!-- <art-item-details -->

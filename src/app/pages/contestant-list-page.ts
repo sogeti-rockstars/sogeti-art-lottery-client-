@@ -151,4 +151,5 @@ export enum ClickableElements {
     selectAll,
     selectNone,
     removeSelected,
+    artItemPicker,
 }

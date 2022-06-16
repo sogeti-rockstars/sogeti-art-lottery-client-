@@ -1,11 +1,31 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
-import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+    AfterViewChecked,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostListener,
+    Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    QueryList,
+    ViewChildren,
+    ViewContainerRef,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
+import { ArtItem } from 'src/app/model/art-item';
 import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
 import { ContestantService } from 'src/app/service/contestant.service';
+import { LotteryService } from 'src/app/service/lottery.service';
+import { WinnerService } from 'src/app/service/winner.service';
+import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
+import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
+import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 
 @Component({
     selector: 'contestant-list-component',
@@ -15,6 +35,9 @@ import { ContestantService } from 'src/app/service/contestant.service';
 export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() contestantListParent!: ContestantListPage;
     @Input() editable = false;
+    @Input() contestantComparator = (a: RowData, b: RowData) => {
+        return a.data!.name.localeCompare(b.data!.name);
+    };
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
     public readonly filterFunction = (row: RowData, query: string) => {
@@ -41,8 +64,11 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
 
     constructor(
         public cdr: ChangeDetectorRef,
-        private modService: ModalService,
-        private vcr: ViewContainerRef,
+        private modalService: ModalService,
+        private viewContainerRef: ViewContainerRef,
+        private lotteryService: LotteryService,
+        private winnerService: WinnerService,
+        private matDialog: MatDialog,
         @Inject(DOCUMENT) private document: Document,
         private contestantService: ContestantService
     ) {}
@@ -51,7 +77,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         this.contestantsListChangeSubs = this.contestantListParent.contestantsChange.subscribe((data) => {
             data.slice(0, this.firstRenderRowCount).forEach((rd) => (rd.render = true));
             this.rowData = data;
-            this.rowData.sort((a, b) => a.data!.name.localeCompare(b.data!.name));
+            this.rowData.sort(this.contestantComparator);
         });
         this.setColWidths([200, 150, 65, 150]);
     }
@@ -77,14 +103,47 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     }
 
     public openDefaultModal(idx: number): void {
-        const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
+        const component = this.viewContainerRef.createComponent<ContestantRowComponent>(ContestantRowComponent);
         component.instance.rowData = Object.assign({}, this.rowData[idx]);
         component.instance.rowData.inModal = true;
-        this.modService
-            .loadModal(component, this.vcr)
+        this.modalService
+            .loadModal(component, this.viewContainerRef)
             .afterClosed()
             .subscribe(() => (this.rowData[idx].data = component.instance.rowData.data));
     }
+
+    openItemModal(artItem: ArtItem) {
+        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
+        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
+    }
+
+    openItemPickerModal(contRowComp: ContestantRowComponent) {
+        if (this.lotteryService.currLotteryId != null)
+            this.lotteryService.getArtItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
+                error: (error: HttpErrorResponse) => {
+                    alert(error.message);
+                },
+                next: (resp: ArtItem[]) => {
+                    const component = this.viewContainerRef.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
+                    component.instance.artItems = resp;
+                    console.log(resp);
+                    component.instance.onThumbnailClick = (artItem: ArtItem) => {
+                        let winner = contRowComp.rowData.winner!;
+                        winner.lotteryItem = artItem;
+                        winner.contestantId = contRowComp.rowData.data?.id!;
+                        console.log(winner);
+                        this.winnerService.updateWinner(winner).subscribe();
+                        this.matDialog.closeAll();
+                    };
+                    this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.viewContainerRef);
+                },
+            });
+    }
+
+    openItemPickerModal2() {}
+    // artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
+    //     matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
+    // }
 
     public buttonEventListener = (elem: ClickableElements) => this.interactionEventListener(-1, { comp: undefined, elem: elem });
 
@@ -131,6 +190,9 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;
+                break;
+            case ClickableElements.artItemPicker:
+                this.openItemPickerModal(iEvent.comp);
                 break;
             default:
                 throw new Error('Unknown enum ' + row?.srcElement + ' was sent to clickEventHandler!!! ');
