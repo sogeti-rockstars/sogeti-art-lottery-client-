@@ -7,7 +7,7 @@ systemet bl.a. allmän information om lotteriet, vinsthistorik, dragning av vinn
 
 # Vilka knappar finns? Hur är de kopplade till lotterierna?
 
-## i Huvudmenyn överst finns:
+## I huvudmenyn överst finns:
 
     ## För användare:
     -   Norrkonst knapp med dropdown funktion där man kan se konstverk för de olika åren (denna knapp är huvudknapp i "mobilläge")
