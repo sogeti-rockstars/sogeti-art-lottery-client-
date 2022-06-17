@@ -5,7 +5,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: row;
-    /* padding-bottom: 3rem; */
+    background-color: #f5f9fc;
+    color: #212738;
 }
 
 #art-item-card-wrapper {
