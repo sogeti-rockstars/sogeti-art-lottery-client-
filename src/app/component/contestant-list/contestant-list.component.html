@@ -27,7 +27,6 @@
         <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
             <app-contestant-row
                 #renderedRow
-                *ngIf="row.render && !row.filtered; else notRenderedRow"
                 class="row-item row-item-rendered"
                 id="rendered"
                 (interactionEvent)="interactionEventListener(idx, $event)"
@@ -35,9 +34,10 @@
                 [index]="idx"
                 [enabledRowActions]="enabledRowActions"
             ></app-contestant-row>
-            <ng-template #notRenderedRow>
-                <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div>
-            </ng-template>
+            <!-- *ngIf="row.render &#38;&#38; !row.filtered; else notRenderedRow" -->
+            <!-- <ng-template #notRenderedRow> -->
+            <!--     <div class="row-item row-item-not-rendered" id="not-rendered" [style.height]="row.filtered ? 0 : unrenderedRowsHeight"></div> -->
+            <!-- </ng-template> -->
         </div>
     </mat-list>
 </span>

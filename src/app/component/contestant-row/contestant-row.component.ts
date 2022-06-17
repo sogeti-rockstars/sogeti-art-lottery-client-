@@ -30,7 +30,7 @@ export class ContestantRowComponent implements OnInit {
     private enabledFields = ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'];
 
     constructor(public authService: AuthService, private fb: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant) {
-        if (data !== undefined) this.rowData = { data: data!, inModal: true, render: true };
+        if (data !== undefined) this.rowData = { data: data!, inModal: true };
     }
 
     ngOnInit(): void {

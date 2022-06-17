@@ -1,19 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import {
-    AfterViewChecked,
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    HostListener,
-    Inject,
-    Input,
-    OnDestroy,
-    OnInit,
-    QueryList,
-    ViewChildren,
-    ViewContainerRef,
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, Inject, Input, OnDestroy, OnInit, ViewChildren, ViewContainerRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
@@ -43,20 +30,11 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         row.filtered = row.data === undefined || !row.data!.name.toLowerCase().includes(query.toLowerCase());
         return row.filtered;
     };
-    public get unrenderedRowsHeight() {
-        return this.unrenderedRowsHeight$;
-    }
 
     public ClickableElements = ClickableElements;
     public addNewRowData?: RowData;
 
     @ViewChildren('rowWrapper')
-    private contRows!: QueryList<ElementRef<HTMLDivElement>>;
-    private unrenderedRowsHeight$ = '10px';
-    private rowRenderMargin = 500;
-    private firstRenderRowCount = 20;
-    private lastWinScrollY = 0;
-    private firstRenderFinished = false;
     private colGap = 20;
     private contestantsListChangeSubs!: Subscription;
     private currentExpandedRow?: ContestantRowComponent;
@@ -75,7 +53,6 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     ngOnInit(): void {
         this.contestantsListChangeSubs = this.contestantListParent.contestantsChange.subscribe((data) => {
             data.sort(this.contestantComparator);
-            data.slice(0, this.firstRenderRowCount).forEach((rd, i) => (rd.render = true));
             this.rowData = data;
         });
         this.setColWidths([200, 150, 65, 150]);
@@ -86,12 +63,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         this.contestantsListChangeSubs.unsubscribe();
     }
 
-    ngAfterViewChecked(): void {
-        if (!this.firstRenderFinished && this.contRows.length > 0) {
-            this.firstRenderFinished = true;
-            this.onFinishedRendering();
-        }
-    }
+    ngAfterViewChecked(): void {}
 
     public async filteredItemsChangeListener(_matches: number) {
         this.refreshList();
@@ -204,55 +176,8 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
         this.currentExpandedRow = emittingRowComp.rowData.expanded ? emittingRowComp : undefined;
     }
 
-    ////////////////////////////////
-    // Just-in-time rendering stuff:
-    // (Todo: Ottos idea, we might be able to do this using pure CSS! Investigate!)
-
-    /**
-     * Called by ngAfterViewChecked after rowWrapper ElementRefs are found for the first time.
-     * By doing so we can get the rendered size of the elements and a standard height for unredered rows. */
-    private onFinishedRendering() {
-        this.unrenderedRowsHeight$ = this.contRows.get(0)?.nativeElement?.getBoundingClientRect().height! + 'px';
-        this.cdr.detectChanges(); // We get 'ExpressionChangedAfterItHasBeenCheckedError' otherwise
-    }
-
     private async refreshList() {
         this.cdr.detectChanges();
-        this.markVisibleForRendering(true).finally(() => this.cdr.detectChanges());
-    }
-
-    /**
-     * Called on scroll, window resize, and list changed events.
-     * Looks at which rows are visible inside the window and marks them for rendering */
-    // Todo: cancel previous execution when called again? Maybe we can do this with CSS!!!
-    @HostListener('window:resize', ['false', '$event']) // for window scroll events
-    @HostListener('window:scroll', ['false', '$event']) // for window scroll events
-    private async markVisibleForRendering(force: boolean = false, _event?: any) {
-        let winScrollY = window.scrollY + window.innerHeight; // Treat resize events as scrolling.
-        // Ignore tiny scrolls
-        if (!force && Math.abs(winScrollY - this.lastWinScrollY) < 10) return;
-        this.lastWinScrollY = winScrollY;
-
-        // Y grows downwars, kinda confusting....
-        // elem ┌───┐╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ e.top    ~= -5       bottom > top
-        //    ┌─┼───┼───┐╌╌ TopLimit = 0-extra                     botLim > topLim
-        //    │ └───┘   │╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ e.bottom ~= +5
-        // win│         │
-        //    │ ┌───┐   │╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ e.top    ~= winH-5
-        //    └─┼───┼───┘╌╌ BotLimit = winHgt + extra
-        // elem └───┘╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌ e.bottom ~= winH+5
-
-        let [topLimit, bottomLimit] = [-this.rowRenderMargin, window.innerHeight + this.rowRenderMargin];
-
-        this.contRows
-            .map((e) => {
-                let rect = e.nativeElement.getBoundingClientRect();
-                return { idx: +e.nativeElement.id, t: rect.top, b: rect.bottom };
-            })
-            .filter(({ idx: idx, t: _, b: __ }) => !this.rowData[idx].filtered) // Only check unfiltered
-            .forEach(({ idx: idx, t: top, b: bottom }) => {
-                this.rowData[idx].render = bottom > topLimit && top < bottomLimit;
-            });
     }
 
     // Variable width things
