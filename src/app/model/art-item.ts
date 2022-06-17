@@ -7,7 +7,7 @@ export class ArtItem {
     artistName: string = '';
     size: string = '';
     frameDescription: string = '';
-    value: string = '';
+    itemValue: string = '';
     technique: string = '';
     lottery!: Lottery;
     available!: boolean;
