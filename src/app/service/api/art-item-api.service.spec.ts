@@ -136,4 +136,3 @@ describe('ArtItemApiService', () => {
         return randItem;
     }
 });
-

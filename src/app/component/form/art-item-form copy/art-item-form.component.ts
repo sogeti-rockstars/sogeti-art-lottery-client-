@@ -23,7 +23,7 @@ export class ArtItemFormComponent implements OnInit {
         artistName: [''],
         size: [''],
         frameDescription: [''],
-        value: [''],
+        itemValue: [''],
         technique: [''],
     });
     constructor(private fb: FormBuilder, private artItemService: ArtItemService, private itemApiService: ArtItemApiService, private matDialog: MatDialog) {}
@@ -52,12 +52,12 @@ export class ArtItemFormComponent implements OnInit {
     updateForm() {
         this.profileForm.patchValue({
             id: this.artItem.id,
-            lotteryId: this.artItem.lottery_id,
+            lotteryId: this.artItem.lotteryId,
             itemName: this.artItem.itemName,
             artistName: this.artItem.artistName,
             size: this.artItem.size,
             frameDescription: this.artItem.frameDescription,
-            value: this.artItem.value,
+            itemValue: this.artItem.itemValue,
             technique: this.artItem.technique,
         });
         console.log(this.artItem.itemName + 'updateForm');

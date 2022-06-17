@@ -72,7 +72,7 @@ export class ArtItemsComponent implements OnInit, OnDestroy {
 
     public newItem() {
         const component = this.vcr.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-        this.modalService.loadModal(component, this.vcr);
+        this.modalService.loadModalWithPanelClass(component, 'modal-new-item', this.vcr);
     }
 
     public removeSelectedArtItems() {

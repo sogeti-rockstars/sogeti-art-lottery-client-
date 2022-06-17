@@ -94,7 +94,7 @@ export class AutoCardComponent implements OnInit {
         ['artistName', 'Konstnär'],
         ['size', 'Storlek'],
         ['frameDescription', 'Rambeskrivning'],
-        ['value', 'Värde'],
+        ['itemValue', 'Värde'],
         ['technique', 'Teknik'],
         ['available', ''],
     ]);

@@ -102,13 +102,13 @@ export abstract class ContestantListPage implements OnInit, OnDestroy {
         // Check if type is Contestant, winner or sanitized Contestant
         if (dataSample.sanitize === true || dataSample.employeeId !== undefined)
             (data as Contestant[]).forEach((c, _) => {
-                this.rowData.push({ data: c, render: false });
+                this.rowData.push({ data: c });
             });
         else {
             (data as Winner[]).forEach((w, _) => {
                 let cont = this.winnerToContestant(w);
                 if (cont !== undefined) {
-                    this.rowData.push({ data: cont, render: false, winner: w });
+                    this.rowData.push({ data: cont, winner: w });
                 }
             });
         }
@@ -130,7 +130,6 @@ export interface RowData {
     inEditMode?: boolean;
     inModal?: boolean;
     filtered?: boolean;
-    render?: boolean;
     inAddNewMode?: boolean;
     winner?: Winner;
 }

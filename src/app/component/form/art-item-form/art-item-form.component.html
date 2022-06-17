@@ -1,13 +1,13 @@
 <form [formGroup]="profileForm" class="form-group" (ngSubmit)="onSubmit(profileForm.value)">
     <div class="form-div">
         <mat-form-field appearance="outline" width="inherit">
-            <mat-label>Item Name</mat-label>
-            <input matInput id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Name of the item" required />
+            <mat-label>Titel</mat-label>
+            <input matInput id="itemName" type="text" formControlName="itemName" class="form-control" id="artistName" placeholder="Namn på konstföremålet" required />
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Artist Name</mat-label>
+            <mat-label>Konstnär</mat-label>
             <input
                 matInput
                 type="artistName"
@@ -15,25 +15,25 @@
                 formControlName="artistName"
                 class="form-control"
                 id="artistName2"
-                placeholder="Artist who made the item"
+                placeholder="Namn på konstnären som skapat föremålet"
             />
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Value</mat-label>
-            <input matInput type="value" type="text" formControlName="value" class="form-control" id="value" placeholder="e.g. '500kr'" />
+            <mat-label>Värde</mat-label>
+            <input matInput type="itemValue" type="text" formControlName="itemValue" class="form-control" id="itemValue" placeholder="t.ex. '500kr'" />
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Size</mat-label>
-            <input matInput type="size" type="text" formControlName="size" class="form-control" id="size" placeholder="e.g. '25x35cm'" />
+            <mat-label>Storlek</mat-label>
+            <input matInput type="size" type="text" formControlName="size" class="form-control" id="size" placeholder="t.ex. '25x35cm'" />
         </mat-form-field>
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Frame Description</mat-label>
+            <mat-label>Rambeskrivning</mat-label>
             <input
                 matInput
                 type="frameDescription"
@@ -47,7 +47,7 @@
     </div>
     <div>
         <mat-form-field appearance="outline">
-            <mat-label>Technique</mat-label>
+            <mat-label>Teknik</mat-label>
             <input
                 matInput
                 type="technique"
@@ -55,22 +55,22 @@
                 formControlName="technique"
                 class="form-control"
                 id="technique"
-                placeholder="e.g. 'Oil painting', 'carved in wood'"
+                placeholder="t.ex. 'Oljemålning', 'trätäljning'"
             />
         </mat-form-field>
     </div>
 
     <mat-form-field appearance="fill">
-        <mat-label>Lottery</mat-label>
+        <mat-label>Lotteri</mat-label>
         <mat-select [(value)]="selected">
             <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id"> {{lottery.title}} </mat-option>
         </mat-select>
     </mat-form-field>
 </form>
 <div>
-    <input type="file" (change)="onFileChanged($event)" />
+    <input type="file" (change)="onFileChanged($event)"/>
 </div>
 <div class="form-value">
-    <div *ngIf="update==true"><button [disabled]="!profileForm.valid" type="submit">Update</button></div>
-    <div *ngIf="update!=true"><button [disabled]="!profileForm.valid" (click)="onSubmit(profileForm.value)" type="submit">Add</button></div>
+    <div *ngIf="update==true"><button [disabled]="!profileForm.valid" type="submit">Updatera</button></div>
+    <div *ngIf="update!=true"><button [disabled]="!profileForm.valid" (click)="onSubmit(profileForm.value)" type="submit">Lägg till</button></div>
 </div>

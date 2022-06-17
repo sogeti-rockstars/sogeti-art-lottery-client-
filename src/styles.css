@@ -16,6 +16,10 @@ h2 {
 .custom-dialog-container .mat-dialog-container {
     padding: 0px;
 }
+
+.modal-new-item .mat-dialog-container {
+    padding: 20px;
+}
 .custom-thumbnail .mat-dialog-container {
     overflow: auto;
     outline: 0;
