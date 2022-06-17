@@ -74,9 +74,9 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
 
     ngOnInit(): void {
         this.contestantsListChangeSubs = this.contestantListParent.contestantsChange.subscribe((data) => {
-            data.slice(0, this.firstRenderRowCount).forEach((rd) => (rd.render = true));
+            data.sort(this.contestantComparator);
+            data.slice(0, this.firstRenderRowCount).forEach((rd, i) => (rd.render = true));
             this.rowData = data;
-            this.rowData.sort(this.contestantComparator);
         });
         this.setColWidths([200, 150, 65, 150]);
         if (!this.authService.authenticated) this.enabledRowActions = { buttonRow: false, selections: false, delete: false, edit: false };
