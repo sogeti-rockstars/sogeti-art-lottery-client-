@@ -23,7 +23,7 @@ export class ArtItemFormComponent implements OnInit {
         artistName: [''],
         size: [''],
         frameDescription: [''],
-        value: [''],
+        itemValue: [''],
         technique: [''],
     });
     constructor(private fb: FormBuilder, private artItemService: ArtItemService, private itemApiService: ArtItemApiService, private matDialog: MatDialog) {}
@@ -57,7 +57,7 @@ export class ArtItemFormComponent implements OnInit {
             artistName: this.artItem.artistName,
             size: this.artItem.size,
             frameDescription: this.artItem.frameDescription,
-            value: this.artItem.itemValue,
+            itemValue: this.artItem.itemValue,
             technique: this.artItem.technique,
         });
         console.log(this.artItem.itemName + 'updateForm');
