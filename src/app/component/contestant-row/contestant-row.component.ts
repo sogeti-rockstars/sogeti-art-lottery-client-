@@ -1,18 +1,9 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Inject, Input, OnInit, Optional, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ArtItem } from 'src/app/model/art-item';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Contestant } from 'src/app/model/contestant';
 import { ClickableElements, RowData } from 'src/app/pages/contestant-list-page';
 import { AuthService } from 'src/app/service/auth.service';
-import { ContestantService } from 'src/app/service/contestant.service';
-import { LotteryService } from 'src/app/service/lottery.service';
-import { WinnerService } from 'src/app/service/winner.service';
-import { ArtItemDetailsComponent } from '../art-item-details/art-item-details.component';
-import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
-import { AutoCardComponent } from '../card/auto-card/auto-card.component';
-import { ModalService } from '../modal/modal.service';
 
 @Component({
     selector: 'app-contestant-row',
@@ -20,12 +11,12 @@ import { ModalService } from '../modal/modal.service';
     styleUrls: ['./contestant-row.component.css'],
 })
 export class ContestantRowComponent implements OnInit {
-    @Output() public interactionEvent = new EventEmitter<RowData>();
+    @Output() public interactionEvent = new EventEmitter<{ comp: ContestantRowComponent; elem: ClickableElements }>();
 
-    @Output() public rowDataChange = new EventEmitter<RowData>();
     @Input() public rowData!: RowData;
+    @Output() public rowDataChange = new EventEmitter<RowData>();
 
-    @Input() public editable = false;
+    @Input() public enabledRowActions!: { delete: boolean; edit: boolean; selections: boolean; buttonRow: boolean };
     @Input() set index(idx: number) {
         this.rowData.index = idx;
     }
@@ -35,18 +26,10 @@ export class ContestantRowComponent implements OnInit {
 
     public contestantForm!: FormGroup;
 
-    constructor(
-        public authService: AuthService,
-        private lotteryService: LotteryService,
-        private contestantService: ContestantService,
-        private winnerService: WinnerService,
-        private matDialog: MatDialog,
-        private vcr: ViewContainerRef,
-        private modalService: ModalService,
-        private fb: FormBuilder,
-        private viewContainerRef: ViewContainerRef,
-        @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant
-    ) {
+    private preEditValues?: Map<string, any>;
+    private enabledFields = ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'];
+
+    constructor(public authService: AuthService, private fb: FormBuilder, @Optional() @Inject(MAT_DIALOG_DATA) data?: Contestant) {
         if (data !== undefined) this.rowData = { data: data!, inModal: true, render: true };
     }
 
@@ -60,56 +43,14 @@ export class ContestantRowComponent implements OnInit {
             employeeId: new FormControl({ value: this.rowData.data.employeeId, disabled: true }),
             email: new FormControl({ value: this.rowData.data.email, disabled: true }),
             teleNumber: new FormControl({ value: this.rowData.data.teleNumber, disabled: true }),
-            office: new FormControl({ value: 'BACKENDWIP', disabled: true }),
+            office: new FormControl({ value: this.rowData.data.office, disabled: true }),
         });
 
         if (this.rowData.inAddNewMode) {
             this.rowData.expanded = true;
             this.rowData.inEditMode = true;
-            this.rowData.expanded = true;
             this.setEditMode(true);
         }
-    }
-
-    openItemModal(artItem: ArtItem) {
-        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
-        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
-    }
-
-    openItemPickerModal() {
-        if (this.lotteryService.currLotteryId != null)
-            this.lotteryService.getArtItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
-                error: (error: HttpErrorResponse) => {
-                    alert(error.message);
-                },
-                next: (resp: ArtItem[]) => {
-                    const component = this.vcr.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
-                    component.instance.artItems = resp;
-                    console.log(resp);
-                    component.instance.onThumbnailClick = (artItem: ArtItem) => {
-                        let winner = this.rowData.winner!;
-                        winner.lotteryItem = artItem;
-                        winner.contestantId = this.rowData.data?.id!;
-                        console.log(winner);
-                        this.winnerService.updateWinner(winner).subscribe();
-                        this.matDialog.closeAll();
-                    };
-                    this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.vcr);
-                },
-            });
-    }
-
-    artItemClicked(artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) {
-        matDialog.open(ArtItemDetailsComponent, { data: artItemComp.data, panelClass: 'art-item-details-card' });
-    }
-
-    onSubmit(contestant: Contestant) {
-        this.contestantService.updateContestant(contestant).subscribe((resp) => (this.rowData.data = resp));
-    }
-
-    setEditMode(value: boolean) {
-        if (value) ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].enable());
-        else ['id', 'name', 'employeeId', 'email', 'teleNumber', 'office'].forEach((f) => this.contestantForm.controls[f].disable());
     }
 
     /**
@@ -117,30 +58,70 @@ export class ContestantRowComponent implements OnInit {
      * so we go with a custom enum....
      * @param element enum value of element clicked.
      * @param event When we want to stop the propagation (because more elements use the same event) */
-    public clickEventHandler(element: ClickableElements, event?: MouseEvent) {
+    clickEventHandler(element: ClickableElements, event?: MouseEvent) {
+        event?.stopPropagation();
+
         switch (element) {
             case ClickableElements.edit:
-                this.rowData.inEditMode = this.rowData.inEditMode === undefined || !this.rowData.inEditMode;
-                this.setEditMode(this.rowData.inEditMode!);
-                if (this.rowData.inEditMode && !this.rowData.expanded) this.rowData.expanded = true;
+                this.setEditMode(!this.rowData.inEditMode);
+                if (!this.rowData.expanded) this.setExpanded(true);
                 break;
             case ClickableElements.acceptNew:
-                console.log(this.rowData);
                 this.rowData.data = this.contestantForm.value as Contestant;
+                this.setEditMode(false);
+                this.setExpanded(false);
                 break;
             case ClickableElements.acceptEdit:
-                console.log('EDITACC');
-                console.log(this.rowData);
                 this.rowData.data = this.contestantForm.value as Contestant;
+                this.setEditMode(false);
+                this.setExpanded(false);
+                break;
+            case ClickableElements.abort:
+                this.setExpanded(false);
+                break;
+            case ClickableElements.expand:
+                this.setExpanded();
+                break;
+            case ClickableElements.artItemPicker:
                 break;
         }
 
-        event?.stopPropagation();
-        let iEvent = Object.assign({ srcElement: element }, this.rowData);
-        this.interactionEvent.emit(iEvent);
+        this.interactionEvent.emit({ comp: this, elem: element });
     }
 
-    public getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
+    inputContDataSubmit(event?: MouseEvent) {
+        if (this.rowData.inAddNewMode) this.clickEventHandler(ClickableElements.acceptNew, event);
+        else this.clickEventHandler(ClickableElements.acceptEdit, event);
+    }
+
+    /**
+     * @param expanded omit to toggle.
+     */
+    setExpanded(expanded?: boolean) {
+        this.rowData.expanded = expanded !== undefined ? expanded : !this.rowData?.expanded;
+        if (!this.rowData.expanded && this.rowData.inEditMode) this.setEditMode(false, true);
+    }
+
+    private setEditMode(value: boolean, restore?: boolean) {
+        if (value) {
+            this.preEditValues = new Map();
+            this.enabledFields.forEach((formName) => {
+                let formCtrl = this.contestantForm.controls[formName];
+                this.preEditValues!.set(formName, formCtrl.value);
+                formCtrl.enable();
+            });
+        } else {
+            this.enabledFields.forEach((formName) => {
+                let formCtrl = this.contestantForm.controls[formName];
+                if (restore) formCtrl.setValue(this.preEditValues!.get(formName));
+                formCtrl.disable();
+            });
+            this.preEditValues = undefined;
+        }
+        this.rowData.inEditMode = value;
+    }
+
+    getAllColumnWidths(elem: ElementRef<HTMLElement>): number[] {
         let currElem = elem?.nativeElement.children.item(0);
         let widths = [];
         while (currElem != null) {

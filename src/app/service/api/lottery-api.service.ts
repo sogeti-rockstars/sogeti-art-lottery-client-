@@ -32,6 +32,17 @@ export class LotteryApiService {
         return this.httpGet<ArtItem[]>(`${id}/items`);
     }
 
+    public getAvailableItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.httpGet<ArtItem[]>(`${id}/available-items`);
+    }
+
+    public getGuaranteePrize(id: number): Observable<ArtItem> {
+        return this.httpGet<ArtItem>(`${id}/guarantee-prize`);
+    }
+    public setGuaranteePrize(id: number, data: ArtItem): Observable<boolean> {
+        return this.httpPut<boolean>(data, `${id}/guarantee-prize`);
+    }
+
     public getWinnersByLotteryId(id: number): Observable<Winner[]> {
         return this.httpGet<Winner[]>(`${id}/winners`);
     }

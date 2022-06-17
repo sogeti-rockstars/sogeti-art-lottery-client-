@@ -1,7 +1,6 @@
-import { Component, Output, EventEmitter, Inject, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, ComponentRef, EventEmitter, Inject, OnInit, Output, ViewContainerRef } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
-import { ArtItemService } from 'src/app/service/art-item.service';
 
 @Component({
     selector: 'dialog-content',
@@ -18,7 +17,6 @@ export class DialogContentComponent implements OnInit {
         private vcr: ViewContainerRef
     ) {}
     ngOnInit(): void {
-        console.log(this.data.component.instance);
         this.vcr.insert(this.data.component.hostView);
     }
 }

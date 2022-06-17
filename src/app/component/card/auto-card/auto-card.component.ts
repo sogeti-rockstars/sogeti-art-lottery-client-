@@ -88,6 +88,17 @@ export class AutoCardComponent implements OnInit {
         this.profileForm.patchValue({ value: this.values[6] });
     }
 
+    private fieldGuiNames = new Map<string, string>([
+        ['id', 'ID'],
+        ['itemName', 'Titel'],
+        ['artistName', 'Konstnär'],
+        ['size', 'Storlek'],
+        ['frameDescription', 'Rambeskrivning'],
+        ['value', 'Värde'],
+        ['technique', 'Teknik'],
+        ['available', ''],
+    ]);
+
     private objectValueExtraction() {
         this.objectContent = Object.entries(this.object);
         this.values = this.objectContent.map(function (value, _) {
@@ -102,8 +113,7 @@ export class AutoCardComponent implements OnInit {
             return value[0];
         });
         for (let i = 0; i < this.variableNames.length; i++) {
-            this.prettyVarNames[i] = this.variableNames[i].replace(/([A-Z])/g, ' $1');
-            this.prettyVarNames[i] = this.prettyVarNames[i].charAt(0).toUpperCase() + this.prettyVarNames[i].slice(1);
+            this.prettyVarNames[i] = this.fieldGuiNames.get(this.variableNames[i])!;
         }
     }
 

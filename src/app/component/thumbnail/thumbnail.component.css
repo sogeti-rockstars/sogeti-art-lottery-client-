@@ -4,11 +4,15 @@
     object-fit: contain;
 }
 
+.ribbonable {
+    z-index: 91;
+}
 .thumbnail-card {
     margin: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 100%;
 }
 
 .default-thumbnail-card {
@@ -19,6 +23,7 @@
 }
 
 .mat-card-content {
+    z-index: 86;
     position: absolute;
     bottom: 0;
 }
@@ -33,4 +38,30 @@
     position: absolute;
     right: 1rem;
     top: 1rem;
+}
+
+.ribbon {
+    /* position: absolute; */
+    z-index: 100;
+    font: bold 15px sans-serif;
+    color: #333;
+    text-align: center;
+    transform: none;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    /* position: relative; */
+    padding: 7px 0;
+    top: 15px;
+    right: 6px;
+    width: 120px;
+    color: #fff;
+}
+#ribbon-available {
+    background-color: #2ee47e;
+}
+
+#ribbon-taken {
+    background-color: #ebb134;
 }

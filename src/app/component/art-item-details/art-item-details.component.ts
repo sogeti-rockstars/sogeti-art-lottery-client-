@@ -1,15 +1,16 @@
 import { ChangeDetectorRef, Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ArtItem } from 'src/app/model/art-item';
-import { Lottery } from 'src/app/model/lottery';
 import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
+import { LotteryService } from 'src/app/service/lottery.service';
 
 interface ArtItemDetailsViewData {
     inEditMode?: boolean;
     isAdmin?: boolean;
     isThumbnail?: boolean;
+    isModal?: boolean;
 }
 
 @Component({
@@ -23,13 +24,11 @@ export class ArtItemDetailsComponent implements OnInit {
 
     fieldnames: { key: string; value: string }[] = [];
 
-    @Input() onClickOverride?: (artItemComp: ArtItemDetailsComponent, matDialog: MatDialog) => void;
-
     @Input() data!: ArtItem;
-    @Input() viewData: ArtItemDetailsViewData = { inEditMode: false, isAdmin: false };
+    @Input() viewData: ArtItemDetailsViewData = { inEditMode: false, isAdmin: false, isThumbnail: true, isModal: false };
     @Input() dataa!: { file: string; imgUrl: string };
 
-    @Input() lotteries: Lottery[] = [];
+    @Input() lotteryId!: number;
 
     profileForm = this.fb.group(this.fb.control('edit-item'));
 
@@ -37,23 +36,18 @@ export class ArtItemDetailsComponent implements OnInit {
         private fb: FormBuilder,
         private itemApiService: ArtItemApiService,
         private artItemService: ArtItemService,
-        private matDialog: MatDialog,
+        private lotteryService: LotteryService,
+        private cdr: ChangeDetectorRef,
         @Optional()
         @Inject(MAT_DIALOG_DATA)
-        data?: ArtItem
+        data?: { item?: ArtItem; viewData?: ArtItemDetailsViewData }
     ) {
-        if (data !== undefined) this.data = data;
+        if (data?.item !== undefined) this.data = data.item;
+        if (data?.viewData !== undefined) this.viewData = data.viewData;
     }
-
     ngOnInit(): void {
-        Object.entries(this.data).forEach((entr) => {
-            this.fieldnames.push({ key: entr[0], value: entr[1] as string });
-        });
+        this.populateFields();
         this.loadImageUrl();
-    }
-
-    onClick() {
-        if (this.onClickOverride != undefined) this.onClickOverride(this, this.matDialog);
     }
 
     enableEdit() {
@@ -66,24 +60,49 @@ export class ArtItemDetailsComponent implements OnInit {
         let reader = new FileReader();
         reader.readAsDataURL(this.file!);
         reader.onload = (_pEv) => {
-            console.log(reader.result);
             this.imgURL = reader.result;
         };
     }
 
     onSubmit(fieldValues: any) {
         let artItem = this.constructArtItemFromInputFields(fieldValues);
-        artItem.lottery = this.data.lottery;
-        this.artItemService.observeUpdateArtItem(artItem).subscribe();
-        this.uploadIfNeeded(artItem);
+
+        this.lotteryService.setGuaranteePrize(this.lotteryId, artItem).subscribe((_) => {
+            // this.data = artItem;
+            this.lotteryService.getGuaranteePrize(this.lotteryId).subscribe((r) => {
+                this.data = r;
+                this.uploadIfNeeded(r);
+                this.populateFields();
+            });
+        });
+        this.viewData.inEditMode = false;
+        this.cdr.detectChanges();
     }
 
+    readonly fieldGuiNames = new Map<string, string>([
+        ['id', 'ID'],
+        ['itemName', 'Titel'],
+        ['artistName', 'Konstnär'],
+        ['size', 'Storlek'],
+        ['frameDescription', 'Rambeskrivning'],
+        ['value', 'Värde'],
+        ['technique', 'Teknik'],
+        ['available', ''],
+    ]);
+
+    private populateFields() {
+        this.fieldnames = [];
+        Object.entries(this.data).forEach((entr) => {
+            if (entr[0] !== 'id' && entr[0] !== 'available') this.fieldnames.push({ key: entr[0], value: entr[1] as string });
+        });
+    }
     private constructArtItemFromInputFields(item: any) {
-        let artItemEntries = Object.entries(this.data).map((entry) => {
+        let artItemEntries: [string, any][] = Object.entries(this.data).map((entry) => {
             let key = entry[0];
-            let value = item[key] !== undefined && key !== 'id' ? item[key] : (this.data as any)[key];
+            let value = item[key];
             return [key, value];
         });
+        artItemEntries.push(['id', this.data.id!]);
         return Object.fromEntries(artItemEntries) as ArtItem;
     }
 
@@ -92,7 +111,6 @@ export class ArtItemDetailsComponent implements OnInit {
             let formData = new FormData();
             formData.append('image', new Blob([this.file], { type: 'application/json' }));
             this.artItemService.setImage(artItem, formData).subscribe((_) => {
-                console.log('Upload complete!');
                 this.file = undefined;
             });
         }
@@ -103,6 +121,6 @@ export class ArtItemDetailsComponent implements OnInit {
     }
 
     private loadImageUrl() {
-        this.imgURL = this.itemApiService.getArtItemImageUrl(this.data.id);
+        if (this.data.id !== undefined) this.imgURL = this.itemApiService.getArtItemImageUrl(this.data.id!);
     }
 }

@@ -42,7 +42,7 @@ export class ArtItemService {
     }
 
     public setImage(artItem: ArtItem, upload: FormData): Observable<FormData> {
-        return this.artItemApiService.updateImage(artItem.id, upload).pipe(
+        return this.artItemApiService.updateImage(artItem.id!, upload).pipe(
             retry(1),
             tap((response) => this.imageSubject.next(response))
         );

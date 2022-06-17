@@ -50,12 +50,24 @@ export class LotteryService {
         return this.apiService.getLottery(id);
     }
 
+    public getGuaranteePrize(id: number) {
+        return this.apiService.getGuaranteePrize(id);
+    }
+
+    public setGuaranteePrize(id: number, data: ArtItem) {
+        return this.apiService.setGuaranteePrize(id, data);
+    }
+
     public detectChanges() {
         this.apiService.getLottery(this.currLotteryId!).subscribe((r) => this.lotteryChanged.emit(r));
     }
 
     public getArtItemsByLotteryId(id: number): Observable<ArtItem[]> {
         return this.apiService.getArtItemsByLotteryId(id);
+    }
+
+    public getAvailableItemsByLotteryId(id: number): Observable<ArtItem[]> {
+        return this.apiService.getAvailableItemsByLotteryId(id);
     }
 
     public getCurrentWinners(): Observable<Winner[]> | undefined {

@@ -1,11 +1,30 @@
 import { DOCUMENT } from '@angular/common';
-import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, Input, OnDestroy } from '@angular/core';
-import { HostListener, Inject, OnInit, QueryList, ViewChildren, ViewContainerRef } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import {
+    AfterViewChecked,
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    HostListener,
+    Inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    QueryList,
+    ViewChildren,
+    ViewContainerRef,
+} from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { ContestantRowComponent } from 'src/app/component/contestant-row/contestant-row.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
+import { ArtItem } from 'src/app/model/art-item';
 import { ClickableElements, ContestantListPage, RowData } from 'src/app/pages/contestant-list-page';
-import { ContestantService } from 'src/app/service/contestant.service';
+import { AuthService } from 'src/app/service/auth.service';
+import { LotteryService } from 'src/app/service/lottery.service';
+import { WinnerService } from 'src/app/service/winner.service';
+import { ArtItemsListComponent } from '../art-items-list/art-items-list.component';
+import { AutoCardComponent } from '../card/auto-card/auto-card.component';
 
 @Component({
     selector: 'contestant-list-component',
@@ -14,7 +33,10 @@ import { ContestantService } from 'src/app/service/contestant.service';
 })
 export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChecked {
     @Input() contestantListParent!: ContestantListPage;
-    @Input() editable = false;
+    @Input() enabledRowActions = { edit: false, delete: false, selections: false, buttonRow: false };
+    @Input() contestantComparator = (a: RowData, b: RowData) => {
+        return a.data!.name.localeCompare(b.data!.name);
+    };
     public rowData: RowData[] = [];
     public selectedItemsAmount = 0;
     public readonly filterFunction = (row: RowData, query: string) => {
@@ -37,22 +59,27 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     private firstRenderFinished = false;
     private colGap = 20;
     private contestantsListChangeSubs!: Subscription;
+    private currentExpandedRow?: ContestantRowComponent;
 
     constructor(
-        public cdr: ChangeDetectorRef,
-        private modService: ModalService,
-        private vcr: ViewContainerRef,
-        @Inject(DOCUMENT) private document: Document,
-        private contestantService: ContestantService
+        private authService: AuthService,
+        private lotteryService: LotteryService,
+        private winnerService: WinnerService,
+        private cdr: ChangeDetectorRef,
+        private modalService: ModalService,
+        private viewContainerRef: ViewContainerRef,
+        private matDialog: MatDialog,
+        @Inject(DOCUMENT) private document: Document
     ) {}
 
     ngOnInit(): void {
         this.contestantsListChangeSubs = this.contestantListParent.contestantsChange.subscribe((data) => {
             data.slice(0, this.firstRenderRowCount).forEach((rd) => (rd.render = true));
             this.rowData = data;
-            this.rowData.sort((a, b) => a.data!.name.localeCompare(b.data!.name));
+            this.rowData.sort(this.contestantComparator);
         });
         this.setColWidths([200, 150, 65, 150]);
+        if (!this.authService.authenticated) this.enabledRowActions = { buttonRow: false, selections: false, delete: false, edit: false };
     }
 
     ngOnDestroy(): void {
@@ -76,32 +103,63 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
     }
 
     public openDefaultModal(idx: number): void {
-        const component = this.vcr.createComponent<ContestantRowComponent>(ContestantRowComponent);
+        const component = this.viewContainerRef.createComponent<ContestantRowComponent>(ContestantRowComponent);
         component.instance.rowData = Object.assign({}, this.rowData[idx]);
         component.instance.rowData.inModal = true;
-        this.modService
-            .loadModal(component, this.vcr)
+        this.modalService
+            .loadModal(component, this.viewContainerRef)
             .afterClosed()
             .subscribe(() => (this.rowData[idx].data = component.instance.rowData.data));
     }
 
+    openItemModal(artItem: ArtItem) {
+        const component = this.viewContainerRef.createComponent<AutoCardComponent>(AutoCardComponent);
+        this.modalService.loadModalWithObject(component, artItem, this.viewContainerRef);
+    }
+
+    openItemPickerModal(contRowComp: ContestantRowComponent) {
+        if (this.lotteryService.currLotteryId != null)
+            this.lotteryService.getAvailableItemsByLotteryId(this.lotteryService.currLotteryId).subscribe({
+                error: (error: HttpErrorResponse) => {
+                    alert(error.message);
+                },
+                next: (resp: ArtItem[]) => {
+                    const component = this.viewContainerRef.createComponent<ArtItemsListComponent>(ArtItemsListComponent);
+                    component.instance.artItems = resp;
+                    console.log(resp);
+                    component.instance.onThumbnailClick = (artItem: ArtItem) => {
+                        let winner = contRowComp.rowData.winner!;
+                        winner.lotteryItem = artItem;
+                        winner.contestantId = contRowComp.rowData.data?.id!;
+                        console.log(winner);
+                        this.winnerService.updateWinner(winner).subscribe();
+                        this.matDialog.closeAll();
+                    };
+                    this.modalService.loadModalWithPanelClass(component, 'custom-thumbnail', this.viewContainerRef);
+                },
+            });
+    }
+
+    public buttonEventListener = (elem: ClickableElements) => this.interactionEventListener(-1, { comp: undefined, elem: elem });
+
     /* EVENT LISTENERS: */
-    public interactionEventListener = (_idx: number, row?: RowData, srcElement?: ClickableElements) => {
-        let element = srcElement === undefined ? row!.srcElement : srcElement;
+    public interactionEventListener = (idx: number, iEvent: { comp: any; elem: ClickableElements }) => {
+        let row = iEvent?.comp?.rowData;
+        let element = iEvent.elem;
         switch (element) {
             case ClickableElements.body:
-            case ClickableElements.expand:
-                this.rowData[_idx].expanded = !this.rowData[_idx].expanded;
+            case ClickableElements.expand: // Emitted here only so we can close other rows.
+                this.unexpandLastRow(iEvent.comp);
                 break;
             case ClickableElements.edit:
-                // handled by cont-row.
+                this.unexpandLastRow(iEvent.comp);
                 break;
             case ClickableElements.checkbox:
-                this.rowData[_idx].selected = !row!.selected;
+                this.rowData[idx].selected = !row!.selected;
                 this.selectedItemsAmount += !row!.selected ? 1 : -1;
                 break;
             case ClickableElements.remove:
-                this.contestantListParent.listManipulation.deleteByIdx(_idx);
+                this.contestantListParent.listManipulation.deleteByIdx(idx);
                 break;
             case ClickableElements.selectAll:
                 this.rowData.forEach((c) => (c.selected = true));
@@ -123,17 +181,28 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.acceptEdit:
-                this.contestantService.updateContestant(row?.data!).subscribe();
-                this.addNewRowData = undefined;
+                this.contestantListParent.listManipulation.update(this.addNewRowData!.data!);
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;
+                break;
+            case ClickableElements.artItemPicker:
+                this.openItemPickerModal(iEvent.comp);
                 break;
             default:
                 throw new Error('Unknown enum ' + row?.srcElement + ' was sent to clickEventHandler!!! ');
         }
         this.refreshList();
     };
+
+    // This isn't just a feature, removing it without other changes will introduce bugs.
+    // At the very least we need to check other rows are not in edit mode...
+    private unexpandLastRow(emittingRowComp: ContestantRowComponent) {
+        if (this.currentExpandedRow !== undefined && this.currentExpandedRow !== emittingRowComp) {
+            this.currentExpandedRow.setExpanded(false);
+        }
+        this.currentExpandedRow = emittingRowComp.rowData.expanded ? emittingRowComp : undefined;
+    }
 
     ////////////////////////////////
     // Just-in-time rendering stuff:

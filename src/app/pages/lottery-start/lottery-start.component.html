@@ -1,13 +1,21 @@
 <h1>Starta lotteri</h1>
 <table class="lottery-start-button-table">
-        <tr>
-            <td>
-                <button class="lottery-button" (click)="spinTheWheel($event)">Utför dragning</button>
-            </td>
-            <td>
-                <app-spinning-wheel (onAnimationEnd)="spinningAnimationEndHandler()" [animationControlEvent]="animationControlEvent"></app-spinning-wheel>
-            </td>
-        </tr>
+    <tr>
+        <td>
+            <button class="lottery-button" (click)="spinTheWheel($event)">Utför dragning</button>
+        </td>
+        <td>
+            <app-spinning-wheel
+                (onAnimationEnd)="spinningAnimationEndHandler()"
+                [animationControlEvent]="animationControlEvent"
+                [parentComponent]="this"
+            ></app-spinning-wheel>
+        </td>
+    </tr>
 </table>
 <h2>Vinnare</h2>
-<contestant-list-component [contestantListParent]="this"></contestant-list-component>
+<contestant-list-component
+    [contestantListParent]="this"
+    [contestantComparator]="contestantComparator"
+    [enabledRowActions]="{edit:false,delete:true,selections:false,buttonRow:false}"
+></contestant-list-component>

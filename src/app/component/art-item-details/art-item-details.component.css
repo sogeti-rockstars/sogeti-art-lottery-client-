@@ -1,35 +1,44 @@
+.art-item-details-card {
+    height: 90%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    /* padding-bottom: 3rem; */
+}
 ::ng-deep .art-item-details-card {
-    max-height: 90vh;
-    max-width: 30rem;
+    width: auto;
+    /* height: 80%; */
+    /* max-height: 50rem; */
+    background-color: #f5f9fc;
+    color: #212738;
+    margin: 0;
+    /* max-width: 50rem; */
 }
 ::ng-deep mat-dialog-container {
     padding: 0 !important;
     margin: 0 !important;
 }
-/* .art-item-details-card { */
-/* max-width: 100%; */
-/* max-height: 100%; */
-/* } */
+#art-item-card-wrapper {
+    margin: 0;
+}
 .mat-card-image {
-    /* height: 30rem; */
-    /* width: auto; */
-    /* max-height: 100%; */
-
-    /* width: 30rem; */
-    /* height: auto; */
-    /* max-height: 100%; */
-
     max-width: 100%;
-    max-height: 100%;
-    margin: auto;
+    max-height: 20rem;
+    margin: 0;
+    /* margin-top: 4rem; */
     display: block;
+    width: auto;
 }
 .mat-card-header {
-    margin: -8px;
+    /* position: absolute; */
+    top: 1rem;
 }
 .mat-card-actions {
-    padding: 0px;
+    float: flex-end;
 }
 .mat-card-body {
-    margin-bottom: 10px;
+    margin-top: 5rem;
+    /* margin-bottom: -5rem; */
 }

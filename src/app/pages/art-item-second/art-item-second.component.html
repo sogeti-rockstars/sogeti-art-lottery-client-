@@ -1,1 +1,4 @@
-<h1>Årets garantivinst: </h1>;
+<h1>Årets garantivinst:</h1>
+<div *ngIf="guaranteePrize!==undefined && authenticated!==undefined">
+    <art-item-details class="art-item-details" [data]="guaranteePrize!" [viewData]="{isAdmin:authenticated}" [lotteryId]="lotteryId!"></art-item-details>
+</div>

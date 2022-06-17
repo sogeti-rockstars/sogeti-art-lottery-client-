@@ -18,7 +18,6 @@ export class AuthService {
     private authHeaders!: HttpHeaders;
 
     constructor(private http: HttpClient, private router: Router) {
-        this.login('admin', 'admin');
         this.checkAuthentication(); // this.login('admin', 'admin');
     }
 

@@ -12,7 +12,9 @@ export class WinnerService {
     constructor(private winnerApiService: WinnerApiService) {}
 
     public updateWinner(winner: Winner): Observable<Winner> {
-        console.log(winner);
         return this.winnerApiService.updateWinner(winner).pipe(tap((resp: Winner) => this.winnerChanged.emit(resp)));
+    }
+    public deleteWinner(winnerId: number): Observable<any> {
+        return this.winnerApiService.deleteWinner(winnerId);
     }
 }

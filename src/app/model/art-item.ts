@@ -1,7 +1,7 @@
 import { Lottery } from './lottery';
 
 export class ArtItem {
-    id!: number;
+    id?: number;
     lotteryId!: number;
     itemName: string = '';
     artistName: string = '';
@@ -10,4 +10,5 @@ export class ArtItem {
     value: string = '';
     technique: string = '';
     lottery!: Lottery;
+    available!: boolean;
 }

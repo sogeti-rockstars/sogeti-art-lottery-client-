@@ -19,15 +19,34 @@ export class ContestantService {
         return this.service.getContestant(id);
     }
 
+    // There is a bug on the back-end, any lists submitted as responses seem unreliable...
     public addContestant(cont: Contestant): Observable<Contestant> {
-        return this.service.addContestant(cont).pipe(tap(this.getContestants().subscribe((contestants) => this.contestantsChanged.emit(contestants))));
+        return this.service.addContestant(cont).pipe(
+            tap((_) =>
+                this.getContestants().subscribe((contestants) => {
+                    this.contestantsChanged.emit(contestants);
+                })
+            )
+        );
     }
 
     public updateContestant(cont: Contestant): Observable<Contestant> {
-        return this.service.updateContestant(cont);
+        return this.service.updateContestant(cont).pipe(
+            tap((_) =>
+                this.getContestants().subscribe((contestants) => {
+                    this.contestantsChanged.emit(contestants);
+                })
+            )
+        );
     }
 
     public deleteContestant(id: number): Observable<Object> {
-        return this.service.deleteContestant(id);
+        return this.service.deleteContestant(id).pipe(
+            tap((_) =>
+                this.getContestants().subscribe((contestants) => {
+                    this.contestantsChanged.emit(contestants);
+                })
+            )
+        );
     }
 }

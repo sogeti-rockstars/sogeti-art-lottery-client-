@@ -13,7 +13,6 @@ export class DialogContentImageComponent {
     @Output() artItemOutput = new EventEmitter<ArtItem>();
 
     output(artItem: ArtItem) {
-        console.log('diaconima' + artItem.itemName);
         this.saveUpdateItem(artItem);
         this.dialogRef.close();
     }
@@ -30,14 +29,11 @@ export class DialogContentImageComponent {
     ) {}
 
     loadImageUrl(): string {
-        return this.itemApiService.getArtItemImageUrl(this.data.artItem.id);
+        return this.itemApiService.getArtItemImageUrl(this.data.artItem.id!);
     }
 
     saveUpdateItem(artItem: ArtItem) {
-        console.log('update is' + artItem.itemName);
-        this.artItemService.observeUpdateArtItem(artItem).subscribe((data) => {
-            console.log(data.id);
-        });
+        this.artItemService.observeUpdateArtItem(artItem).subscribe((_) => {});
         this.artItemOutput.emit(artItem);
     }
 }

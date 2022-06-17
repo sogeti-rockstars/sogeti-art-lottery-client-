@@ -3,6 +3,8 @@
     <div id="art-item-wrapper">
         <div *ngFor="let item of artItems">
             <thumbnail class="art-item-thumbnail" [artItem]="item" [onClickOverride]="onThumbnailClick" [showCheckbox]="showThumbnailCheckboxes"></thumbnail>
+            <!-- <art-item-details class="art-item-thumbnail" [data]="item" [viewData]="{isAdmin:true,isThumbnail:true}"></art-item-details> -->
+            <!-- [onClickOverride]="artItemClicked" -->
         </div>
     </div>
 </ng-template>

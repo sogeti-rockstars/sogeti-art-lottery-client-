@@ -3,11 +3,13 @@
 </div>
 
 <ng-template #buttons class="buttons">
-    <span *ngIf="!rowData.inAddNewMode && !rowData.inEditMode; else buttonsEditMode">
-        <span *ngIf="editable">
+    <span *ngIf="!rowData.inEditMode; else buttonsEditMode">
+        <span *ngIf="enabledRowActions.edit">
             <button id="edit" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.edit, $event)">
                 <mat-icon aria-label="Redigera">edit</mat-icon>
             </button>
+        </span>
+        <span *ngIf="enabledRowActions.delete">
             <button id="remove" mat-icon-button class="cont-button-hover-show" (click)="clickEventHandler(ClickElems.remove, $event)">
                 <mat-icon aria-label="Ta bort">delete</mat-icon>
             </button>
@@ -17,29 +19,19 @@
         </button>
     </span>
     <ng-template #buttonsEditMode>
-        <span *ngIf="rowData.inAddNewMode; else buttonsEditExistingMode">
-            <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
-                <mat-icon aria-label="Avbryt">close</mat-icon>
-            </button>
-            <button id="accept" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.acceptNew, $event)">
-                <mat-icon aria-label="Verkställ">done</mat-icon>
-            </button>
-        </span>
-        <ng-template #buttonsEditExistingMode>
-            <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
-                <mat-icon aria-label="Avbryt">close</mat-icon>
-            </button>
-            <button id="accept" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.acceptEdit, $event)">
-                <mat-icon aria-label="Verkställ">done</mat-icon>
-            </button>
-        </ng-template>
+        <button id="accept" mat-icon-button class="cont-button" (click)="inputContDataSubmit($event)">
+            <mat-icon aria-label="Verkställ">done</mat-icon>
+        </button>
+        <button id="abort" mat-icon-button class="cont-button" (click)="clickEventHandler(ClickElems.abort, $event)">
+            <mat-icon aria-label="Avbryt">close</mat-icon>
+        </button>
     </ng-template>
 </ng-template>
 
 <ng-template #notInModal>
     <mat-list-item matLine checkboxPosition="before" class="contestant-row">
         <mat-pseudo-checkbox
-            *ngIf="editable && !rowData.inAddNewMode"
+            *ngIf="enabledRowActions.edit && !rowData.inAddNewMode"
             [state]="rowData.selected ? 'checked' : 'unchecked'"
             (click)="clickEventHandler(ClickElems.checkbox, $event)"
         ></mat-pseudo-checkbox>
@@ -63,7 +55,7 @@
         <p>dbId: {{ rowData.data!.id }}</p>
         <p>employeeId: {{ rowData.data!.employeeId }}</p>
         <p>teleNumber: {{ rowData.data!.teleNumber }}</p>
-        <p>office: BACKEND WIP</p>
+        <p>office: {{ rowData.data?.office }}</p>
     </span>
 </ng-template>
 
@@ -77,7 +69,8 @@
                 <div class="collapsed-item" id="col-1">{{ rowData.data?.name }}</div>
                 <div *ngIf="rowData.winner === undefined ; else collapsedWinner">
                     <div class="collapsed-item" id="col-2">anställningsnummer: {{ rowData.data?.employeeId }}</div>
-                    <div class="collapsed-item" id="col-4">telefonnummer: {{ rowData.data?.teleNumber }}</div>
+                    <div class="collapsed-item" id="col-4">kontor: {{ rowData.data?.office }}</div>
+                    <div class="collapsed-item" id="col-5">telefonnummer: {{ rowData.data?.teleNumber }}</div>
                 </div>
                 <ng-template #collapsedWinner>
                     <div class="collapsed-item" id="col-2">placering: {{ rowData.winner?.placement }}</div>
@@ -108,7 +101,7 @@
 
 <ng-template #rowValueItemEdit>
     <div class="expanded-row-wrapper">
-        <form [formGroup]="contestantForm" class="form-group" (ngSubmit)="onSubmit(contestantForm.value)">
+        <form [formGroup]="contestantForm" class="form-group" (ngSubmit)="inputContDataSubmit()">
             <mat-form-field appearance="legacy">
                 <mat-label>namn</mat-label>
                 <input matInput class="form-control" formControlName="name" type="text" placeholder="" />
@@ -120,7 +113,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="legacy">
                     <mat-label>telefonnummer</mat-label>
-                    <input matInput class="form-control" formControlName="teleNumber" type="number" placeholder="" />
+                    <input matInput class="form-control" formControlName="teleNumber" type="text" placeholder="" />
                 </mat-form-field>
                 <mat-form-field appearance="legacy">
                     <mat-label>e-post</mat-label>
@@ -131,18 +124,19 @@
                     <input matInput class="form-control" formControlName="office" type="text" placeholder="" />
                 </mat-form-field>
             </span>
+
+            <button class="button" type="submit" [ngStyle]="{'display' : 'none'}"></button
+            ><!--Just so enter works-->
         </form>
 
         <div class="choosen-item-wrapper" *ngIf="rowData.winner!==undefined">
-            <button *ngIf=" this.authService.authenticated==true " (click)="openItemPickerModal()">Välj konstföremål</button>
+            <button mat-button *ngIf=" this.authService.authenticated==true " (click)="clickEventHandler(ClickElems.artItemPicker, $event)">
+                Välj konstföremål
+            </button>
             <div *ngIf="rowData.winner!.lotteryItem!==undefined">
                 <thumbnail [artItem]="rowData.winner!.lotteryItem!" [showCheckbox]="false"></thumbnail>
-                <!-- <art-item-details -->
-                <!--     class="art-item-details" -->
-                <!--     [data]="rowData.winner.lotteryItem" -->
-                <!--     [onClickOverride]="artItemClicked" -->
-                <!--     [viewData]="{isAdmin:true}" -->
-                <!-- ></art-item-details> -->
+                <!-- <art-item-details class="art-item-details" [data]="rowData.winner.lotteryItem" [viewData]="{isAdmin:true}"></art-item-details> -->
+                <!-- [onClickOverride]="artItemClicked" -->
             </div>
         </div>
     </div>

@@ -1,15 +1,10 @@
 #art-item-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 10rem);
-    grid-gap: 1rem;
+    grid-template-columns: repeat(auto-fill, 15rem);
+    grid-gap: 0rem 0rem;
     justify-content: space-between;
     overflow-x: hidden;
-    max-width: 70rem;
+    max-width: 80rem;
     margin-left: auto;
     margin-right: auto;
-}
-
-.art-item-thumbnail {
-    width: 30rem;
-    height: 30rem;
 }
