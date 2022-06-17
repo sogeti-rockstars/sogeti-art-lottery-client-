@@ -68,14 +68,14 @@
             <div #collapsedItems class="collapsed-contestant-info-items">
                 <div class="collapsed-item" id="col-1">{{ rowData.data?.name }}</div>
                 <div *ngIf="rowData.winner === undefined ; else collapsedWinner">
-                    <div class="collapsed-item" id="col-2">anställningsnummer: {{ rowData.data?.employeeId }}</div>
-                    <div class="collapsed-item" id="col-4">kontor: {{ rowData.data?.office }}</div>
-                    <div class="collapsed-item" id="col-5">telefonnummer: {{ rowData.data?.teleNumber }}</div>
+                    <div class="collapsed-item" id="col-2">Anställningsnr: {{ rowData.data?.employeeId }}</div>
+                    <div class="collapsed-item" id="col-4">Kontor: {{ rowData.data?.office }}</div>
+                    <div class="collapsed-item" id="col-5">Telefonnummer: {{ rowData.data?.teleNumber }}</div>
                 </div>
                 <ng-template #collapsedWinner>
-                    <div class="collapsed-item" id="col-2">placering: {{ rowData.winner!.placement }}</div>
+                    <div class="collapsed-item" id="col-2">Placering: {{ rowData.winner!.placement }}</div>
                     <div class="collapsed-item" id="col-3">
-                        vald föremål: {{ rowData.winner?.lotteryItem !== undefined ? rowData.winner?.lotteryItem?.itemName : 'Ingen' }}
+                        Valt föremål: {{ rowData.winner?.lotteryItem !== undefined ? rowData.winner?.lotteryItem?.itemName : 'Ingen' }}
                     </div>
                 </ng-template>
             </div>
