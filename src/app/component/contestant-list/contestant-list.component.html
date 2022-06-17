@@ -27,6 +27,7 @@
         <div #rowWrapper class="row-wrapper" *ngFor="let row of rowData; trackBy:trackByContestant; let idx=index" [id]="idx">
             <app-contestant-row
                 #renderedRow
+                *ngIf="!row.filtered"
                 class="row-item row-item-rendered"
                 id="rendered"
                 (interactionEvent)="interactionEventListener(idx, $event)"
