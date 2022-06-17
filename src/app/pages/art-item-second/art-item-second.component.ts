@@ -36,7 +36,7 @@ export class ArtItemSecondComponent implements OnInit, OnDestroy {
             this.lotteryId = this.lotteryService.currLotteryId;
             this.lotteryService.getGuaranteePrize(this.lotteryService.currLotteryId!).subscribe((r) => {
                 if (r !== null) this.guaranteePrize = r;
-                else this.guaranteePrize = undefined;
+                else this.guaranteePrize = new ArtItem();
             });
         } else this.lotteryService.setCurrentLotteryIndex(0);
     }
