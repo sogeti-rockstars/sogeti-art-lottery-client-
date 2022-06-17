@@ -181,7 +181,7 @@ export class ContestantListComponent implements OnInit, OnDestroy, AfterViewChec
                 this.addNewRowData = undefined;
                 break;
             case ClickableElements.acceptEdit:
-                this.contestantListParent.listManipulation.update(this.addNewRowData!.data!);
+                this.contestantListParent.listManipulation.update(row.data);
                 break;
             case ClickableElements.abort:
                 this.addNewRowData = undefined;

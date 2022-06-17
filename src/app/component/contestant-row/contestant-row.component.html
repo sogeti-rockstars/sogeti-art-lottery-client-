@@ -73,7 +73,7 @@
                     <div class="collapsed-item" id="col-5">telefonnummer: {{ rowData.data?.teleNumber }}</div>
                 </div>
                 <ng-template #collapsedWinner>
-                    <div class="collapsed-item" id="col-2">placering: {{ rowData.winner?.placement }}</div>
+                    <div class="collapsed-item" id="col-2">placering: {{ rowData.winner!.placement }}</div>
                     <div class="collapsed-item" id="col-3">
                         vald föremål: {{ rowData.winner?.lotteryItem !== undefined ? rowData.winner?.lotteryItem?.itemName : 'Ingen' }}
                     </div>

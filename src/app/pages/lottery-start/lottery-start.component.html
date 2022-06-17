@@ -1,7 +1,7 @@
 <h1>Starta lotteri</h1>
 <table class="lottery-start-button-table">
     <tr>
-        <td>
+        <td *ngIf="buttonShown">
             <button class="lottery-button" (click)="spinTheWheel($event)">Utför dragning</button>
         </td>
         <td>

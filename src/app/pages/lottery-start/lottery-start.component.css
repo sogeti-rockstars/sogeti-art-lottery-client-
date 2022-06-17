@@ -4,21 +4,6 @@
     margin-right: auto;
 }
 
-/* .lottery-start-container { */
-/*     display: flex; */
-/*     justify-content: center; */
-/*     margin-top: 100px; */
-/* } */
-/* .header { */
-/*     font-size: 50px; */
-/* } */
-/* .lottery-header { */
-/*     font-size: 50px; */
-/* } */
-/* .lottery-body { */
-/*     display: flex; */
-/*     justify-content: center; */
-/* } */
 .lottery-button {
     font-size: 18px;
     width: 200px;
@@ -45,7 +30,3 @@
     margin-right: auto;
     margin-bottom: 40px;
 }
-/* .winners { */
-/*     display: flex; */
-/*     justify-content: center; */
-/* } */
