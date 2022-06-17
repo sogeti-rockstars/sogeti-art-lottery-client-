@@ -79,7 +79,7 @@ export class ArtItemFormComponent implements OnInit {
             artistName: this.artItem.artistName,
             size: this.artItem.size,
             frameDescription: this.artItem.frameDescription,
-            value: this.artItem.value,
+            value: this.artItem.itemValue,
             technique: this.artItem.technique,
         });
     }
