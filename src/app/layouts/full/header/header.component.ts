@@ -1,5 +1,5 @@
 import { FocusMonitor } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppComponent } from 'src/app/app.component';
 import { Lottery } from 'src/app/model/lottery';
@@ -16,40 +16,56 @@ export class AppHeaderComponent implements AfterViewInit {
 
     currLotteryTitle!: string;
     lotteries!: Lottery[];
+    currIndex!: number;
 
     public readonly menuItems = menuItems;
 
     constructor(
         public app: AppComponent,
         private router: Router,
-        private authService: AuthService,
+        public authService: AuthService,
         private _focusMonitor: FocusMonitor,
         public lotteryService: LotteryService
     ) {
-        lotteryService.lotteryChanged.subscribe((lott) => (this.currLotteryTitle = lott.title));
-        lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        lotteryService.lotteryChanged.subscribe((lott) => {
+            this.currLotteryTitle = lott.title;
+            lotteryService.getLotteriesSummary().subscribe((lotts) => (this.lotteries = lotts));
+        });
     }
 
     ngAfterViewInit(): void {
         this._focusMonitor.stopMonitoring(document.getElementById('toggleSide')!);
     }
 
+    public setCurrIndex(index: number) {
+        this.currIndex = index;
+    }
+
     public doAction(menuitem: MenuItem, event: MouseEvent) {
         event.stopImmediatePropagation();
-        console.log(this.authService.isAdmin);
-        if (menuitem.action === 'showRoute') {
-            let url = this.authService.isAdmin ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
-            this.router.navigateByUrl(url);
-        } else if (menuitem.action == 'loginOrLogout') {
-            let url = this.router.url.replace(/(admin|user)/, menuitem.route);
-            console.log(url);
-            this.router.navigateByUrl(url);
-        } else throw new Error('Unknown action was given!');
+        switch (menuitem.action) {
+            case 'showRoute':
+                let url = this.authService.authenticated ? 'admin/' + menuitem.route : 'user/' + menuitem.route;
+                this.router.navigateByUrl(url);
+                break;
+            case 'login':
+                this.router.navigateByUrl('/login?from=' + this.router.url.split('/').slice(-1));
+                this.router.setUpLocationChangeListener;
+                break;
+            case 'logout':
+                this.authService.logout();
+                break;
+            case 'nothing':
+                break;
+        }
     }
 
     public getMenuItems() {
         return menuItems.filter(
-            (item) => item.limitedTo == '' || (item.limitedTo == 'user' && !this.authService.isAdmin) || (item.limitedTo == 'admin' && this.authService.isAdmin)
+            (item) =>
+                item.limitedTo == '' ||
+                (item.limitedTo == 'user' && !this.authService.authenticated) ||
+                (item.limitedTo == 'admin' && this.authService.authenticated)
         );
     }
 }
@@ -57,11 +73,21 @@ export class AppHeaderComponent implements AfterViewInit {
 const menuItems: MenuItem[] = [
     {
         route: 'artitems',
-        label: 'Konstverk',
+        label: 'Högvinster',
         icon: '',
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
+    },
+    {
+        route: 'artitemSecond',
+        label: 'Garantivinst',
+        icon: '',
+        cls: 'header-buttons route-button',
+        limitedTo: '',
+        action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'winners',
@@ -70,14 +96,41 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: '',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
-        route: 'association',
-        label: 'Om föreningen',
+        route: '',
+        label: 'Om oss',
         icon: '',
         cls: 'header-buttons route-button',
-        limitedTo: 'user',
-        action: 'showRoute',
+        limitedTo: '',
+        action: 'nothing',
+        subMenuItems: [
+            {
+                route: 'association',
+                label: 'Styrelsen',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'flow',
+                label: 'Flöde',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+            {
+                route: 'about',
+                label: 'Info',
+                icon: '',
+                cls: 'header-buttons route-button',
+                limitedTo: '',
+                action: 'showRoute',
+            },
+        ],
     },
     {
         route: 'members',
@@ -86,6 +139,7 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'lottery-start',
@@ -94,23 +148,26 @@ const menuItems: MenuItem[] = [
         cls: 'header-buttons route-button',
         limitedTo: 'admin',
         action: 'showRoute',
+        subMenuItems: [],
     },
     {
         route: 'user',
         label: 'Logga ut',
-        icon: '',
+        icon: 'person',
         cls: 'header-buttons login-out-button',
         limitedTo: 'admin',
-        action: 'loginOrLogout',
+        subMenuItems: [],
+        action: 'logout',
     },
-    {
-        route: 'admin',
-        label: 'Logga in',
-        icon: '',
-        cls: 'header-buttons login-out-button',
-        limitedTo: 'user',
-        action: 'loginOrLogout',
-    },
+    // {
+    //     route: 'admin',
+    //     label: 'Logga in',
+    //     icon: 'person',
+    //     cls: 'header-buttons login-out-button',
+    //     limitedTo: 'user',
+    //     subMenuItems: [],
+    //     action: 'login',
+    // },
 ];
 
 export interface MenuItem {
@@ -120,4 +177,5 @@ export interface MenuItem {
     cls: string;
     limitedTo: string /*admin, user or blank (=not limited to any user group)*/;
     action: string;
+    subMenuItems: any[];
 }

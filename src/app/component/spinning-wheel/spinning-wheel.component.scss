@@ -1,0 +1,80 @@
+$anims: ();
+
+$anim-start-degs: 0deg, 45deg, 90deg, 135deg, 180deg, 225deg, 270deg, 315deg, 360deg;
+
+$anim-steps: 100ms, 400ms, 800ms, 1200ms, 1200ms, 2000ms; //, 2000ms;
+$anim-durts: 1000ms, 1100ms, 1500ms, 2300ms, 3500ms, 4700ms; //, 6700ms;
+@for $i from 1 through length($anim-start-degs) {
+    $spin-steps: spin#{$i} nth($anim-steps, 1) linear nth($anim-durts, 1), spin#{$i} nth($anim-steps, 2) linear nth($anim-durts, 2),
+        spin#{$i} nth($anim-steps, 3) linear nth($anim-durts, 3), spin#{$i} nth($anim-steps, 4) linear nth($anim-durts, 4),
+        spin#{$i} nth($anim-steps, 5) linear nth($anim-durts, 5), spin#{$i} nth($anim-steps, 6) linear nth($anim-durts, 6);
+    $anims: append($anims, $spin-steps);
+}
+
+#container {
+    display: grid;
+    background: #e6e7e8;
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+}
+
+.circle {
+    grid-column: 1;
+    grid-row: 1;
+
+    border-radius: 50%;
+    background-image: conic-gradient(transparent 93.75%, #2485c1 6.25%);
+}
+
+.circle-paused > * {
+    animation-play-state: paused !important;
+}
+
+@for $i from 1 through length($anim-start-degs) {
+    $starting-deg: nth($anim-start-degs, $i);
+    $anim-name: spin#{$i};
+
+    .circle#circle#{$i} {
+        animation-iteration-count: infinite !important;
+
+        animation: nth($anims, $i);
+        -webkit-animation: nth($anims, $i);
+
+        transform: rotate($starting-deg);
+        -moz-transform: rotate($starting-deg);
+        -webkit-transform: rotate($starting-deg);
+        -o-transform: rotate($starting-deg);
+        -ms-transform: rotate($starting-deg);
+    }
+
+    @keyframes spin#{$i} {
+        0% {
+            -moz-transform: rotate($starting-deg);
+            -webkit-transform: rotate($starting-deg);
+            -o-transform: rotate($starting-deg);
+            -ms-transform: rotate($starting-deg);
+        }
+        100% {
+            -moz-transform: rotate($starting-deg + 360deg);
+            -webkit-transform: rotate($starting-deg + 360deg);
+            -o-transform: rotate($starting-deg + 360deg);
+            -ms-transform: rotate($starting-deg + 360deg);
+        }
+    }
+
+    @-webkit-keyframes spin#{$i} {
+        0% {
+            -moz-transform: rotate($starting-deg);
+            -webkit-transform: rotate($starting-deg);
+            -o-transform: rotate($starting-deg);
+            -ms-transform: rotate($starting-deg);
+        }
+        100% {
+            -moz-transform: rotate($starting-deg + 360deg);
+            -webkit-transform: rotate($starting-deg + 360deg);
+            -o-transform: rotate($starting-deg + 360deg);
+            -ms-transform: rotate($starting-deg + 360deg);
+        }
+    }
+}

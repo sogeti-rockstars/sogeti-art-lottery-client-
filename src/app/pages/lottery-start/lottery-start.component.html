@@ -1,21 +1,21 @@
 <h1>Starta lotteri</h1>
-<button class="lottery-button" (click)="spinTheWheel()">spin</button>
-<div id="lottery-main-content">
-    <div *ngFor="let winner of winners; let i=index">{{i}} cont. Id: {{winner.id}}</div>
-</div>
-
-<!-- <div class="lottery-start-container"> -->
-<!--     <div class="row"> -->
-<!--         <div class="header"> -->
-<!--             <h1 class="lottery-header">Starta lotteriet!!!</h1> -->
-<!--         </div> -->
-<!--         <div class="lottery-body"> -->
-<!--             <button class="lottery-button" (click)="spinTheWheel()">spin</button> -->
-<!--              -->
-<!--         </div> -->
-<!--         <div class="winners" *ngFor="let winner of winners"> -->
-<!--             {{winner.id}} -->
-<!--             {{winner.placement}} -->
-<!--         </div> -->
-<!--     </div> -->
-<!-- </div>; -->
+<table class="lottery-start-button-table">
+    <tr>
+        <td>
+            <button class="lottery-button" (click)="spinTheWheel($event)">Utför dragning</button>
+        </td>
+        <td>
+            <app-spinning-wheel
+                (onAnimationEnd)="spinningAnimationEndHandler()"
+                [animationControlEvent]="animationControlEvent"
+                [parentComponent]="this"
+            ></app-spinning-wheel>
+        </td>
+    </tr>
+</table>
+<h2>Vinnare</h2>
+<contestant-list-component
+    [contestantListParent]="this"
+    [contestantComparator]="contestantComparator"
+    [enabledRowActions]="{edit:false,delete:true,selections:false,buttonRow:false}"
+></contestant-list-component>

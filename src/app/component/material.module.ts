@@ -49,6 +49,13 @@ import { ContestantListComponent } from './contestant-list/contestant-list.compo
 import { MembersComponent } from '../pages/members/members.component';
 import { CreateLotteryComponent } from '../pages/create-lottery/create-lottery.component';
 import { LotteryStartComponent } from '../pages/lottery-start/lottery-start.component';
+import { SpinningWheelComponent } from './spinning-wheel/spinning-wheel.component';
+import { EditLotteryComponent } from '../pages/edit-lottery/edit-lottery.component';
+import { LoginComponent } from '../pages/login/login.component';
+import { FlowComponent } from '../pages/flow/flow.component';
+import { AboutComponent } from '../pages/info/about.component';
+import { ArtItemDetailsComponent } from './art-item-details/art-item-details.component';
+import { ArtItemSecondComponent } from '../pages/art-item-second/art-item-second.component';
 
 // import { CdkTableModule } from '@angular/cdk/table';
 // import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -129,6 +136,13 @@ const components: Array<any> = [
     ContestantListComponent,
     LotteryStartComponent,
     CreateLotteryComponent,
+    EditLotteryComponent,
+    SpinningWheelComponent,
+    LoginComponent,
+    FlowComponent,
+    AboutComponent,
+    ArtItemDetailsComponent,
+    ArtItemSecondComponent,
 ];
 
 @NgModule({

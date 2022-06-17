@@ -1,4 +1,7 @@
 <h1>Medlemmar</h1>
 <div id="members-main-content">
-    <contestant-list-component [parent]="this"></contestant-list-component>
+    <contestant-list-component
+        [contestantListParent]="this"
+        [enabledRowActions]="{edit:true,delete:true,selections:true,buttonRow:true}"
+    ></contestant-list-component>
 </div>

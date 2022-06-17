@@ -1,39 +1,56 @@
 <mat-card class="example-card">
+    <div class="ribbon-wrapper">
+        <span *ngIf="object.available; else taken">
+            <div class="ribbon" id="ribbon-available">Ej taget!</div>
+        </span>
+        <ng-template #taken>
+            <div class="ribbon" id="ribbon-taken">Taget!</div>
+        </ng-template>
+    </div>
     <mat-card-header>
-        <!-- <div mat-card-avatar class="example-header-image"></div> -->
         <mat-card-title>{{object.itemName}}</mat-card-title>
         <mat-card-subtitle>{{object.artistName}}</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image [src]="loadImageUrl()" alt="Photo of item" />
+
+    <span *ngIf="editMode != true">
+        <img mat-card-image [src]="imgURL" alt="Photo of item" />
+    </span>
     <mat-card-content class="mat-card-body">
-        <ul class="list-group">
-            <div *ngIf="objectContent[1][0]=='itemName'">
-                <div *ngFor="let value of values; let i=index">
-                    <div class="form-group">
-                        <div *ngIf="editMode == true">
-                            <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
-                                <li class="list-group-item">
-                                    <div *ngIf="editMode == true">
-                                        {{prettyVarNames[i]}}:
-                                        <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
-                                    </div>
-                                </li>
-                            </form>
-                        </div>
-                    </div>
-                    <div *ngIf="editMode == false">
-                        <li class="list-group-item">{{prettyVarNames[i]}}: {{value}}</li>
+        <ul class="list-group" *ngIf="objectContent[1][0]=='itemName'">
+            <div *ngFor="let value of values; let i=index">
+                <div class="form-group">
+                    <div *ngIf="editMode == true && prettyVarNames[i]!=='ID' && prettyVarNames[i]!==''">
+                        <form [formGroup]="profileForm" (ngSubmit)="onSubmit(profileForm.value)">
+                            <li class="list-group-item">
+                                {{prettyVarNames[i]}}:
+                                <input formControlName="{{variableNames[i]}}" type="text" class="form-control" id="{{variableNames[i]}}" />
+                            </li>
+                        </form>
                     </div>
                 </div>
+                <div *ngIf="editMode == false && prettyVarNames[i]!==''">
+                    <li class="list-group-item">{{prettyVarNames[i]}}: {{value}}</li>
+                </div>
+            </div>
+            <div *ngIf="editMode == true && object.available">
+                <mat-form-field id="lottery-picker" appearance="fill">
+                    <mat-label>Lottery</mat-label>
+                    <mat-select [(value)]="selected">
+                        <mat-option *ngFor="let lottery of lotteries; index as i" [value]="lottery.id-1"> {{lottery.title}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </ul>
     </mat-card-content>
     <mat-card-actions>
-        <div *ngIf="editMode == false"><button *ngIf="this.authService.isAdmin == true" mat-button (click)="enableEdit()">Edit</button></div>
-        <div *ngIf="editMode == true">
-            <button [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Update</button>
+        <div *ngIf="editMode == false"><button *ngIf="this.authService.authenticated == true" mat-button (click)="enableEdit()">Redigera</button></div>
+        <div *ngIf="editMode == true" id="buttons-wrapper">
+            <button id="file-pick-button" mat-button type="button" (click)="fileInput.click()">
+                <span>Välj fil</span>
+                <input #fileInput type="file" (change)="onFileChanged($event)" style="display: none" />
+            </button>
+            <button id="accept-button" [disabled]="!profileForm.valid" type="submit" mat-button (click)="onSubmit(profileForm.value)">Acceptera</button>
         </div>
         <!-- <button mat-button>SHARE</button> -->
     </mat-card-actions>
 </mat-card>
-

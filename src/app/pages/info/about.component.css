@@ -1,0 +1,58 @@
+#inner-page-wrap {
+    display: flex;
+    position: absolute;
+    /* width: 100%; */
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    flex-direction: column;
+    align-items: center;
+    max-width: 80rem;
+}
+
+.viewing-wrapper-title {
+    display: flex;
+    flex-direction: row;
+}
+.viewing-wrapper-body {
+    display: flex;
+    margin: 20px;
+    flex-direction: row;
+}
+
+#viewing-wrapper-inner {
+    width: 100%;
+    float: left;
+    flex-direction: row;
+    min-height: 10rem;
+}
+
+#body {
+    float: left;
+}
+.editing-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+#body-edit-textarea {
+    resize: both;
+    width: 100%;
+    min-height: 10rem;
+}
+#body-edit-from {
+    width: 500px;
+}
+.edit-buttons-wrapper {
+    float: right;
+}
+.edit-button {
+    float: right;
+}
+.about-us {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    text-align: center;
+    color: black;
+    font-size: 12px;
+}

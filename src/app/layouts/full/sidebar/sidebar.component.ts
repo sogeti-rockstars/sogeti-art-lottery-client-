@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Lottery } from 'src/app/model/lottery';
+import { AuthService } from 'src/app/service/auth.service';
 import { LotteryService } from 'src/app/service/lottery.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class AppSidebarComponent implements OnInit {
 
     private lotteries$: Lottery[] = [];
 
-    constructor(private lotteryService: LotteryService) {}
+    constructor(private lotteryService: LotteryService, public authService: AuthService) {}
 
     ngOnInit(): void {
         console.log('init');
@@ -25,31 +26,7 @@ export class AppSidebarComponent implements OnInit {
     }
 
     public pickLottery(idx: any) {
-        this.lotteryService.setCurrentLottery(idx);
+        this.lotteryService.setCurrentLotteryIndex(idx);
         this.sidebarVisibleClicked.emit();
     }
 }
-
-// Todo: autoclose sidebar when clicking on side.
-// the code below works only when viewing the contestant component for some reason...
-//
-// import { ApplicationRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2 } from '@angular/core';
-// constructor(private lotteryService: LotteryService, private elemRef: ElementRef, private renderer: Renderer2, private app: ApplicationRef) {}
-// this.sidebarVisibleClicked.subscribe(() => this.listenClicks());
-// private unListenClicksFunction?: () => void;
-// private listenClicks() {
-//     this.unListenClicks();
-//     if (this.visible == true)
-//         this.unListenClicks = this.renderer.listen(this.app.components[0].location.nativeElement, 'click', (event) => this.clickListen(event));
-//     else console.log('not subscribing');
-// }
-// private unListenClicks() {
-//     if (this.unListenClicksFunction) this.unListenClicksFunction.call(this);
-// }
-// private clickListen(event: any) {
-//     if (!this.elemRef.nativeElement.contains(event.target)) {
-//         console.log('clicked outside!');
-//         this.visible = false;
-//         this.sidebarVisibleClicked.emit();
-//     } else console.log('clicked inside!');
-// }

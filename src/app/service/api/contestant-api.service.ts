@@ -25,7 +25,7 @@ export class ContestantApiService {
     }
 
     public updateContestant(cont: Contestant): Observable<Contestant> {
-        return this.httpPut(cont, cont.id);
+        return this.httpPut<Contestant>(cont, cont.id);
     }
 
     public deleteContestant(id: number): Observable<Object> {
@@ -49,6 +49,6 @@ export class ContestantApiService {
     }
 
     private getHeaders() {
-        return { headers: this.auth.authHeaders };
+        return this.auth.getHttpOptions();
     }
 }

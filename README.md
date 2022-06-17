@@ -1,3 +1,74 @@
+# Vad gör Applikationen allmänt, vad är den till för?
+
+Applikationen hanterar Sogetis årliga konstlotteri, där konstverk årsvis
+lottas ut till de anställda. Utöver att visa upp de konstverk som ingår i en utlottning, sköter
+systemet bl.a. allmän information om lotteriet, vinsthistorik, dragning av vinnare, register
+över medlemmar med mera.
+
+# Vilka knappar finns? Hur är de kopplade till lotterierna?
+
+## För användare:
+
+-   "Norrkonst"<br>
+    Knapp med dropdown-funktion där man kan se konstverk
+    för de olika åren (denna knapp ändras till huvudmeny-knapp i "mobilläge")
+
+-   "Högvinster"<br>
+    Knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet. Användare kan klicka på ett konstverk för att få upp en ruta med detaljerad info om konstverket.
+
+-   "Garantivinster"<br>
+    Knapp för att se garantivinster för tidigare år eller i de aktuella lotteriet.
+
+-   "Vinnare"<br>
+    Knapp för att se tidigare vinnare, här finns även funktion för att söka bland vinnarna.
+
+-   "Om oss"<br>
+    Knapp med en dropdown-funktion som visar menyval för "Styrelse", "Flöde" och "Info".
+
+## För admin:
+
+-   "Norrkonst"<br>
+    Knapp med dropdown-funktion med de olika lotterierna, där admin kan skapa nytt lotteri, redigera samt ta bort tidigare lotterier.
+
+-   "Högvinster"<br>
+    Knapp för att se de olika konstverken som varit med i tidigare lotteri samt se vilka konstverk som är med i de aktuella lotteriet. Här finns det tre funktions-knappar för admin:
+    "Ta bort valda", "Välj alla" samt "Lägg till ny". Som admin kan man klicka på konstverket och redigera och på så sätt uppdatera det valda konstverket. Man kan markera en eller flera bilder om man vill ta bort.
+
+-   "Garantivinster"<br>
+    Knapp för att se garantivinster för tidigare år eller i de aktuella lotteriet samt kunna lägga upp ny garantivinst.
+
+-   "Logga in/ut"<br>
+    Knapp där man loggar in med användarnamn och lösenord (för admin).
+
+-   "Medlemmar"<br>
+    Knapp för att se vilka som är medlemmar, sökfunktion för att söka bland medlemmar. Funktioner för att lägga till, redigera och ta bort medlemmar.
+
+-   "Vinnare"<br>
+    Knapp för att se tidigare vinnare och välja konstföremål som vinnarna har valt.
+
+-   "Starta Lotteri"<br>
+    Där finns en knapp som utför dragning och som slumpvis lottar fram vinnare, 25% av medlemmarna vinner högvinster och resten får garantivinst.
+
+-   "Om oss"<br>
+    Knapp med en dropdown-funktion som visar "Styrelse", "Flöde" samt "Info".
+    I samtliga dessa sidor kan admin klicka på en funktions-knapp, "pennan", för att redigera text.
+
+-   "Logga ut"<br>
+    Knapp för att som admin kunna logga ut.
+
+## Vilka listor med data finns?
+
+-   konstverk
+-   medlemmar
+-   vinnare
+
+## Vilken teknik ligger bakom?
+
+-   Frontend/Backend
+-   Java (med Spring Boot)
+-   Angular (med Material Design)
+-   mySQL
+
 # SogetiArtLotteryClient
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.3.

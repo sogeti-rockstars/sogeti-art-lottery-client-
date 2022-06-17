@@ -1,17 +1,10 @@
 <div *ngIf="artItems.length === 0; else mainContent">loading...</div>
 <ng-template #mainContent>
-  <ng-container *ngFor="let item of artItems; let i = index">
-    <div style="max-width: 1000px" class="row" *ngIf="i % 5 == 0">
-      <ng-container *ngFor="let pos of [0, 1, 2, 3, 4]">
-        <div class="column" *ngIf="i + pos < artItems.length">
-          <!-- <app-materialmodal [artItem]="artItems[i + pos]"></app-materialmodal> -->
-          <thumbnail
-            [id]="artItems[i + pos].id"
-            [artItem]="artItems[i + pos]"
-            cssClass="thumbnailImg"
-          ></thumbnail>
+    <div id="art-item-wrapper">
+        <div *ngFor="let item of artItems">
+            <thumbnail class="art-item-thumbnail" [artItem]="item" [onClickOverride]="onThumbnailClick" [showCheckbox]="showThumbnailCheckboxes"></thumbnail>
+            <!-- <art-item-details class="art-item-thumbnail" [data]="item" [viewData]="{isAdmin:true,isThumbnail:true}"></art-item-details> -->
+            <!-- [onClickOverride]="artItemClicked" -->
         </div>
-      </ng-container>
     </div>
-  </ng-container>
 </ng-template>

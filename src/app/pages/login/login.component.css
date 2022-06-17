@@ -1,0 +1,24 @@
+#main-content {
+    position: absolute;
+    top: 0rem;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+#wrong-pass-message {
+    text-align: center;
+}
+
+#form-wrap {
+    max-width: 40rem;
+}
+#login-form {
+    display: flex;
+    flex-direction: column;
+}

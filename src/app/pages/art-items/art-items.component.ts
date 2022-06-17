@@ -1,12 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { CheckboxControlValueAccessor } from '@angular/forms';
+import { Component, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AppComponent } from 'src/app/app.component';
 import { ArtItemFormComponent } from 'src/app/component/form/art-item-form/art-item-form.component';
 import { ModalService } from 'src/app/component/modal/modal.service';
 import { ArtItem } from 'src/app/model/art-item';
-import { ArtItemApiService } from 'src/app/service/api/art-item-api.service';
 import { ArtItemService } from 'src/app/service/art-item.service';
 import { AuthService } from 'src/app/service/auth.service';
 import { LotteryService } from 'src/app/service/lottery.service';
@@ -16,21 +13,25 @@ import { LotteryService } from 'src/app/service/lottery.service';
     templateUrl: 'art-items.component.html',
     styleUrls: ['./art-items.component.css'],
 })
-export class ArtItemsComponent implements OnInit {
+export class ArtItemsComponent implements OnInit, OnDestroy {
     @Input() public artItems: ArtItem[] = [];
-    allIsChecked = false;
-    private loadPaintingSubscription!: Subscription;
+
+    private lotteryChanged!: Subscription;
+    private allIsChecked = false;
+
     constructor(
         public authService: AuthService,
-        private artItemApiService: ArtItemApiService,
         private artItemService: ArtItemService,
         private lotteryService: LotteryService,
         private modalService: ModalService,
         private vcr: ViewContainerRef
     ) {}
+    ngOnDestroy(): void {
+        this.lotteryChanged.unsubscribe();
+    }
     ngOnInit(): void {
         if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
-        this.loadPaintingSubscription = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
+        this.lotteryChanged = this.lotteryService.lotteryChanged.subscribe((lottery) => this.loadPaintingsFromLottery(lottery.id));
         this.artItemService.artItemSubject$.subscribe(() => {
             if (this.lotteryService.currLotteryId !== undefined) this.loadPaintingsFromLottery(this.lotteryService.currLotteryId);
             else this.loadAllItems;
@@ -38,10 +39,7 @@ export class ArtItemsComponent implements OnInit {
     }
 
     public loadAllItems() {
-        this.artItemApiService.getArtItems().subscribe({
-            complete: () => {
-                console.log('Loading complete!');
-            },
+        this.artItemService.getArtItems().subscribe({
             error: (error: HttpErrorResponse) => {
                 alert(error.message);
             },
@@ -53,9 +51,6 @@ export class ArtItemsComponent implements OnInit {
 
     public loadPaintingsFromLottery(lotteryId: number): void {
         this.lotteryService.getArtItemsByLotteryId(lotteryId).subscribe({
-            complete: () => {
-                console.log('Loading complete!');
-            },
             error: (error: HttpErrorResponse) => {
                 alert(error.message);
             },
@@ -76,27 +71,22 @@ export class ArtItemsComponent implements OnInit {
     }
 
     public newItem() {
-        console.log('newItem');
         const component = this.vcr.createComponent<ArtItemFormComponent>(ArtItemFormComponent);
-
         this.modalService.loadModal(component, this.vcr);
-        console.log(component);
     }
 
     public removeSelectedArtItems() {
         if (confirm('Är du säker på att du vill radera?')) {
             var allCheckboxes = document.getElementsByName('artItemCheckbox');
             var cbox;
-            var arrSelected = [];
             for (var i = 0; i < allCheckboxes.length; i++) {
                 cbox = <any>allCheckboxes[i];
-                cbox.checked
-                    ? this.artItemService.deleteArtItem(cbox.value).subscribe({
-                          complete: () => {
-                              this.artItemApiService.getArtItems();
-                          },
-                      })
-                    : void 0;
+                if (cbox.checked)
+                    this.artItemService.deleteArtItem(cbox.value).subscribe({
+                        complete: () => {
+                            this.artItemService.getArtItems();
+                        },
+                    });
             }
         }
     }

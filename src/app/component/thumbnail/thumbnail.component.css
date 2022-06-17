@@ -1,36 +1,67 @@
-.XXsquare {
-  height: 50px;
-  width: 50px;
-  background-color: white;
-  display: table-cell;
-  justify-content: center;
-  vertical-align: middle;
-  text-align: center;
+.thumbnail-image {
+    max-height: 90%;
+    max-width: 100%;
+    object-fit: contain;
 }
-.thumbnailImg {
-  width: 110px;
-  border: 2px solid rosybrown;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  margin-top: auto !important;
-  max-width: 75%;
+
+.ribbonable {
+    z-index: 91;
 }
-.card {
-  margin: 10px;
-  max-width: 120px;
-  height: 180px;
-  position: relative;
-  background-color: #e1e1e1;
+.thumbnail-card {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
+
+.default-thumbnail-card {
+    max-width: 10rem;
+    min-width: 7rem;
+    height: 10rem;
+    background-color: #e1e1e1;
+}
+
 .mat-card-content {
-  position: absolute;
-  bottom: 0;
-  margin: auto;
+    z-index: 86;
+    position: absolute;
+    bottom: 0;
 }
+
 .text {
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-size: 12.5px;
-  color: black;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    font-size: 12.5px;
+    color: black;
+}
+
+.thumbnail-checkbox {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+.ribbon {
+    /* position: absolute; */
+    z-index: 100;
+    font: bold 15px sans-serif;
+    color: #333;
+    text-align: center;
+    transform: none;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    /* position: relative; */
+    padding: 7px 0;
+    top: 15px;
+    right: 6px;
+    width: 120px;
+    color: #fff;
+}
+#ribbon-available {
+    background-color: #2ee47e;
+}
+
+#ribbon-taken {
+    background-color: #ebb134;
 }

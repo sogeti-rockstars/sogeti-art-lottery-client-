@@ -1,0 +1,56 @@
+<div id="inner-page-wrap">
+    <div class="viewing-wrapper-title" *ngIf="!title.editing; else editTitle">
+        <h1>{{title.text}}</h1>
+        <button *ngIf="authService.authenticated" mat-icon-button aria-label="redigera" (click)="title.editing=true">
+            <mat-icon>edit</mat-icon>
+        </button>
+    </div>
+    <div class="viewing-wrapper-body">
+        <div id="viewing-wrapper-inner" *ngIf="!body.editing; else editBody">
+            <div id="body" [innerHTML]="body.text"></div>
+            <button *ngIf="authService.authenticated" mat-icon-button aria-label="redigera" (click)="body.editing=true">
+                <mat-icon>edit</mat-icon>
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-template #editTitle>
+    <div class="editing-wrapper">
+        <form id="edit-form" role="form" (submit)="infoService.setField('aboutFlowTitle', title.text) ; title.editing=false">
+            <div class="edit-buttons-wrapper">
+                <button mat-icon-button type="submit" class="edit-button btn btn-primary" aria-label="Verkställ">
+                    <mat-icon>done</mat-icon>
+                </button>
+                <button class="edit-button" mat-icon-button aria-label="avbryt" (click)="title.editing=false">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <mat-form-field matLine name="edit" id="title-edit-form" appearance="standard">
+                <mat-label>Titel:</mat-label>
+                <input matInput name="title" type="text" [placeholder]="title.text" [(ngModel)]="title.text" />
+            </mat-form-field>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #editBody>
+    <div class="editing-wrapper">
+        <!-- <form id="edit-form" role="form" (submit)="infoService.setField('aboutUsBody', body.text) ; body.editing=false"> -->
+        <form id="edit-form" role="form" (submit)="infoService.setField('aboutFlowBody', body.text) ; body.editing=false">
+            <div class="edit-buttons-wrapper">
+                <button mat-icon-button type="submit" class="edit-button btn btn-primary" aria-label="Verkställ">
+                    <mat-icon>done</mat-icon>
+                </button>
+                <button class="edit-button" mat-icon-button aria-label="avbryt" (click)="body.editing=false">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <!-- <form id="body-edit-form" matLine name="edit" appearance="standard"> -->
+            <!-- <mat-label>Text:</mat-label> -->
+            <textarea id="body-edit-textarea" name="body" type="text" [placeholder]="body.text" [(ngModel)]="body.text"></textarea>
+            <!-- </form> -->
+        </form>
+        <!-- </form> -->
+    </div>
+</ng-template>

@@ -4,28 +4,44 @@
             <button
                 mat-raised-button
                 aria-label="sidebar-icon"
-                class="header-buttons sidebar-button"
+                class="drop-menu-button"
+                [matMenuTriggerFor]="dropMenuFull"
                 value="sidebarclosed"
                 id="toggleSide"
-                (click)="sidebarVisibleClicked.emit()"
             >
-                <mat-icon class="header-button-icon">notes</mat-icon>
-                {{ currLotteryTitle }}
+                {{ currLotteryTitle }} <mat-icon>keyboard_arrow_down</mat-icon>
             </button>
 
-            <button
-                *ngFor="let item of getMenuItems()"
-                class="{{ item.cls }}"
-                value="sidebarclosed"
-                [id]="item.action"
-                mat-raised-button
-                mat-button
-                fxHide.xs
-                (click)="this.doAction(item, $event)"
-            >
-                <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon>
-                {{ item.label }}
-            </button>
+            <span *ngFor="let item of getMenuItems()">
+                <button
+                    *ngIf="item.subMenuItems.length > 0"
+                    class="{{ item.cls }}"
+                    value="sidebarclosed"
+                    [id]="item.action"
+                    [matMenuTriggerFor]="dropMenuSubItems"
+                    [matMenuTriggerData]="item"
+                    mat-raised-button
+                    mat-button
+                    fxHide.xs
+                    (click)="this.doAction(item, $event)"
+                >
+                    <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon>
+                    {{ item.label }} <mat-icon>keyboard_arrow_down</mat-icon>
+                </button>
+                <button
+                    *ngIf="item.subMenuItems.length == 0"
+                    class="{{ item.cls }}"
+                    value="sidebarclosed"
+                    [id]="item.action"
+                    mat-raised-button
+                    mat-button
+                    fxHide.xs
+                    (click)="this.doAction(item, $event)"
+                >
+                    <mat-icon *ngIf="item.icon !== ''" class="header-button-icon">{{ item.icon }}</mat-icon>
+                    {{ item.label }}
+                </button>
+            </span>
         </div>
 
         <button mat-raised-button class="drop-menu-button" [matMenuTriggerFor]="dropMenu" fxHide fxShow.xs>
@@ -39,10 +55,42 @@
         </a>
     </div>
 
+    <mat-menu #dropMenuFull="matMenu">
+        <div class="mat-menu-autosize">
+            <ng-container *ngFor="let lottery of lotteries; let i=index">
+                <button mat-menu-item (click)="this.lotteryService.setCurrentLotteryIndex(i)">
+                    {{ lottery.title }}
+                    <button
+                        *ngIf="authService.authenticated == true"
+                        mat-raised-button
+                        class="edit-lottery-button"
+                        [routerLink]="['admin/edit-lottery/'+(i+1)]"
+                    >
+                        <mat-icon>create</mat-icon>
+                    </button>
+                </button>
+                <mat-divider></mat-divider>
+            </ng-container>
+            <button *ngIf="authService.authenticated == true" mat-raised-button class="create-lottery-button" [routerLink]="['admin/create-lottery']">
+                Skapa nytt lotteri
+                <mat-icon>create</mat-icon>
+            </button>
+        </div>
+    </mat-menu>
+
     <mat-menu #dropMenu="matMenu">
         <button mat-menu-item [matMenuTriggerFor]="subMenu">Andra årtal</button>
         <ng-container *ngFor="let item of getMenuItems()">
-            <button mat-menu-item (click)="this.doAction(item, $event)">{{ item.label }}</button>
+            <button *ngIf="item.subMenuItems.length == 0" mat-menu-item (click)="this.doAction(item, $event)">{{ item.label }}</button>
+            <button
+                *ngIf="item.subMenuItems.length > 0"
+                mat-menu-item
+                [matMenuTriggerFor]="dropMenuSubItems"
+                [matMenuTriggerData]="item"
+                (click)="this.doAction(item, $event)"
+            >
+                {{ item.label }}
+            </button>
             <mat-divider></mat-divider>
         </ng-container>
     </mat-menu>
@@ -50,9 +98,24 @@
     <mat-menu #subMenu>
         <div class="submenu-container">
             <span *ngFor="let lott of lotteries; let i=index">
-                <button mat-menu-item (click)="lotteryService.setCurrentLottery(i)">{{ lott.title }}</button>
+                <button mat-menu-item (click)="lotteryService.setCurrentLotteryIndex(i)">{{ lott.title }}</button>
                 <mat-divider></mat-divider>
             </span>
+            <button *ngIf="authService.authenticated == true" mat-raised-button class="create-lottery-button" [routerLink]="['admin/create-lottery']">
+                Skapa nytt lotteri
+                <mat-icon>create</mat-icon>
+            </button>
+        </div>
+    </mat-menu>
+
+    <mat-menu #dropMenuSubItems="matMenu">
+        <div class="mat-menu-autosize">
+            <ng-template matMenuContent let-submenu="subMenuItems">
+                <ng-container *ngFor="let menu of submenu; let i=index">
+                    <button mat-menu-item (click)="this.doAction(menu, $event)">{{ submenu[i].label }}</button>
+                    <mat-divider></mat-divider>
+                </ng-container>
+            </ng-template>
         </div>
     </mat-menu>
 </mat-toolbar>

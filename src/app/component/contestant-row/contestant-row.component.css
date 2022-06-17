@@ -33,22 +33,11 @@
 }
 
 .collapsed-contestant-info-float {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     display: flex;
     width: 100%;
-
-    /* display: table; */
-    /* align-content: flex-start; */
-    /* height: 100px; */
-    /* padding: 20px; */
-    /* vertical-align: middle; */
-    /* align-items: center; */
 }
 
 .collapsed-contestant-info {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     float: left;
     margin-top: auto;
     margin-bottom: auto;
@@ -56,12 +45,9 @@
 
 .cont-row-table-col {
     box-shadow: 1px solid #0000ff;
-    -webkit-box-shadow: inset 0px 0px 0px 1px #0000ff;
 }
 
 .collapsed-contestant-info-items {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     margin-top: auto;
     margin-bottom: auto;
 
@@ -73,9 +59,6 @@
 }
 
 .collapsed-item {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
-    /* height: 30px; */
     position: absolute;
 
     overflow: hidden;
@@ -91,7 +74,10 @@
     top: 0;
     bottom: 0;
 }
-
+.winner-item-image {
+    max-width: 30vw;
+    max-height: 30vh;
+}
 #col-1 {
     left: var(--item-col-1);
 }
@@ -109,13 +95,9 @@
 }
 
 .collapsed-contestant-buttons-cont {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     min-width: fit-content;
 }
 .collapsed-contestant-buttons {
-    /* box-shadow: 1px solid #ff0000; */
-    /* -webkit-box-shadow: inset 0px 0px 0px 1px #ff0000; */
     float: right;
 }
 
@@ -124,15 +106,11 @@
     position: fixed;
     top: 100px;
     left: 400px;
-    /* display: table; */
-    /* align-items: flex-end; */
-    /* color: blue; */
 }
 
 @media (max-width: 50em) {
     .collapsing-office {
         display: none;
-        /* color: red; */
     }
 }
 
@@ -149,6 +127,11 @@
     color: black;
 }
 
+/* .mat-form-field-appearance-legacy.mat-form-field-disabled { */
+::ng-deep .mat-form-field-disabled .mat-form-field-underline {
+    display: none !important;
+}
+
 #expanded-topline {
     display: flex !important;
     justify-content: space-between;
@@ -160,4 +143,23 @@
 #account-icon {
     display: block;
     float: left !important;
+}
+
+.expanded-row-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 20rem;
+}
+.choosen-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    /* align-content:space-around; */
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.art-item-details {
+    height: 100%;
 }

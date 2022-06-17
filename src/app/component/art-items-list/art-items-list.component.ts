@@ -1,5 +1,4 @@
-import { AfterContentChecked, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { AppComponent } from 'src/app/app.component';
+import { Component, Input } from '@angular/core';
 import { ArtItem } from 'src/app/model/art-item';
 
 @Component({
@@ -8,6 +7,16 @@ import { ArtItem } from 'src/app/model/art-item';
     styleUrls: ['./art-items-list.component.css'],
 })
 export class ArtItemsListComponent {
-    @Input() public artItems: ArtItem[] = [];
-    constructor(private app: AppComponent) {}
+    @Input() set artItems(artItems: ArtItem[]) {
+        this.artItems$ = artItems.sort((a, b) => a.id! - b.id!);
+    }
+    get artItems() {
+        return this.artItems$;
+    }
+
+    @Input() onThumbnailClick?: (artItem: ArtItem) => void;
+    @Input() showThumbnailCheckboxes = true;
+
+    private artItems$: ArtItem[] = [];
+    constructor() {}
 }

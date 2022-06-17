@@ -4,4 +4,5 @@ export class Contestant {
     name = '';
     email = '';
     teleNumber = '';
+    office = '';
 }
